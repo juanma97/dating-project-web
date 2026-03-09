@@ -22,6 +22,7 @@ src/components/ComponentName/
 Other directories:
 
 - `src/hooks`: Custom React hooks.
+- `src/pages`: Complex components representing full pages or routes.
 - `src/api`: API service layers and data fetching logic.
 
 ## Clean Code Principles

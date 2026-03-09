@@ -20,7 +20,7 @@ describe('App Component', () => {
         <App />
       </BrowserRouter>,
     );
-    const heroText = screen.getByText(/Premium Connections, Real-World Magic/i);
+    const heroText = screen.getByText(/Connect in the Real World/i);
     expect(heroText).toBeInTheDocument();
   });
 });

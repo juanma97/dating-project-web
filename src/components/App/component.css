@@ -34,52 +34,6 @@ body {
 
 .app-main {
   flex: 1;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 70px auto 0;
+  margin-top: 70px;
   width: 100%;
-}
-
-.home-hero {
-  text-align: center;
-  padding: 4rem 1rem;
-}
-
-.home-hero h2 {
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  color: var(--secondary-color);
-}
-
-.home-hero p {
-  font-size: 1.25rem;
-  color: #666;
-  margin-bottom: 2rem;
-}
-
-.cta-button {
-  background-color: var(--primary-color);
-  color: var(--white);
-  border: none;
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  cursor: pointer;
-  transition:
-    transform var(--transition-speed),
-    background-color var(--transition-speed);
-}
-
-.cta-button:hover {
-  background-color: #e63946;
-  transform: translateY(-2px);
-}
-
-.app-footer {
-  padding: 2rem;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #999;
 }
