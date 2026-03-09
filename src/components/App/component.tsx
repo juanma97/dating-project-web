@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Toolbar from '../Toolbar/component';
+import Toolbar from '../ToolbarComponent/Toolbar/component';
 import './component.css';
 
 const App: React.FC = () => {
