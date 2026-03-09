@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../../components/Header/component';
 import Seeker from '../../components/Seeker/component';
 import EventsList from '../../components/EventsList/component';
 import Footer from '../../components/Footer/component';
@@ -35,10 +36,7 @@ const MOCK_EVENTS: SpeedyEvent[] = [
 const LandingPage: React.FC = () => {
   return (
     <div className="landing-page">
-      <header className="hero-section">
-        <h1>Connect in the Real World</h1>
-        <p>Premium speed dating events for authentic interactions.</p>
-      </header>
+      <Header />
 
       <div className="container">
         <Seeker />

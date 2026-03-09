@@ -1,0 +1,166 @@
+/* ================================================
+   Hero Header — Animated Gradient + Floating Shapes
+   ================================================ */
+
+.hero-header {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 340px;
+    padding: 5rem 2rem;
+    background: linear-gradient(-45deg, #ff4d4d, #ff6b6b, #ee5a6f, #c44569, #ff4d4d);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Floating particle shapes */
+.hero-bg-animation {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-shape {
+    position: absolute;
+    opacity: 0.35;
+    font-size: 2rem;
+    animation: floatUp 10s ease-in-out infinite;
+}
+
+.shape-1 {
+    left: 10%;
+    bottom: -10%;
+    animation-delay: 0s;
+    animation-duration: 11s;
+    font-size: 1.8rem;
+}
+
+.shape-2 {
+    left: 30%;
+    bottom: -10%;
+    animation-delay: 2s;
+    animation-duration: 13s;
+    font-size: 1.2rem;
+}
+
+.shape-3 {
+    left: 55%;
+    bottom: -10%;
+    animation-delay: 4s;
+    animation-duration: 10s;
+    font-size: 2.2rem;
+}
+
+.shape-4 {
+    left: 75%;
+    bottom: -10%;
+    animation-delay: 1s;
+    animation-duration: 14s;
+    font-size: 1.5rem;
+}
+
+.shape-5 {
+    left: 90%;
+    bottom: -10%;
+    animation-delay: 3s;
+    animation-duration: 12s;
+    font-size: 1rem;
+}
+
+.shape-6 {
+    left: 45%;
+    bottom: -10%;
+    animation-delay: 5s;
+    animation-duration: 15s;
+    font-size: 1.6rem;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.35;
+    }
+
+    90% {
+        opacity: 0.35;
+    }
+
+    100% {
+        transform: translateY(-500px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Content layer */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 700px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--white);
+    margin: 0 0 1rem;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-header {
+        min-height: 260px;
+        padding: 3.5rem 1.5rem;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+}
