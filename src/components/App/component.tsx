@@ -1,13 +1,11 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Toolbar from '../Toolbar/component';
 import './component.css';
 
 const App: React.FC = () => {
   return (
     <div className="app-container">
-      <header className="app-header">
-        <h1 className="logo">Speed Dating Connect</h1>
-      </header>
+      <Toolbar />
       <main className="app-main">
         <Routes>
           <Route path="/" element={<Home />} />

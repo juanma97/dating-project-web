@@ -10,8 +10,8 @@ describe('App Component', () => {
         <App />
       </BrowserRouter>,
     );
-    const linkElement = screen.getByRole('heading', { name: /Speed Dating Connect/i, level: 1 });
-    expect(linkElement).toBeInTheDocument();
+    const logoLink = screen.getByRole('link', { name: /Speed Dating Connect/i });
+    expect(logoLink).toBeInTheDocument();
   });
 
   test('renders the hero section text', () => {

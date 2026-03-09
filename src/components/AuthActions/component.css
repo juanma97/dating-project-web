@@ -1,0 +1,33 @@
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-link {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  transition: all var(--transition-speed);
+}
+
+.login-btn {
+  color: var(--secondary-color);
+}
+
+.login-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.register-btn {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.register-btn:hover {
+  background-color: #e63946;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(255, 77, 77, 0.2);
+}
