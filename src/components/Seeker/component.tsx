@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AgeRangeSelector from '../AgeRangeSelector/component';
 import './component.css';
 
 interface SeekerFilters {
@@ -20,8 +21,8 @@ const CITIES = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga
 
 const Seeker: React.FC = () => {
   const [filters, setFilters] = useState<SeekerFilters>({
-    ageMin: 18,
-    ageMax: 60,
+    ageMin: 25,
+    ageMax: 40,
     gender: '',
     city: '',
   });
@@ -29,13 +30,8 @@ const Seeker: React.FC = () => {
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
-    const value = parseInt(e.target.value);
-    if (type === 'min') {
-      setFilters((prev) => ({ ...prev, ageMin: Math.min(value, prev.ageMax - 1) }));
-    } else {
-      setFilters((prev) => ({ ...prev, ageMax: Math.max(value, prev.ageMin + 1) }));
-    }
+  const handleAgeChange = (values: { minAge: number; maxAge: number }) => {
+    setFilters((prev) => ({ ...prev, ...values }));
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,35 +62,12 @@ const Seeker: React.FC = () => {
     <section className="seeker">
       <form className="seeker-form" onSubmit={handleSubmit}>
         <div className="filter-group">
-          <label>
-            Age Range: {filters.ageMin} - {filters.ageMax}
-          </label>
-          <div className="range-slider">
-            <input
-              type="range"
-              min="18"
-              max="60"
-              value={filters.ageMin}
-              onChange={(e) => handleAgeChange(e, 'min')}
-              className="thumb thumb-left"
-            />
-            <input
-              type="range"
-              min="18"
-              max="60"
-              value={filters.ageMax}
-              onChange={(e) => handleAgeChange(e, 'max')}
-              className="thumb thumb-right"
-            />
-            <div className="slider-track" />
-            <div
-              className="slider-range"
-              style={{
-                left: `${((filters.ageMin - 18) / 42) * 100}%`,
-                width: `${((filters.ageMax - filters.ageMin) / 42) * 100}%`,
-              }}
-            />
-          </div>
+          <AgeRangeSelector
+            min={18}
+            max={65}
+            initialValues={{ minAge: filters.ageMin, maxAge: filters.ageMax }}
+            onChange={handleAgeChange}
+          />
         </div>
 
         <div className="filter-group">

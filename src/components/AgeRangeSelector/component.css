@@ -1,0 +1,78 @@
+.age-range-selector {
+  width: 100%;
+}
+
+.age-range-label {
+  margin-bottom: 1rem;
+}
+
+.age-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  opacity: 0.8;
+}
+
+.age-values {
+  color: var(--primary-color);
+  font-weight: 800;
+}
+
+/* Track wrapper — establishes the draggable area */
+.age-range-track-wrapper {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+  /* prevents scroll while dragging on mobile */
+}
+
+/* Background track — the thin bar */
+.age-range-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #e5e7eb;
+}
+
+/* Highlighted range between the two handles */
+.age-range-fill {
+  position: absolute;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--primary-color);
+}
+
+/* Circular draggable handles */
+.age-range-handle {
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--white);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  z-index: 2;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+.age-range-handle:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.age-range-handle:active {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+  border-color: var(--primary-color);
+}

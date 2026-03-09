@@ -4,7 +4,7 @@ import Seeker from './component';
 describe('Seeker Component', () => {
   test('renders all filter fields', () => {
     render(<Seeker />);
-    expect(screen.getByText(/Age Range/i)).toBeInTheDocument();
+    expect(screen.getByText(/Age range:/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Gender/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/City/i)).toBeInTheDocument();
   });
