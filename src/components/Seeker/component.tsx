@@ -2,21 +2,59 @@ import React, { useState } from 'react';
 import './component.css';
 
 interface SeekerFilters {
-  ageRange: string;
-  orientation: string;
+  ageMin: number;
+  ageMax: number;
+  gender: string;
   city: string;
 }
 
+const GENDERS = [
+  { value: 'straight', label: 'Straight', flag: '👫' },
+  { value: 'gay', label: 'Gay', flag: '👬' },
+  { value: 'lesbian', label: 'Lesbian', flag: '👭' },
+  { value: 'bisexual', label: 'Bisexual', flag: '🏳️‍🌈' },
+  { value: 'non-binary', label: 'Non-Binary', flag: '🏳️‍⚧️' },
+];
+
+const CITIES = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga'];
+
 const Seeker: React.FC = () => {
   const [filters, setFilters] = useState<SeekerFilters>({
-    ageRange: '',
-    orientation: '',
+    ageMin: 18,
+    ageMax: 60,
+    gender: '',
     city: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+  const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
+    const value = parseInt(e.target.value);
+    if (type === 'min') {
+      setFilters((prev) => ({ ...prev, ageMin: Math.min(value, prev.ageMax - 1) }));
+    } else {
+      setFilters((prev) => ({ ...prev, ageMax: Math.max(value, prev.ageMin + 1) }));
+    }
+  };
+
+  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFilters((prev) => ({ ...prev, city: value }));
+
+    if (value.length > 0) {
+      const filtered = CITIES.filter((city) => city.toLowerCase().startsWith(value.toLowerCase()));
+      setCitySuggestions(filtered);
+      setShowSuggestions(true);
+    } else {
+      setCitySuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const selectCity = (city: string) => {
+    setFilters((prev) => ({ ...prev, city }));
+    setShowSuggestions(false);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -28,41 +66,78 @@ const Seeker: React.FC = () => {
     <section className="seeker">
       <form className="seeker-form" onSubmit={handleSubmit}>
         <div className="filter-group">
-          <label htmlFor="ageRange">Age Range</label>
-          <select name="ageRange" id="ageRange" value={filters.ageRange} onChange={handleChange}>
-            <option value="">All Ages</option>
-            <option value="18-25">18 - 25</option>
-            <option value="26-35">26 - 35</option>
-            <option value="36-45">36 - 45</option>
-            <option value="46+">46+</option>
-          </select>
+          <label>
+            Age Range: {filters.ageMin} - {filters.ageMax}
+          </label>
+          <div className="range-slider">
+            <input
+              type="range"
+              min="18"
+              max="60"
+              value={filters.ageMin}
+              onChange={(e) => handleAgeChange(e, 'min')}
+              className="thumb thumb-left"
+            />
+            <input
+              type="range"
+              min="18"
+              max="60"
+              value={filters.ageMax}
+              onChange={(e) => handleAgeChange(e, 'max')}
+              className="thumb thumb-right"
+            />
+            <div className="slider-track" />
+            <div
+              className="slider-range"
+              style={{
+                left: `${((filters.ageMin - 18) / 42) * 100}%`,
+                width: `${((filters.ageMax - filters.ageMin) / 42) * 100}%`,
+              }}
+            />
+          </div>
         </div>
 
         <div className="filter-group">
-          <label htmlFor="orientation">Event Type</label>
-          <select
-            name="orientation"
-            id="orientation"
-            value={filters.orientation}
-            onChange={handleChange}
-          >
-            <option value="">All Types</option>
-            <option value="straight">Straight</option>
-            <option value="gay">Gay</option>
-            <option value="lesbian">Lesbian</option>
-          </select>
+          <label htmlFor="gender">Gender</label>
+          <div className="custom-select-wrapper">
+            <select
+              name="gender"
+              id="gender"
+              value={filters.gender}
+              onChange={(e) => setFilters((prev) => ({ ...prev, gender: e.target.value }))}
+              className="gender-select"
+            >
+              <option value="">Select Gender</option>
+              {GENDERS.map((g) => (
+                <option key={g.value} value={g.value}>
+                  {g.flag} {g.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div className="filter-group">
+        <div className="filter-group city-autocomplete">
           <label htmlFor="city">City</label>
           <input
             type="text"
             name="city"
             id="city"
-            placeholder="Enter city..."
+            placeholder="Search city..."
             value={filters.city}
-            onChange={handleChange}
+            onChange={handleCityChange}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            autoComplete="off"
           />
+          {showSuggestions && citySuggestions.length > 0 && (
+            <ul className="suggestions-list">
+              {citySuggestions.map((city) => (
+                <li key={city} onClick={() => selectCity(city)}>
+                  {city}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <button type="submit" className="search-button">
