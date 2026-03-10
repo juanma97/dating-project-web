@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AgeRangeSelector from '../AgeRangeSelector/component';
 import DateRangeSelector from '../DateRangeSelector/component';
 import './component.css';
 
-interface SeekerFilters {
+export interface SeekerFilters {
   ageMin: number;
   ageMax: number;
   gender: string;
@@ -22,7 +22,11 @@ const GENDERS = [
 
 const CITIES = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga'];
 
-const Seeker: React.FC = () => {
+interface SeekerProps {
+  onChange?: (filters: SeekerFilters) => void;
+}
+
+const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
   const [filters, setFilters] = useState<SeekerFilters>({
     ageMin: 25,
     ageMax: 40,
@@ -34,6 +38,12 @@ const Seeker: React.FC = () => {
 
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(filters);
+    }
+  }, [filters, onChange]);
 
   const handleAgeChange = (values: { minAge: number; maxAge: number }) => {
     setFilters((prev) => ({ ...prev, ageMin: values.minAge, ageMax: values.maxAge }));
@@ -62,14 +72,9 @@ const Seeker: React.FC = () => {
     setShowSuggestions(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Filters applied:', filters);
-  };
-
   return (
     <section className="seeker">
-      <form className="seeker-form" onSubmit={handleSubmit}>
+      <div className="seeker-form">
         <div className="filter-group">
           <AgeRangeSelector
             min={18}
@@ -130,11 +135,7 @@ const Seeker: React.FC = () => {
             </ul>
           )}
         </div>
-
-        <button type="submit" className="search-button">
-          Find Events
-        </button>
-      </form>
+      </div>
     </section>
   );
 };
