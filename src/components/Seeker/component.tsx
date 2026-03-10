@@ -31,7 +31,7 @@ const Seeker: React.FC = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const handleAgeChange = (values: { minAge: number; maxAge: number }) => {
-    setFilters((prev) => ({ ...prev, ...values }));
+    setFilters((prev) => ({ ...prev, ageMin: values.minAge, ageMax: values.maxAge }));
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -87,7 +87,8 @@ const AgeRangeSelector: React.FC<AgeRangeSelectorProps> = ({
   // Emit changes
   useEffect(() => {
     onChange({ minAge, maxAge });
-  }, [minAge, maxAge, onChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minAge, maxAge]);
 
   const startDrag = (thumb: 'min' | 'max') => {
     draggingRef.current = thumb;
