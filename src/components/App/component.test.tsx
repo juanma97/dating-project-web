@@ -1,25 +1,27 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import App from './component';
 
 describe('App Component', () => {
-  test('renders the logo title', () => {
+  test('renders the logo title', async () => {
     render(
       <BrowserRouter>
         <App />
       </BrowserRouter>,
     );
-    const logoLink = screen.getByRole('link', { name: /Speed Dating Connect/i });
-    expect(logoLink).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: /Speed Dating Connect/i })).toBeInTheDocument();
+    });
   });
 
-  test('renders the hero section text', () => {
+  test('renders the hero section text', async () => {
     render(
       <BrowserRouter>
         <App />
       </BrowserRouter>,
     );
-    const heroText = screen.getByText(/Connect in the Real World/i);
-    expect(heroText).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Connect in the Real World/i)).toBeInTheDocument();
+    });
   });
 });

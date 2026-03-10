@@ -10,6 +10,17 @@ module.exports = {
       'ts-jest',
       {
         tsconfig: 'tsconfig.json',
+        diagnostics: {
+          ignoreCodes: [1343],
+        },
+        astTransformers: {
+          before: [
+            {
+              path: 'ts-jest-mock-import-meta',
+              options: { metaObjectReplacement: { env: process.env } },
+            },
+          ],
+        },
       },
     ],
   },

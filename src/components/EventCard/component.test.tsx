@@ -1,14 +1,28 @@
 import { render, screen } from '@testing-library/react';
+import { Event } from '../../api/model/event';
 import EventCard from './component';
 import EventsList from '../EventsList/component';
 
-const mockEvent = {
+const mockEvent: Event = {
   id: '1',
   title: 'Beach Speed Dating',
+  description: 'A fun event by the beach',
   date: '2026-07-20',
+  time: '18:00:00',
   city: 'Barcelona',
-  organizerUrl: 'https://example.com',
-  type: 'Straight',
+  place: 'Barceloneta Beach',
+  source: 'Eventbrite',
+  source_url: 'https://example.com',
+  image: null,
+  created_at: '2026-03-10T12:00:00Z',
+  street_name: 'Passeig Marítim',
+  street_number: 1,
+  organizer: 'SpeedDatingBCN',
+  min_age: 25,
+  max_age: 35,
+  girls_price: 15,
+  boys_price: 20,
+  sexual_orientation: 'Straight',
 };
 
 describe('Event Components', () => {
@@ -16,9 +30,9 @@ describe('Event Components', () => {
     render(<EventCard event={mockEvent} />);
     expect(screen.getByText(/Beach Speed Dating/i)).toBeInTheDocument();
     expect(screen.getByText(/Barcelona/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /View on Organizer's Site/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /View on Eventbrite/i })).toHaveAttribute(
       'href',
-      mockEvent.organizerUrl,
+      mockEvent.source_url,
     );
   });
 

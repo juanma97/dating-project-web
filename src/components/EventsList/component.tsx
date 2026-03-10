@@ -1,9 +1,10 @@
 import React from 'react';
-import EventCard, { SpeedyEvent } from '../EventCard/component';
+import { Event } from '../../api/model/event';
+import EventCard from '../EventCard/component';
 import './component.css';
 
 interface EventsListProps {
-  events: SpeedyEvent[];
+  events: Event[];
 }
 
 const EventsList: React.FC<EventsListProps> = ({ events }) => {

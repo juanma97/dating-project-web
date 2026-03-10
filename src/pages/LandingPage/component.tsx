@@ -1,39 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/component';
 import Seeker from '../../components/Seeker/component';
 import EventsList from '../../components/EventsList/component';
 import Footer from '../../components/Footer/component';
-import { SpeedyEvent } from '../../components/EventCard/component';
+import { Event } from '../../api/model/event';
+import { eventsApi } from '../../api/supabase/events';
 import './component.css';
 
-const MOCK_EVENTS: SpeedyEvent[] = [
-  {
-    id: '1',
-    title: 'Gourmet Speed Dating',
-    date: '2026-04-15',
-    city: 'Madrid',
-    organizerUrl: '#',
-    type: 'Straight',
-  },
-  {
-    id: '2',
-    title: 'LGBTQ+ Mixer',
-    date: '2026-04-22',
-    city: 'Barcelona',
-    organizerUrl: '#',
-    type: 'Gay',
-  },
-  {
-    id: '3',
-    title: 'Rooftop Sunset Dating',
-    date: '2026-05-01',
-    city: 'Valencia',
-    organizerUrl: '#',
-    type: 'Lesbian',
-  },
-];
 
 const LandingPage: React.FC = () => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEventData = async () => {
+      try {
+        const data = await eventsApi.fetchEvents();
+        setEvents(data);
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch events');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEventData();
+  }, []);
+
   return (
     <div className="landing-page">
       <Header />
@@ -42,7 +36,9 @@ const LandingPage: React.FC = () => {
         <Seeker />
         <section className="events-section">
           <h2 className="section-title">Upcoming Events</h2>
-          <EventsList events={MOCK_EVENTS} />
+          {loading && <p className="loading-message">Loading events...</p>}
+          {error && <p className="error-message">{error}</p>}
+          {!loading && !error && <EventsList events={events} />}
         </section>
       </div>
 
