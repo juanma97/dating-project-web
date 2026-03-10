@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AgeRangeSelector from '../AgeRangeSelector/component';
+import DateRangeSelector from '../DateRangeSelector/component';
 import './component.css';
 
 interface SeekerFilters {
@@ -7,6 +8,8 @@ interface SeekerFilters {
   ageMax: number;
   gender: string;
   city: string;
+  dateStart: Date | null;
+  dateEnd: Date | null;
 }
 
 const GENDERS = [
@@ -25,6 +28,8 @@ const Seeker: React.FC = () => {
     ageMax: 40,
     gender: '',
     city: '',
+    dateStart: null,
+    dateEnd: null,
   });
 
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
@@ -32,6 +37,10 @@ const Seeker: React.FC = () => {
 
   const handleAgeChange = (values: { minAge: number; maxAge: number }) => {
     setFilters((prev) => ({ ...prev, ageMin: values.minAge, ageMax: values.maxAge }));
+  };
+
+  const handleDateRangeChange = (range: { startDate: Date | null; endDate: Date | null }) => {
+    setFilters((prev) => ({ ...prev, dateStart: range.startDate, dateEnd: range.endDate }));
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +76,15 @@ const Seeker: React.FC = () => {
             max={65}
             initialValues={{ minAge: filters.ageMin, maxAge: filters.ageMax }}
             onChange={handleAgeChange}
+          />
+        </div>
+
+        <div className="filter-group date-range-group">
+          <label>Dates</label>
+          <DateRangeSelector
+            initialStartDate={filters.dateStart}
+            initialEndDate={filters.dateEnd}
+            onChange={handleDateRangeChange}
           />
         </div>
 
