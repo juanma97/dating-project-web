@@ -7,7 +7,6 @@ import { Event } from '../../api/model/event';
 import { eventsApi } from '../../api/supabase/events';
 import './component.css';
 
-
 const LandingPage: React.FC = () => {
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
@@ -21,8 +20,8 @@ const LandingPage: React.FC = () => {
         const data = await eventsApi.fetchEvents();
         setAllEvents(data);
         setFilteredEvents(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch events');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch events');
       } finally {
         setLoading(false);
       }
@@ -42,18 +41,21 @@ const LandingPage: React.FC = () => {
       // Since Seeker has a range (ageMin to ageMax), we show events where the event's age limit
       // overlaps with the seeker's age limits.
       // E.g. If Seeker is 20-30, event must allow someone in that range.
-      const overlapsAge = (!event.min_age || event.min_age <= activeFilters.ageMax) &&
+      const overlapsAge =
+        (!event.min_age || event.min_age <= activeFilters.ageMax) &&
         (!event.max_age || event.max_age >= activeFilters.ageMin);
 
       // Gender / Sexual Orientation filtering
       // If none selected, allow all. If selected, match event.sexual_orientation if it exists.
-      const genderMatch = !activeFilters.gender ||
+      const genderMatch =
+        !activeFilters.gender ||
         !event.sexual_orientation ||
         event.sexual_orientation.toLowerCase() === activeFilters.gender.toLowerCase() ||
         event.sexual_orientation.toLowerCase() === 'all';
 
       // City filtering
-      const cityMatch = !activeFilters.city ||
+      const cityMatch =
+        !activeFilters.city ||
         (event.city && event.city.toLowerCase().includes(activeFilters.city.toLowerCase()));
 
       // Date filtering

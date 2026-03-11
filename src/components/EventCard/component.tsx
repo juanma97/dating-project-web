@@ -57,7 +57,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
         {event.source_url && (
           <a href={event.source_url} target="_blank" rel="noopener noreferrer" className="view-btn">
-            View on {event.source || 'Organizer\'s Site'}
+            View on {event.source || "Organizer's Site"}
           </a>
         )}
       </div>
