@@ -5,7 +5,6 @@ import './component.css';
 const Navigation: React.FC = () => {
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'Events', path: '/events' },
     { label: 'About', path: '/about' },
   ];
 
