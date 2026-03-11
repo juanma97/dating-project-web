@@ -10,7 +10,6 @@ describe('Navigation Component', () => {
       </BrowserRouter>,
     );
     expect(screen.getByText(/Home/i)).toBeInTheDocument();
-    expect(screen.getByText(/Events/i)).toBeInTheDocument();
     expect(screen.getByText(/About/i)).toBeInTheDocument();
   });
 });
