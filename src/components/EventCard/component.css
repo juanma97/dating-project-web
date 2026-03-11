@@ -19,11 +19,18 @@
 .event-type-badge {
   background-color: var(--secondary-color);
   color: var(--white);
-  padding: 0.5rem 1rem;
-  font-size: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-type-icon {
+  font-size: 1rem;
 }
 
 .event-content {
@@ -34,43 +41,60 @@
 }
 
 .event-title {
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 1rem 0;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--secondary-color);
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
-.event-meta-grid {
+.event-details-highlight {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  color: #555;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  background-color: #f9f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #eaeaea;
 }
 
-.meta-item {
+.highlight-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.75rem;
   line-height: 1.4;
+  font-size: 0.95rem;
+  color: #444;
 }
 
-.meta-icon {
+.highlight-item .icon {
+  font-size: 1.1rem;
   flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
-.event-description {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.highlight-item strong {
+  color: var(--secondary-color);
+  font-weight: 700;
+}
+
+.highlight-item .text {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.highlight-item.price .text {
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.separator {
+  color: #ccc;
+  font-weight: 400;
+  margin: 0 0.2rem;
 }
 
 .view-btn {
