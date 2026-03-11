@@ -51,7 +51,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
               <span className="icon">💶</span>
               <span className="text">
                 {event.girls_price !== null && `Girls: €${event.girls_price}`}
-                {event.girls_price !== null && event.boys_price !== null && <span className="separator">|</span>}
+                {event.girls_price !== null && event.boys_price !== null && (
+                  <span className="separator">|</span>
+                )}
                 {event.boys_price !== null && `Boys: €${event.boys_price}`}
               </span>
             </div>
@@ -61,7 +63,10 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             <div className="highlight-item ages">
               <span className="icon">👥</span>
               <span className="text">
-                Ages: <strong>{event.min_age || '18'} - {event.max_age || '99'}</strong>
+                Ages:{' '}
+                <strong>
+                  {event.min_age || '18'} - {event.max_age || '99'}
+                </strong>
               </span>
             </div>
           )}
