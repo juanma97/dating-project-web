@@ -1,5 +1,6 @@
 import React from 'react';
 import { Event } from '../../api/model/event';
+import { trackEventClick } from '../../utils/analytics';
 import './component.css';
 
 interface EventCardProps {
@@ -18,6 +19,15 @@ const getOrientationIcon = (orientation: string) => {
 };
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
+  const handleEventClick = () => {
+    trackEventClick({
+      id: event.id,
+      title: event.title,
+      source: event.source || 'Unknown',
+      city: event.city || 'Unknown',
+    });
+  };
+
   return (
     <div className="event-card">
       {event.sexual_orientation && (
@@ -73,7 +83,13 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         </div>
 
         {event.source_url && (
-          <a href={event.source_url} target="_blank" rel="noopener noreferrer" className="view-btn">
+          <a
+            href={event.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="view-btn"
+            onClick={handleEventClick}
+          >
             View on {event.source || "Organizer's Site"}
           </a>
         )}
