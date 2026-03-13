@@ -25,6 +25,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       title: event.title,
       source: event.source || 'Unknown',
       city: event.city || 'Unknown',
+      url: event.source_url || 'Unknown',
     });
   };
 
