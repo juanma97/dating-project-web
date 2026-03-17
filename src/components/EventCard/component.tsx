@@ -19,6 +19,17 @@ const getOrientationIcon = (orientation: string) => {
   return '✨';
 };
 
+const getOrientationAccent = (orientation: string | null): string => {
+  if (!orientation) return '';
+  const o = orientation.toLowerCase();
+  if (o.includes('straight')) return 'accent-straight';
+  if (o.includes('gay')) return 'accent-gay';
+  if (o.includes('lesbian')) return 'accent-lesbian';
+  if (o.includes('bisexual')) return 'accent-bisexual';
+  if (o.includes('non-binary')) return 'accent-nonbinary';
+  return '';
+};
+
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const navigate = useNavigate();
 
@@ -34,7 +45,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   };
 
   return (
-    <div className="event-card">
+    <div className={`event-card ${getOrientationAccent(event.sexual_orientation)}`}>
+      {event.image && (
+        <div className="event-image-banner">
+          <img src={event.image} alt={event.title} loading="lazy" />
+        </div>
+      )}
       {event.sexual_orientation && (
         <div className="event-type-badge">
           <span className="event-type-icon">{getOrientationIcon(event.sexual_orientation)}</span>
@@ -44,46 +60,29 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <div className="event-content">
         <h3 className="event-title">{event.title}</h3>
 
-        <div className="event-details-highlight">
-          <div className="highlight-item date-time">
-            <span className="icon">📅</span>
-            <span className="text">
-              <strong>{event.date}</strong> {event.time && `• ${event.time.substring(0, 5)}`}
-            </span>
-          </div>
+        <div className="event-meta-chips">
+          <span className="meta-chip">
+            📅 <strong>{event.date}</strong>
+            {event.time ? ` · ${event.time.substring(0, 5)}` : ''}
+          </span>
 
-          <div className="highlight-item location">
-            <span className="icon">📍</span>
-            <span className="text">
-              <strong>{event.city}</strong>
-              {event.place ? ` - ${event.place}` : ''}
-              {event.street_name ? ` (${event.street_name} ${event.street_number || ''})` : ''}
-            </span>
-          </div>
+          <span className="meta-chip">
+            📍 <strong>{event.city}</strong>
+            {event.place ? ` · ${event.place}` : ''}
+          </span>
 
           {(event.girls_price !== null || event.boys_price !== null) && (
-            <div className="highlight-item price">
-              <span className="icon">💶</span>
-              <span className="text">
-                {event.girls_price !== null && `Girls: €${event.girls_price}`}
-                {event.girls_price !== null && event.boys_price !== null && (
-                  <span className="separator">|</span>
-                )}
-                {event.boys_price !== null && `Boys: €${event.boys_price}`}
-              </span>
-            </div>
+            <span className="meta-chip price-chip">
+              💶 {event.girls_price !== null && `Girls €${event.girls_price}`}
+              {event.girls_price !== null && event.boys_price !== null && ' · '}
+              {event.boys_price !== null && `Boys €${event.boys_price}`}
+            </span>
           )}
 
           {(event.min_age || event.max_age) && (
-            <div className="highlight-item ages">
-              <span className="icon">👥</span>
-              <span className="text">
-                Ages:{' '}
-                <strong>
-                  {event.min_age || '18'} - {event.max_age || '99'}
-                </strong>
-              </span>
-            </div>
+            <span className="meta-chip">
+              👥 {event.min_age || '18'}–{event.max_age || '99'} years
+            </span>
           )}
         </div>
 

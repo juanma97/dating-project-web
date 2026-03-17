@@ -107,58 +107,29 @@ const EventDetailsPage: React.FC = () => {
         <h1 className="event-details-title">{event.title}</h1>
         {event.organizer && <p className="event-organizer">by {event.organizer}</p>}
 
-        <div className="event-info-grid">
-          <div className="info-item">
-            <div className="info-icon">📅</div>
-            <div className="info-content">
-              <h4>Date & Time</h4>
-              <p>
-                <strong>{event.date}</strong> {event.time ? `• ${event.time.substring(0, 5)}` : ''}
-              </p>
-            </div>
-          </div>
+        <div className="event-meta-chips">
+          <span className="meta-chip">
+            📅 <strong>{event.date}</strong>
+            {event.time ? ` · ${event.time.substring(0, 5)}` : ''}
+          </span>
 
-          <div className="info-item">
-            <div className="info-icon">📍</div>
-            <div className="info-content">
-              <h4>Location</h4>
-              <p>
-                <strong>{event.place || event.city}</strong>
-                {event.street_name && <br />}
-                {event.street_name ? `${event.street_name} ${event.street_number || ''}` : ''}
-              </p>
-            </div>
-          </div>
+          <span className="meta-chip">
+            📍 <strong>{event.place || event.city}</strong>
+            {event.street_name ? ` · ${event.street_name} ${event.street_number || ''}` : ''}
+          </span>
 
           {(event.girls_price !== null || event.boys_price !== null) && (
-            <div className="info-item">
-              <div className="info-icon">💶</div>
-              <div className="info-content">
-                <h4>Price</h4>
-                <p>
-                  {event.girls_price !== null && `Girls: €${event.girls_price}`}
-                  {event.girls_price !== null && event.boys_price !== null && (
-                    <span className="separator"> | </span>
-                  )}
-                  {event.boys_price !== null && `Boys: €${event.boys_price}`}
-                </p>
-              </div>
-            </div>
+            <span className="meta-chip">
+              💶 {event.girls_price !== null && `Girls €${event.girls_price}`}
+              {event.girls_price !== null && event.boys_price !== null && ' · '}
+              {event.boys_price !== null && `Boys €${event.boys_price}`}
+            </span>
           )}
 
           {(event.min_age || event.max_age) && (
-            <div className="info-item">
-              <div className="info-icon">👥</div>
-              <div className="info-content">
-                <h4>Ages</h4>
-                <p>
-                  <strong>
-                    {event.min_age || '18'} - {event.max_age || '99'}
-                  </strong>{' '}
-                  years old
-                </p>
-              </div>
-            </div>
+            <span className="meta-chip">
+              👥 {event.min_age || '18'}–{event.max_age || '99'} years
+            </span>
           )}
         </div>
 
