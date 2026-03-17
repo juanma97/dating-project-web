@@ -16,6 +16,17 @@ export class SupabaseEventsApi implements EventsApi {
 
     return (data as Event[]) || [];
   }
+
+  async getEventById(id: string): Promise<Event | null> {
+    const { data, error } = await supabase.from('events').select('*').eq('id', id).single();
+
+    if (error) {
+      console.error(`Error fetching event ${id} from Supabase:`, error);
+      return null;
+    }
+
+    return (data as Event) || null;
+  }
 }
 
 // Export a singleton instance

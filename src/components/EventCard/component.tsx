@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Event } from '../../api/model/event';
 import { trackEventClick } from '../../utils/analytics';
 import './component.css';
@@ -19,14 +20,17 @@ const getOrientationIcon = (orientation: string) => {
 };
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
+  const navigate = useNavigate();
+
   const handleEventClick = () => {
     trackEventClick({
       id: event.id,
       title: event.title,
-      source: event.source || 'Unknown',
+      source: 'Internal' as string, // the user is staying internal now
       city: event.city || 'Unknown',
-      url: event.source_url || 'Unknown',
+      url: `/events/${event.id}`,
     });
+    navigate(`/events/${event.id}`);
   };
 
   return (
@@ -83,17 +87,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           )}
         </div>
 
-        {event.source_url && (
-          <a
-            href={event.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="view-btn"
-            onClick={handleEventClick}
-          >
-            View on {event.source || "Organizer's Site"}
-          </a>
-        )}
+        <button className="view-btn" onClick={handleEventClick}>
+          View Details
+        </button>
       </div>
     </div>
   );

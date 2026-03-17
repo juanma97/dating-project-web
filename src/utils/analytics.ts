@@ -23,6 +23,21 @@ export const trackEventClick = (eventData: {
   });
 };
 
+export const trackEventSourceClick = (eventId: string, title: string, source: string) => {
+  ReactGA.event('event_source_click', {
+    event_id: eventId,
+    event_title: title,
+    event_source: source,
+  });
+};
+
+export const trackBuyTicketsIntent = (eventId: string, title: string) => {
+  ReactGA.event('buy_tickets_intent', {
+    event_id: eventId,
+    event_title: title,
+  });
+};
+
 export const trackPageView = (path: string) => {
   ReactGA.send({ hitType: 'pageview', page: path });
 };
