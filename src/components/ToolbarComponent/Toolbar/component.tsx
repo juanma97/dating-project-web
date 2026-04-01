@@ -1,7 +1,6 @@
 import React from 'react';
 import Logo from '../Logo/component';
 import Navigation from '../Navigation/component';
-import AuthActions from '../AuthActions/component';
 import './component.css';
 
 const Toolbar: React.FC = () => {
@@ -14,7 +13,6 @@ const Toolbar: React.FC = () => {
         <div className="toolbar-right">
           <Navigation />
           <div className="divider" />
-          <AuthActions />
         </div>
       </div>
     </header>

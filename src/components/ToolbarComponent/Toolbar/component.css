@@ -39,9 +39,5 @@
   .toolbar-content {
     padding: 0 1rem;
   }
-
-  .navigation,
-  .divider {
-    display: none;
-  }
 }
+

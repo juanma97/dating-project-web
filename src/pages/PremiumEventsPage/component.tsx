@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../components/Header/component';
 import Footer from '../../components/Footer/component';
 import PremiumEventCard from '../../components/PremiumEventCard/component';
 import { Event } from '../../api/model/event';
@@ -33,8 +32,6 @@ const PremiumEventsPage: React.FC = () => {
 
   return (
     <div className="premium-page">
-      <Header />
-
       <div className="premium-hero">
         <div className="premium-hero-inner">
           <span className="premium-hero-badge">🔥 Nuevo</span>

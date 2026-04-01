@@ -9,7 +9,9 @@ describe('Navigation Component', () => {
         <Navigation />
       </BrowserRouter>,
     );
-    expect(screen.getByText(/Home/i)).toBeInTheDocument();
-    expect(screen.getByText(/About/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Home/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/About/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Eventos Premium/i).length).toBeGreaterThan(0);
   });
 });
+

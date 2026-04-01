@@ -1,9 +1,9 @@
 .seeker {
   background-color: var(--white);
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  margin-bottom: 3rem;
+  margin-top: 2rem;
 }
 
 .seeker-form {

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { Event } from '../../api/model/event';
 import EventCard from './component';
 import EventsList from '../EventsList/component';
@@ -27,18 +28,23 @@ const mockEvent: Event = {
 
 describe('Event Components', () => {
   test('EventCard renders event details', () => {
-    render(<EventCard event={mockEvent} />);
+    render(
+      <BrowserRouter>
+        <EventCard event={mockEvent} />
+      </BrowserRouter>
+    );
     expect(screen.getByText(/Beach Speed Dating/i)).toBeInTheDocument();
     expect(screen.getByText(/Barcelona/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /View on Eventbrite/i })).toHaveAttribute(
-      'href',
-      mockEvent.source_url,
-    );
+    expect(screen.getByRole('button', { name: /View Details/i })).toBeInTheDocument();
   });
 
   test('EventsList renders a grid of events', () => {
     const events = [mockEvent, { ...mockEvent, id: '2', title: 'Coffee Connection' }];
-    render(<EventsList events={events} />);
+    render(
+      <BrowserRouter>
+        <EventsList events={events} />
+      </BrowserRouter>
+    );
     expect(screen.getByText(/Beach Speed Dating/i)).toBeInTheDocument();
     expect(screen.getByText(/Coffee Connection/i)).toBeInTheDocument();
   });

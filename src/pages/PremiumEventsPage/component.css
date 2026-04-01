@@ -65,7 +65,7 @@
 }
 
 .events-section {
-  padding: 2.5rem 0;
+  padding: 1rem 0;
 }
 
 /* Loading */
@@ -88,7 +88,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error-message {
@@ -114,6 +116,7 @@
   .container {
     padding: 0 1rem;
   }
+
   .premium-hero-title {
     font-size: 1.8rem;
   }

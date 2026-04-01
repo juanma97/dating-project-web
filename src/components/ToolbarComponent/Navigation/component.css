@@ -1,4 +1,5 @@
-.navigation {
+/* ── Desktop nav ─────────────────────────────────────────────── */
+.navigation--desktop {
   display: flex;
 }
 
@@ -8,6 +9,7 @@
   margin: 0;
   padding: 0;
   gap: 2rem;
+  align-items: center;
 }
 
 .nav-link {
@@ -27,7 +29,7 @@
   font-weight: 600;
 }
 
-/* ── Premium nav pill ──────────────────────────────── */
+/* ── Premium pill (desktop) ──────────────────────────────────── */
 .nav-link--premium {
   background: linear-gradient(135deg, #ff6b35, #f5a623);
   color: #fff !important;
@@ -38,6 +40,7 @@
   box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35);
   animation: premiumPulse 2.5s ease-in-out infinite;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .nav-link--premium:hover {
@@ -54,3 +57,159 @@
   50%       { box-shadow: 0 2px 16px rgba(255, 107, 53, 0.65); }
 }
 
+/* ── Hamburger button ────────────────────────────────────────── */
+/* Hidden on desktop, shown on mobile via media query */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  /* Must stay above the portal backdrop */
+  position: relative;
+  z-index: 1200;
+}
+
+.hamburger-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.ham-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--secondary-color);
+  border-radius: 2px;
+  transition: transform 0.28s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+
+/* Animate bars → X when open */
+.hamburger-btn.is-open .ham-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger-btn.is-open .ham-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.hamburger-btn.is-open .ham-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Portal elements (always in <body>, never clipped by toolbar) */
+
+/* Backdrop — always rendered, shown/hidden via class */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 1050;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.nav-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile drawer — slides in from right */
+.navigation--mobile {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 75vw;
+  max-width: 300px;
+  background: #ffffff;
+  z-index: 1100;
+  padding: 5rem 1.5rem 2rem;
+  box-shadow: -6px 0 32px rgba(0, 0, 0, 0.16);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  overflow-y: auto;
+}
+
+.navigation--mobile.is-open {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.nav-list--mobile {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.nav-list--mobile li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nav-list--mobile li.nav-item--secondary {
+  border-bottom: none;
+  margin-top: 0.5rem;
+  opacity: 0.65;
+}
+
+/* Mobile link base */
+.nav-link-mobile {
+  display: block;
+  padding: 1rem 0.25rem;
+  text-decoration: none;
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.nav-link-mobile:hover,
+.nav-link-mobile.active {
+  color: var(--primary-color);
+}
+
+/* Premium link in drawer — full-width card */
+.nav-link--premium-mobile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #ff6b35, #f5a623);
+  color: #fff !important;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.35);
+  animation: premiumPulse 2.5s ease-in-out infinite;
+}
+
+.nav-link--premium-mobile.active {
+  box-shadow: 0 3px 14px rgba(255, 107, 53, 0.55);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navigation--desktop {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+}
