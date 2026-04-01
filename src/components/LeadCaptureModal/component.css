@@ -3,10 +3,12 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
+  padding: 1rem;
   animation: fadeBackdrop 0.2s ease;
 }
 
@@ -15,32 +17,23 @@
   to { opacity: 1; }
 }
 
-/* Slides up from bottom on mobile, centered card on desktop */
+/* Centered card for all devices */
 .modal-card {
   background: #fff;
-  border-radius: 20px 20px 0 0;
-  padding: 2rem 1.5rem 2.5rem;
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
   width: 100%;
-  max-width: 520px;
+  max-width: 500px;
   position: relative;
-  animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  max-height: 92vh;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  max-height: 85dvh;
   overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@media (min-width: 600px) {
-  .modal-backdrop {
-    align-items: center;
-  }
-  .modal-card {
-    border-radius: 20px;
-    max-height: 85vh;
-  }
+@keyframes popIn {
+  from { transform: scale(0.95) translateY(10px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
 }
 
 .modal-close-btn {
