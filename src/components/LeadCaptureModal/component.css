@@ -1,0 +1,230 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeBackdrop 0.2s ease;
+}
+
+@keyframes fadeBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Slides up from bottom on mobile, centered card on desktop */
+.modal-card {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 2rem 1.5rem 2.5rem;
+  width: 100%;
+  max-width: 520px;
+  position: relative;
+  animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (min-width: 600px) {
+  .modal-backdrop {
+    align-items: center;
+  }
+  .modal-card {
+    border-radius: 20px;
+    max-height: 85vh;
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0,0,0,0.06);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  color: #555;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0,0,0,0.12);
+}
+
+/* Header */
+.modal-header {
+  margin-bottom: 1rem;
+}
+
+.modal-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b35, #f5a623);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 0.4rem;
+  line-height: 1.2;
+}
+
+.modal-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Event quick summary row */
+.modal-event-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: #f8f8f8;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.modal-event-summary span {
+  white-space: nowrap;
+}
+
+/* Form */
+.lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.optional-label {
+  font-weight: 400;
+  color: #999;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #f5a623;
+  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+}
+
+.form-error {
+  font-size: 0.85rem;
+  color: #c0392b;
+  margin: 0;
+}
+
+/* Primary CTA button */
+.btn-cta-primary {
+  background: linear-gradient(135deg, #ff6b35, #f5a623);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.btn-cta-primary:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.btn-cta-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-cta-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-legal {
+  font-size: 0.75rem;
+  color: #aaa;
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Success state */
+.modal-success {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.success-emoji {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.modal-success h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem;
+}
+
+.modal-success p {
+  color: #555;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}

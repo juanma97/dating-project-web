@@ -1,0 +1,127 @@
+/* Inherits all base styles from EventDetailsPage — only premium additions here */
+
+/* Premium badge row */
+.pd-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.pd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+}
+
+.pd-badge--premium {
+  background: linear-gradient(90deg, #fff8ec, #fff3d6);
+  border: 1px solid rgba(245, 166, 35, 0.35);
+  color: #a07000;
+}
+
+.pd-badge--nuevo {
+  background: linear-gradient(135deg, #ff6b35, #f5a623);
+  color: #fff;
+}
+
+/* Scarcity bar */
+.pd-scarcity-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 107, 53, 0.08);
+  border: 1px solid rgba(255, 107, 53, 0.25);
+  color: #c84b00;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1.25rem;
+}
+
+/* Highlighted age chip */
+.meta-chip.age-highlight-chip strong {
+  color: #7b5ea7;
+}
+
+/* Highlighted price chip */
+.meta-chip.price-highlight-chip {
+  color: #2e7d32;
+  border-color: rgba(46, 125, 50, 0.25);
+  background-color: rgba(46, 125, 50, 0.06);
+}
+
+/* Price block (large visual) */
+.pd-price-block {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.pd-price-item {
+  flex: 1;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 1px solid rgba(46, 125, 50, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.pd-price-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.pd-price-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a6b3c;
+}
+
+/* Spinner for loading state */
+.pd-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(245, 166, 35, 0.2);
+  border-top-color: #f5a623;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Sticky bottom bar — WhatsApp green for secondary */
+.event-sticky-bottom-bar .btn-secondary {
+  background-color: rgba(37, 211, 102, 0.08);
+  color: #128c7e;
+  border: 2px solid #128c7e;
+}
+
+.event-sticky-bottom-bar .btn-secondary:hover {
+  background-color: rgba(37, 211, 102, 0.15);
+}
+
+/* Primary buy btn uses orange/gold gradient for premium */
+.event-sticky-bottom-bar .buy-tickets-btn {
+  background: linear-gradient(135deg, #ff6b35, #f5a623);
+  border: none;
+  color: white;
+}
+
+.event-sticky-bottom-bar .buy-tickets-btn:hover {
+  opacity: 0.9;
+}

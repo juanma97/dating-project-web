@@ -41,3 +41,53 @@ export const trackBuyTicketsIntent = (eventId: string, title: string) => {
 export const trackPageView = (path: string) => {
   ReactGA.send({ hitType: 'pageview', page: path });
 };
+
+// ─── Premium Events Tracking ───────────────────────────────────────────────
+
+export const trackViewPremiumEvents = () => {
+  ReactGA.event('view_premium_events');
+};
+
+export const trackClickPremiumEvent = (eventData: {
+  id: string;
+  city: string | null;
+  min_age: number | null;
+  max_age: number | null;
+  girls_price: number | null;
+  boys_price: number | null;
+}) => {
+  ReactGA.event('click_premium_event', {
+    event_id: eventData.id,
+    city: eventData.city,
+    min_age: eventData.min_age,
+    max_age: eventData.max_age,
+    girls_price: eventData.girls_price,
+    boys_price: eventData.boys_price,
+  });
+};
+
+export const trackViewPremiumEventDetail = (eventId: string) => {
+  ReactGA.event('view_premium_event_detail', { event_id: eventId });
+};
+
+export const trackPremiumEventCtaClick = (eventId: string) => {
+  ReactGA.event('premium_event_cta_click', { event_id: eventId });
+};
+
+export const trackPremiumEventLeadSubmit = (params: {
+  event_id: string;
+  city: string | null;
+  user_age: number;
+  user_gender: string;
+  girls_price: number | null;
+  boys_price: number | null;
+}) => {
+  ReactGA.event('premium_event_lead_submit', {
+    event_id: params.event_id,
+    city: params.city,
+    user_age: params.user_age,
+    user_gender: params.user_gender,
+    girls_price: params.girls_price,
+    boys_price: params.boys_price,
+  });
+};
