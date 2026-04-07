@@ -32,7 +32,7 @@ const CookieBanner: React.FC = () => {
         <div className="cookie-banner-content">
           <h3>Valoramos tu privacidad</h3>
           <p>
-            Utilizamos cookies para mejorar tu experiencia, analizar el tráfico del sitio y personalizar el contenido. 
+            Utilizamos cookies para mejorar tu experiencia, analizar el tráfico del sitio y personalizar el contenido.
             Al hacer clic en "Aceptar", consientes el uso de cookies en nuestra web para análisis y métricas (incluyendo Google Analytics).
           </p>
         </div>

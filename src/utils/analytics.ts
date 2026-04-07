@@ -17,7 +17,8 @@ export const initGA = () => {
   };
 
   const consent = localStorage.getItem('cookieConsent');
-  const isGranted = consent === 'granted';
+  // Opt-out approach: assumes granted UNLESS explicitly denied
+  const isGranted = consent !== 'denied';
 
   // Set default GA4 consent mode based on user's previous choice
   window.gtag('consent', 'default', {
