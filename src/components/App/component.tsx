@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Toolbar from '../ToolbarComponent/Toolbar/component';
+import CookieBanner from '../CookieBanner/component';
 import LandingPage from '../../pages/LandingPage/component';
 import AboutPage from '../../pages/AboutPage/component';
 import EventDetailsPage from '../../pages/EventDetailsPage/component';
@@ -20,6 +21,7 @@ const App: React.FC = () => {
           <Route path="/premium-events/:id" element={<PremiumEventDetailsPage />} />
         </Routes>
       </main>
+      <CookieBanner />
     </div>
   );
 };

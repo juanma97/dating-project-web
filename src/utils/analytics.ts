@@ -2,8 +2,43 @@ import ReactGA from 'react-ga4';
 
 const GA_MEASUREMENT_ID = 'G-8S6RD6Y128';
 
+// Initialize the dataLayer globally to ensure gtag commands work
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 export const initGA = () => {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function () {
+    window.dataLayer.push(arguments);
+  };
+
+  const consent = localStorage.getItem('cookieConsent');
+  const isGranted = consent === 'granted';
+
+  // Set default GA4 consent mode based on user's previous choice
+  window.gtag('consent', 'default', {
+    ad_storage: isGranted ? 'granted' : 'denied',
+    ad_user_data: isGranted ? 'granted' : 'denied',
+    ad_personalization: isGranted ? 'granted' : 'denied',
+    analytics_storage: isGranted ? 'granted' : 'denied',
+  });
+
   ReactGA.initialize(GA_MEASUREMENT_ID);
+};
+
+export const updateGAConsent = (granted: boolean) => {
+  if (window.gtag) {
+    window.gtag('consent', 'update', {
+      ad_storage: granted ? 'granted' : 'denied',
+      ad_user_data: granted ? 'granted' : 'denied',
+      ad_personalization: granted ? 'granted' : 'denied',
+      analytics_storage: granted ? 'granted' : 'denied',
+    });
+  }
 };
 
 export const trackEventClick = (eventData: {
