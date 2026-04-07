@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import './component.css';
 
 interface DateRangeSelectorProps {
@@ -12,6 +13,7 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
   initialEndDate = null,
   onChange,
 }) => {
+  const { t, i18n } = useTranslation();
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
@@ -33,12 +35,11 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
     const day = new Date(year, month, 1).getDay();
-    // Adjust to make Monday the first day of the week (optional, but typical in EU)
-    // If standard 0=Sun, 1=Mon, ..., 6=Sat
+    // Adjust to make Monday the first day of the week
     return day === 0 ? 6 : day - 1;
   }, [currentMonth]);
 
-  const monthName = currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
+  const monthName = currentMonth.toLocaleString(i18n.language, { month: 'long', year: 'numeric' });
 
   const handlePrevMonth = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -82,7 +83,7 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
 
   const formatDate = (date: Date | null) => {
     if (!date) return '';
-    return date.toLocaleDateString(undefined, {
+    return date.toLocaleDateString(i18n.language, {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
@@ -136,9 +137,9 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
   return (
     <div className="date-range-selector">
       <div className="date-input-wrapper" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
-        <div className="date-input">{startDate ? formatDate(startDate) : 'Start Date'}</div>
+        <div className="date-input">{startDate ? formatDate(startDate) : t('date_range.start_date')}</div>
         <span className="date-separator">—</span>
-        <div className="date-input">{endDate ? formatDate(endDate) : 'End Date'}</div>
+        <div className="date-input">{endDate ? formatDate(endDate) : t('date_range.end_date')}</div>
       </div>
 
       {isCalendarOpen && (
@@ -154,13 +155,13 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
           </div>
 
           <div className="calendar-weekdays">
-            <span>Mo</span>
-            <span>Tu</span>
-            <span>We</span>
-            <span>Th</span>
-            <span>Fr</span>
-            <span>Sa</span>
-            <span>Su</span>
+            <span>{t('date_range.mon')}</span>
+            <span>{t('date_range.tue')}</span>
+            <span>{t('date_range.wed')}</span>
+            <span>{t('date_range.thu')}</span>
+            <span>{t('date_range.fri')}</span>
+            <span>{t('date_range.sat')}</span>
+            <span>{t('date_range.sun')}</span>
           </div>
 
           <div className="calendar-days-grid">{renderDays()}</div>
@@ -171,3 +172,4 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
 };
 
 export default DateRangeSelector;
+

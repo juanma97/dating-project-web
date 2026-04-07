@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Event } from '../../api/model/event';
 import EventCard from '../EventCard/component';
 import './component.css';
@@ -8,10 +9,12 @@ interface EventsListProps {
 }
 
 const EventsList: React.FC<EventsListProps> = ({ events }) => {
+  const { t } = useTranslation();
+
   if (events.length === 0) {
     return (
       <div className="empty-events">
-        <p>No events found. Try adjusting your filters.</p>
+        <p>{t('landing.no_events')}</p>
       </div>
     );
   }
@@ -26,3 +29,4 @@ const EventsList: React.FC<EventsListProps> = ({ events }) => {
 };
 
 export default EventsList;
+

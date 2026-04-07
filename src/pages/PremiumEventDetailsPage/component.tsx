@@ -8,18 +8,12 @@ import {
   trackPremiumEventCtaClick,
   trackPageView,
 } from '../../utils/analytics';
+import { useTranslation } from 'react-i18next';
 import '../EventDetailsPage/component.css'; // base layout styles
 import './component.css';
 
-
-// Replace with your real WhatsApp number (international format, no + or spaces)
-const WHATSAPP_NUMBER = import.meta.env.VITE_PHONE_NUMBER_CONTACT;
-const WHATSAPP_MESSAGE = encodeURIComponent(
-  '¡Hola! Quiero más información sobre el evento de speed dating premium 😊',
-);
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
-
 const PremiumEventDetailsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [event, setEvent] = useState<Event | null>(null);
@@ -40,17 +34,17 @@ const PremiumEventDetailsPage: React.FC = () => {
           setEvent(fetchedEvent);
           trackViewPremiumEventDetail(id);
         } else {
-          setError('Evento no encontrado');
+          setError(t('premium_event_details.error_not_found'));
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error cargando el evento');
+        setError(err instanceof Error ? err.message : t('premium_event_details.error_loading'));
       } finally {
         setLoading(false);
       }
     };
 
     fetchEvent();
-  }, [id]);
+  }, [id, t]);
 
   const handleApuntarme = () => {
     if (event) {
@@ -63,7 +57,7 @@ const PremiumEventDetailsPage: React.FC = () => {
     return (
       <div className="event-details-loading">
         <div className="pd-spinner" />
-        <p>Cargando evento...</p>
+        <p>{t('premium_event_details.loading')}</p>
       </div>
     );
   }
@@ -71,10 +65,10 @@ const PremiumEventDetailsPage: React.FC = () => {
   if (error || !event) {
     return (
       <div className="event-details-error">
-        <h2>Oops!</h2>
-        <p>{error || 'No se encontró el evento.'}</p>
+        <h2>{t('premium_event_details.oops')}</h2>
+        <p>{error || t('premium_event_details.not_found_desc')}</p>
         <button className="back-btn" onClick={() => navigate(-1)}>
-          Volver
+          {t('premium_event_details.back')}
         </button>
       </div>
     );
@@ -85,29 +79,34 @@ const PremiumEventDetailsPage: React.FC = () => {
   const addressQuery = encodeURIComponent(addressParts.join(', '));
   const mapsEmbedUrl = `https://maps.google.com/maps?q=${addressQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
+  // WhatsApp logic
+  const WHATSAPP_NUMBER = import.meta.env.VITE_PHONE_NUMBER_CONTACT;
+  const WHATSAPP_MESSAGE = encodeURIComponent(t('premium_event_details.whatsapp_message'));
+  const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
+
   return (
     <>
       <div className="event-details-page">
         {/* Back nav */}
         <div className="event-header-section">
           <button className="back-nav-btn" onClick={() => navigate(-1)}>
-            ← Volver
+            {t('premium_event_details.back_nav')}
           </button>
         </div>
 
         <div className="event-details-content">
           {/* Premium badges */}
           <div className="pd-badges-row">
-            <span className="pd-badge pd-badge--premium">✨ Organizado por nosotros</span>
-            <span className="pd-badge pd-badge--nuevo">🔥 Nuevo</span>
+            <span className="pd-badge pd-badge--premium">{t('premium_event_details.badge_premium')}</span>
+            <span className="pd-badge pd-badge--nuevo">{t('premium_event_details.badge_new')}</span>
           </div>
 
           <h1 className="event-details-title">{event.title}</h1>
-          {event.organizer && <p className="event-organizer">por {event.organizer}</p>}
+          {event.organizer && <p className="event-organizer">{t('premium_event_details.by_organizer', { organizer: event.organizer })}</p>}
 
           {/* Scarcity */}
           <div className="pd-scarcity-bar">
-            ⏳ Plazas limitadas — estamos validando demanda
+            {t('premium_event_details.scarcity')}
           </div>
 
           {/* Meta chips */}
@@ -124,16 +123,16 @@ const PremiumEventDetailsPage: React.FC = () => {
 
             {(event.min_age || event.max_age) && (
               <span className="meta-chip age-highlight-chip">
-                👥 Edad: <strong>{event.min_age || 18}–{event.max_age || 99} años</strong>
+                {t('premium_event_details.age')} <strong>{event.min_age || 18}–{event.max_age || 99} {t('premium_event_details.years')}</strong>
               </span>
             )}
 
             {(event.girls_price !== null || event.boys_price !== null) && (
               <span className="meta-chip price-highlight-chip">
                 💶{' '}
-                {event.girls_price !== null && `Chicas: €${event.girls_price}`}
+                {event.girls_price !== null && `${t('premium_event_details.girls')}: €${event.girls_price}`}
                 {event.girls_price !== null && event.boys_price !== null && ' | '}
-                {event.boys_price !== null && `Chicos: €${event.boys_price}`}
+                {event.boys_price !== null && `${t('premium_event_details.boys')}: €${event.boys_price}`}
               </span>
             )}
           </div>
@@ -143,13 +142,13 @@ const PremiumEventDetailsPage: React.FC = () => {
             <div className="pd-price-block">
               {event.girls_price !== null && (
                 <div className="pd-price-item">
-                  <span className="pd-price-label">Chicas</span>
+                  <span className="pd-price-label">{t('premium_event_details.girls')}</span>
                   <span className="pd-price-value">€{event.girls_price}</span>
                 </div>
               )}
               {event.boys_price !== null && (
                 <div className="pd-price-item">
-                  <span className="pd-price-label">Chicos</span>
+                  <span className="pd-price-label">{t('premium_event_details.boys')}</span>
                   <span className="pd-price-value">€{event.boys_price}</span>
                 </div>
               )}
@@ -159,7 +158,7 @@ const PremiumEventDetailsPage: React.FC = () => {
           {/* Description */}
           {event.description && (
             <div className="event-description-box">
-              <h3>Sobre el evento</h3>
+              <h3>{t('premium_event_details.about_event')}</h3>
               <p>{event.description}</p>
             </div>
           )}
@@ -167,8 +166,8 @@ const PremiumEventDetailsPage: React.FC = () => {
           {/* Map */}
           {addressParts.length > 0 && (
             <div className="event-map-box">
-              <h3>Localización</h3>
-              <p className="map-instruction">Haz clic en el mapa para abrir en Google Maps</p>
+              <h3>{t('premium_event_details.location')}</h3>
+              <p className="map-instruction">{t('premium_event_details.map_instruction')}</p>
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${addressQuery}`}
                 target="_blank"
@@ -203,10 +202,10 @@ const PremiumEventDetailsPage: React.FC = () => {
             rel="noopener noreferrer"
             className="btn-secondary"
           >
-            💬 Más información
+            {t('premium_event_details.more_info')}
           </a>
           <button className="btn-primary buy-tickets-btn" onClick={handleApuntarme}>
-            👉 Apuntarme (Plazas limitadas)
+            {t('premium_event_details.buy_tickets')}
           </button>
         </div>
       </div>
@@ -220,3 +219,4 @@ const PremiumEventDetailsPage: React.FC = () => {
 };
 
 export default PremiumEventDetailsPage;
+

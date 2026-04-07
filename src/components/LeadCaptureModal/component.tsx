@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Event } from '../../api/model/event';
 import { submitLead } from '../../api/supabase/leads';
 import { trackPremiumEventLeadSubmit } from '../../utils/analytics';
@@ -9,21 +10,23 @@ interface LeadCaptureModalProps {
   onClose: () => void;
 }
 
-const GENDER_OPTIONS = [
-  { value: 'female', label: '👩 Mujer' },
-  { value: 'male', label: '👨 Hombre' },
-  { value: 'other', label: '🌈 Otro' },
-];
-
-const AGE_RANGE_OPTIONS = [
-  { value: '', label: 'Sin preferencia' },
-  { value: '18-25', label: '18–25' },
-  { value: '25-35', label: '25–35' },
-  { value: '35-45', label: '35–45' },
-  { value: '45+', label: '45+' },
-];
-
 const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) => {
+  const { t } = useTranslation();
+
+  const GENDER_OPTIONS = [
+    { value: 'female', label: '👩 ' + t('premium_event_details.girls') },
+    { value: 'male', label: '👨 ' + t('premium_event_details.boys') },
+    { value: 'other', label: '🌈 ' + t('seeker.non_binary') },
+  ];
+
+  const AGE_RANGE_OPTIONS = [
+    { value: '', label: t('lead_capture.no_preference') },
+    { value: '18-25', label: '18–25' },
+    { value: '25-35', label: '25–35' },
+    { value: '35-45', label: '35–45' },
+    { value: '45+', label: '45+' },
+  ];
+
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
@@ -64,7 +67,7 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
 
       setSuccess(true);
     } catch (err) {
-      setError('Algo salió mal. Por favor, inténtalo de nuevo.');
+      setError(t('lead_capture.error_msg'));
       console.error(err);
     } finally {
       setLoading(false);
@@ -79,22 +82,22 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick} role="dialog" aria-modal="true">
       <div className="modal-card">
-        <button className="modal-close-btn" onClick={onClose} aria-label="Cerrar">✕</button>
+        <button className="modal-close-btn" onClick={onClose} aria-label={t('lead_capture.close')}>✕</button>
 
         {success ? (
           <div className="modal-success">
             <div className="success-emoji">🎉</div>
-            <h2>¡Todo listo!</h2>
-            <p>Te avisaremos cuando abramos las plazas 🎉</p>
-            <button className="btn-cta-primary" onClick={onClose}>Cerrar</button>
+            <h2>{t('lead_capture.all_set')}</h2>
+            <p>{t('lead_capture.success_msg')}</p>
+            <button className="btn-cta-primary" onClick={onClose}>{t('lead_capture.close')}</button>
           </div>
         ) : (
           <>
             <div className="modal-header">
-              <span className="modal-badge">🔥 Plazas limitadas</span>
-              <h2 className="modal-title">Reserva tu plaza</h2>
+              <span className="modal-badge">{t('lead_capture.limited_spots')}</span>
+              <h2 className="modal-title">{t('lead_capture.reserve_spot')}</h2>
               <p className="modal-subtitle">
-                Estamos validando demanda. Te avisaremos cuando abramos inscripciones.
+                {t('lead_capture.validation_msg')}
               </p>
             </div>
 
@@ -102,13 +105,13 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
               <span>📅 {event.date}</span>
               {event.city && <span>📍 {event.city}</span>}
               {(event.min_age || event.max_age) && (
-                <span>👥 {event.min_age || 18}–{event.max_age || 99} años</span>
+                <span>👥 {event.min_age || 18}–{event.max_age || 99} {t('premium_event_details.years')}</span>
               )}
             </div>
 
             <form className="lead-form" onSubmit={handleSubmit} noValidate>
               <div className="form-group">
-                <label htmlFor="lead-email">Email *</label>
+                <label htmlFor="lead-email">{t('lead_capture.email')}</label>
                 <input
                   id="lead-email"
                   type="email"
@@ -122,7 +125,7 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="lead-age">Edad *</label>
+                  <label htmlFor="lead-age">{t('lead_capture.user_age')}</label>
                   <input
                     id="lead-age"
                     type="number"
@@ -136,14 +139,14 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="lead-gender">Género *</label>
+                  <label htmlFor="lead-gender">{t('lead_capture.user_gender')}</label>
                   <select
                     id="lead-gender"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                     required
                   >
-                    <option value="">Selecciona...</option>
+                    <option value="">{t('common.select')}</option>
                     {GENDER_OPTIONS.map((g) => (
                       <option key={g.value} value={g.value}>{g.label}</option>
                     ))}
@@ -153,8 +156,8 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
 
               <div className="form-group">
                 <label htmlFor="lead-age-range">
-                  Rango de edad preferido{' '}
-                  <span className="optional-label">(opcional)</span>
+                  {t('lead_capture.age_range')}{' '}
+                  <span className="optional-label">{t('common.optional')}</span>
                 </label>
                 <select
                   id="lead-age-range"
@@ -174,11 +177,11 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
                 className="btn-cta-primary"
                 disabled={loading || !email || !age || !gender}
               >
-                {loading ? 'Enviando...' : '👉 Apuntarme (Plazas limitadas)'}
+                {loading ? t('lead_capture.sending') : t('lead_capture.signup_btn')}
               </button>
 
               <p className="form-legal">
-                Sin registro obligatorio · Sin spam · Solo te avisamos cuando abramos plazas.
+                {t('lead_capture.legal_info')}
               </p>
             </form>
           </>
@@ -189,3 +192,4 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
 };
 
 export default LeadCaptureModal;
+

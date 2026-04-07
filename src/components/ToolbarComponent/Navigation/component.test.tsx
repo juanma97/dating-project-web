@@ -11,7 +11,7 @@ describe('Navigation Component', () => {
     );
     expect(screen.getAllByText(/Home/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/About/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Eventos Premium/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Premium Events/i).length).toBeGreaterThan(0);
   });
 });
 

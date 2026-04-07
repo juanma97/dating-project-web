@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import AgeRangeSelector from '../AgeRangeSelector/component';
 import DateRangeSelector from '../DateRangeSelector/component';
 import './component.css';
@@ -12,14 +13,6 @@ export interface SeekerFilters {
   dateEnd: Date | null;
 }
 
-const GENDERS = [
-  { value: 'straight', label: 'Straight', flag: '👫' },
-  { value: 'gay', label: 'Gay', flag: '👬' },
-  { value: 'lesbian', label: 'Lesbian', flag: '👭' },
-  { value: 'bisexual', label: 'Bisexual', flag: '🏳️‍🌈' },
-  { value: 'non-binary', label: 'Non-Binary', flag: '🏳️‍⚧️' },
-];
-
 const CITIES = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga'];
 
 interface SeekerProps {
@@ -27,6 +20,16 @@ interface SeekerProps {
 }
 
 const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
+  const { t } = useTranslation();
+
+  const GENDERS = [
+    { value: 'straight', label: t('seeker.straight'), flag: '👫' },
+    { value: 'gay', label: t('seeker.gay'), flag: '👬' },
+    { value: 'lesbian', label: t('seeker.lesbian'), flag: '👭' },
+    { value: 'bisexual', label: t('seeker.bisexual'), flag: '🏳️‍🌈' },
+    { value: 'non-binary', label: t('seeker.non_binary'), flag: '🏳️‍⚧️' },
+  ];
+
   const [filters, setFilters] = useState<SeekerFilters>({
     ageMin: 25,
     ageMax: 40,
@@ -85,7 +88,7 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
         </div>
 
         <div className="filter-group date-range-group">
-          <label>Dates</label>
+          <label>{t('seeker.dates')}</label>
           <DateRangeSelector
             initialStartDate={filters.dateStart}
             initialEndDate={filters.dateEnd}
@@ -94,7 +97,7 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
         </div>
 
         <div className="filter-group">
-          <label htmlFor="gender">Gender</label>
+          <label htmlFor="gender">{t('seeker.gender')}</label>
           <div className="custom-select-wrapper">
             <select
               name="gender"
@@ -103,7 +106,7 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
               onChange={(e) => setFilters((prev) => ({ ...prev, gender: e.target.value }))}
               className="gender-select"
             >
-              <option value="">Select Gender</option>
+              <option value="">{t('seeker.select_gender')}</option>
               {GENDERS.map((g) => (
                 <option key={g.value} value={g.value}>
                   {g.flag} {g.label}
@@ -114,12 +117,12 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
         </div>
 
         <div className="filter-group city-autocomplete">
-          <label htmlFor="city">City</label>
+          <label htmlFor="city">{t('seeker.city')}</label>
           <input
             type="text"
             name="city"
             id="city"
-            placeholder="Search city..."
+            placeholder={t('seeker.search_city')}
             value={filters.city}
             onChange={handleCityChange}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
@@ -141,3 +144,4 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
 };
 
 export default Seeker;
+

@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Event } from '../../api/model/event';
 import { eventsApi } from '../../api/supabase/events';
 import { trackEventSourceClick, trackBuyTicketsIntent, trackPageView } from '../../utils/analytics';
+import { useTranslation } from 'react-i18next';
 import './component.css';
 
 const EventDetailsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [event, setEvent] = useState<Event | null>(null);
@@ -25,17 +27,17 @@ const EventDetailsPage: React.FC = () => {
         if (fetchedEvent) {
           setEvent(fetchedEvent);
         } else {
-          setError('Event not found');
+          setError(t('event_details.not_found'));
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load event');
+        setError(err instanceof Error ? err.message : t('event_details.load_error'));
       } finally {
         setLoading(false);
       }
     };
 
     fetchEvent();
-  }, [id]);
+  }, [id, t]);
 
   const handleSourceClick = () => {
     if (event) {
@@ -46,7 +48,7 @@ const EventDetailsPage: React.FC = () => {
   const handleBuyTickets = () => {
     if (event) {
       trackBuyTicketsIntent(event.id, event.title);
-      setToastMessage('Buying tickets will be available soon! We are measuring demand.');
+      setToastMessage(t('event_details.toast_buying'));
       setTimeout(() => setToastMessage(null), 4000);
     }
   };
@@ -55,7 +57,7 @@ const EventDetailsPage: React.FC = () => {
     return (
       <div className="event-details-loading">
         <div className="spinner"></div>
-        <p>Loading event...</p>
+        <p>{t('event_details.loading')}</p>
       </div>
     );
   }
@@ -63,10 +65,10 @@ const EventDetailsPage: React.FC = () => {
   if (error || !event) {
     return (
       <div className="event-details-error">
-        <h2>Oops!</h2>
-        <p>{error || 'Event could not be found.'}</p>
+        <h2>{t('event_details.oops')}</h2>
+        <p>{error || t('event_details.could_not_be_found')}</p>
         <button className="back-btn" onClick={() => navigate(-1)}>
-          Go Back
+          {t('event_details.go_back')}
         </button>
       </div>
     );
@@ -83,6 +85,16 @@ const EventDetailsPage: React.FC = () => {
     return '✨';
   };
 
+  const translateOrientation = (orientation: string) => {
+    const o = orientation.toLowerCase();
+    if (o.includes('straight')) return t('seeker.straight');
+    if (o.includes('gay')) return t('seeker.gay');
+    if (o.includes('lesbian')) return t('seeker.lesbian');
+    if (o.includes('bisexual')) return t('seeker.bisexual');
+    if (o.includes('non-binary')) return t('seeker.non_binary');
+    return orientation;
+  };
+
   // Google Maps address construction
   const addressParts = [event.street_name, event.street_number, event.city].filter(Boolean);
   const addressQuery = encodeURIComponent(addressParts.join(', '));
@@ -92,7 +104,7 @@ const EventDetailsPage: React.FC = () => {
     <div className="event-details-page">
       <div className="event-header-section">
         <button className="back-nav-btn" onClick={() => navigate(-1)}>
-          ← Back
+          {t('event_details.back_nav')}
         </button>
       </div>
 
@@ -100,12 +112,12 @@ const EventDetailsPage: React.FC = () => {
         {event.sexual_orientation && (
           <div className="event-type-badge large-badge">
             <span className="event-type-icon">{getOrientationIcon(event.sexual_orientation)}</span>
-            {event.sexual_orientation}
+            {translateOrientation(event.sexual_orientation)}
           </div>
         )}
 
         <h1 className="event-details-title">{event.title}</h1>
-        {event.organizer && <p className="event-organizer">by {event.organizer}</p>}
+        {event.organizer && <p className="event-organizer">{t('event_details.by_organizer', { organizer: event.organizer })}</p>}
 
         <div className="event-meta-chips">
           <span className="meta-chip">
@@ -120,29 +132,29 @@ const EventDetailsPage: React.FC = () => {
 
           {(event.girls_price !== null || event.boys_price !== null) && (
             <span className="meta-chip">
-              💶 {event.girls_price !== null && `Girls €${event.girls_price}`}
+              💶 {event.girls_price !== null && `${t('event_details.girls')} €${event.girls_price}`}
               {event.girls_price !== null && event.boys_price !== null && ' · '}
-              {event.boys_price !== null && `Boys €${event.boys_price}`}
+              {event.boys_price !== null && `${t('event_details.boys')} €${event.boys_price}`}
             </span>
           )}
 
           {(event.min_age || event.max_age) && (
             <span className="meta-chip">
-              👥 {event.min_age || '18'}–{event.max_age || '99'} years
+              👥 {event.min_age || '18'}–{event.max_age || '99'} {t('event_details.years')}
             </span>
           )}
         </div>
 
         {event.description && (
           <div className="event-description-box">
-            <h3>About this event</h3>
+            <h3>{t('event_details.about_this')}</h3>
             <p>{event.description}</p>
           </div>
         )}
 
         <div className="event-map-box">
-          <h3>Location Map</h3>
-          <p className="map-instruction">Click the map to open in Google Maps</p>
+          <h3>{t('event_details.location_map')}</h3>
+          <p className="map-instruction">{t('event_details.map_instruction')}</p>
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${addressQuery}`}
             target="_blank"
@@ -184,11 +196,11 @@ const EventDetailsPage: React.FC = () => {
             className="btn-secondary"
             onClick={handleSourceClick}
           >
-            View on {event.source || "Organizer's Site"}
+            {t('event_details.view_on', { source: event.source || t('event_details.organizers_site') })}
           </a>
         )}
         <button className="btn-primary buy-tickets-btn" onClick={handleBuyTickets}>
-          Comprar entradas
+          {t('event_details.buy_tickets')}
         </button>
       </div>
     </div>
@@ -196,3 +208,4 @@ const EventDetailsPage: React.FC = () => {
 };
 
 export default EventDetailsPage;
+

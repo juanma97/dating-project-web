@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './component.css';
 
 interface HeaderProps {
@@ -7,9 +8,14 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
-  title = 'Connect in the Real World',
-  subtitle = 'Premium speed dating events for authentic interactions.',
+  title,
+  subtitle,
 }) => {
+  const { t } = useTranslation();
+
+  const displayTitle = title || t('landing.hero_title');
+  const displaySubtitle = subtitle || t('landing.hero_subtitle');
+
   return (
     <header className="hero-header">
       <div className="hero-bg-animation" aria-hidden="true">
@@ -22,11 +28,12 @@ const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="hero-content">
-        <h1 className="hero-title">{title}</h1>
-        <p className="hero-subtitle">{subtitle}</p>
+        <h1 className="hero-title">{displayTitle}</h1>
+        <p className="hero-subtitle">{displaySubtitle}</p>
       </div>
     </header>
   );
 };
 
 export default Header;
+

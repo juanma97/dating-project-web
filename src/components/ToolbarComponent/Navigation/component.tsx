@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './component.css';
 
 const Navigation: React.FC = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
@@ -25,12 +27,12 @@ const Navigation: React.FC = () => {
         <ul className="nav-list">
           <li className="nav-item">
             <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-              Home
+              {t('nav.home')}
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/about" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-              About
+              {t('nav.about')}
             </NavLink>
           </li>
           <li className="nav-item">
@@ -40,7 +42,7 @@ const Navigation: React.FC = () => {
                 isActive ? 'nav-link nav-link--premium active' : 'nav-link nav-link--premium'
               }
             >
-              🔥 Eventos Premium
+              {t('nav.premium_events')}
             </NavLink>
           </li>
         </ul>
@@ -50,7 +52,7 @@ const Navigation: React.FC = () => {
       <button
         className={`hamburger-btn${open ? ' is-open' : ''}`}
         onClick={() => setOpen((v) => !v)}
-        aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+        aria-label={open ? t('nav.close_menu') : t('nav.open_menu')}
         aria-expanded={open}
       >
         <span className="ham-bar" />
@@ -58,8 +60,7 @@ const Navigation: React.FC = () => {
         <span className="ham-bar" />
       </button>
 
-      {/* ── Portal: renders directly into <body>, bypassing the toolbar's
-              backdrop-filter stacking context which would clip fixed children ── */}
+      {/* ── Portal: renders directly into <body> ── */}
       {createPortal(
         <>
           {/* Backdrop */}
@@ -83,7 +84,7 @@ const Navigation: React.FC = () => {
                     isActive ? 'nav-link--premium-mobile active' : 'nav-link--premium-mobile'
                   }
                 >
-                  🔥 Eventos Premium
+                  {t('nav.premium_events')}
                 </NavLink>
               </li>
               {/* Priority 2 — Home / Eventos */}
@@ -95,7 +96,7 @@ const Navigation: React.FC = () => {
                     isActive ? 'nav-link-mobile active' : 'nav-link-mobile'
                   }
                 >
-                  Eventos
+                  {t('nav.events')}
                 </NavLink>
               </li>
               {/* Priority 3 — About */}
@@ -106,7 +107,7 @@ const Navigation: React.FC = () => {
                     isActive ? 'nav-link-mobile active' : 'nav-link-mobile'
                   }
                 >
-                  About
+                  {t('nav.about')}
                 </NavLink>
               </li>
             </ul>
@@ -119,3 +120,4 @@ const Navigation: React.FC = () => {
 };
 
 export default Navigation;
+

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Event } from '../../api/model/event';
 import { trackEventClick } from '../../utils/analytics';
 import './component.css';
@@ -32,16 +33,27 @@ const getOrientationAccent = (orientation: string | null): string => {
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleEventClick = () => {
     trackEventClick({
       id: event.id,
       title: event.title,
-      source: 'Internal' as string, // the user is staying internal now
+      source: 'Internal' as string,
       city: event.city || 'Unknown',
       url: `/events/${event.id}`,
     });
     navigate(`/events/${event.id}`);
+  };
+
+  const translateOrientation = (orientation: string) => {
+    const o = orientation.toLowerCase();
+    if (o.includes('straight')) return t('seeker.straight');
+    if (o.includes('gay')) return t('seeker.gay');
+    if (o.includes('lesbian')) return t('seeker.lesbian');
+    if (o.includes('bisexual')) return t('seeker.bisexual');
+    if (o.includes('non-binary')) return t('seeker.non_binary');
+    return orientation;
   };
 
   return (
@@ -54,7 +66,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       {event.sexual_orientation && (
         <div className="event-type-badge">
           <span className="event-type-icon">{getOrientationIcon(event.sexual_orientation)}</span>
-          {event.sexual_orientation}
+          {translateOrientation(event.sexual_orientation)}
         </div>
       )}
       <div className="event-content">
@@ -73,21 +85,21 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
           {(event.girls_price !== null || event.boys_price !== null) && (
             <span className="meta-chip price-chip">
-              💶 {event.girls_price !== null && `Girls €${event.girls_price}`}
+              💶 {event.girls_price !== null && `${t('premium_event_details.girls')} €${event.girls_price}`}
               {event.girls_price !== null && event.boys_price !== null && ' · '}
-              {event.boys_price !== null && `Boys €${event.boys_price}`}
+              {event.boys_price !== null && `${t('premium_event_details.boys')} €${event.boys_price}`}
             </span>
           )}
 
           {(event.min_age || event.max_age) && (
             <span className="meta-chip">
-              👥 {event.min_age || '18'}–{event.max_age || '99'} years
+              👥 {event.min_age || '18'}–{event.max_age || '99'} {t('premium_event_details.years')}
             </span>
           )}
         </div>
 
         <button className="view-btn" onClick={handleEventClick}>
-          View Details
+          {t('premium_events.view_details')}
         </button>
       </div>
     </div>
@@ -95,3 +107,4 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 };
 
 export default EventCard;
+

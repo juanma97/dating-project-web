@@ -5,9 +5,11 @@ import EventsList from '../../components/EventsList/component';
 import Footer from '../../components/Footer/component';
 import { Event } from '../../api/model/event';
 import { eventsApi } from '../../api/supabase/events';
+import { useTranslation } from 'react-i18next';
 import './component.css';
 
 const LandingPage: React.FC = () => {
+  const { t } = useTranslation();
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +23,7 @@ const LandingPage: React.FC = () => {
         setAllEvents(data);
         setFilteredEvents(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch events');
+        setError(err instanceof Error ? err.message : t('landing.error_fetch'));
       } finally {
         setLoading(false);
       }
@@ -91,8 +93,8 @@ const LandingPage: React.FC = () => {
       <div className="container">
         <Seeker onChange={setActiveFilters} />
         <section className="events-section">
-          <h2 className="section-title">Upcoming Events</h2>
-          {loading && <p className="loading-message">Loading events...</p>}
+          <h2 className="section-title">{t('landing.upcoming_events')}</h2>
+          {loading && <p className="loading-message">{t('landing.loading_events')}</p>}
           {error && <p className="error-message">{error}</p>}
           {!loading && !error && <EventsList events={filteredEvents} />}
         </section>

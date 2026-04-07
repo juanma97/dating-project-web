@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Event } from '../../api/model/event';
 import { trackClickPremiumEvent } from '../../utils/analytics';
 import './component.css';
@@ -10,6 +11,7 @@ interface PremiumEventCardProps {
 
 const PremiumEventCard: React.FC<PremiumEventCardProps> = ({ event }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     trackClickPremiumEvent({
@@ -28,12 +30,12 @@ const PremiumEventCard: React.FC<PremiumEventCardProps> = ({ event }) => {
       {event.image && (
         <div className="event-image-banner">
           <img src={event.image} alt={event.title} loading="lazy" />
-          <span className="nuevo-badge">🔥 Nuevo</span>
+          <span className="nuevo-badge">{t('premium_event_details.badge_new')}</span>
         </div>
       )}
-      {!event.image && <div className="nuevo-badge nuevo-badge--no-image">🔥 Nuevo</div>}
+      {!event.image && <div className="nuevo-badge nuevo-badge--no-image">{t('premium_event_details.badge_new')}</div>}
 
-      <div className="organizado-tag">✨ Organizado por nosotros</div>
+      <div className="organizado-tag">{t('premium_event_details.badge_premium')}</div>
 
       <div className="event-content">
         <h3 className="event-title">{event.title}</h3>
@@ -51,24 +53,24 @@ const PremiumEventCard: React.FC<PremiumEventCardProps> = ({ event }) => {
 
           {(event.min_age || event.max_age) && (
             <span className="meta-chip age-chip">
-              👥 Edad: <strong>{event.min_age || 18}–{event.max_age || 99}</strong>
+              {t('premium_event_details.age')} <strong>{event.min_age || 18}–{event.max_age || 99}</strong>
             </span>
           )}
 
           {(event.girls_price !== null || event.boys_price !== null) && (
             <span className="meta-chip price-chip">
               💶{' '}
-              {event.girls_price !== null && `Chicas: €${event.girls_price}`}
+              {event.girls_price !== null && `${t('premium_event_details.girls')}: €${event.girls_price}`}
               {event.girls_price !== null && event.boys_price !== null && ' | '}
-              {event.boys_price !== null && `Chicos: €${event.boys_price}`}
+              {event.boys_price !== null && `${t('premium_event_details.boys')}: €${event.boys_price}`}
             </span>
           )}
         </div>
 
-        <div className="scarcity-pill">⏳ Plazas limitadas</div>
+        <div className="scarcity-pill">{t('lead_capture.limited_spots')}</div>
 
         <button className="view-btn" onClick={handleClick}>
-          Ver detalles
+          {t('premium_events.view_details')}
         </button>
       </div>
     </div>
@@ -76,3 +78,4 @@ const PremiumEventCard: React.FC<PremiumEventCardProps> = ({ event }) => {
 };
 
 export default PremiumEventCard;
+

@@ -4,9 +4,11 @@ import PremiumEventCard from '../../components/PremiumEventCard/component';
 import { Event } from '../../api/model/event';
 import { premiumEventsApi } from '../../api/supabase/premiumEvents';
 import { trackViewPremiumEvents, trackPageView } from '../../utils/analytics';
+import { useTranslation } from 'react-i18next';
 import './component.css';
 
 const PremiumEventsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +23,7 @@ const PremiumEventsPage: React.FC = () => {
         const data = await premiumEventsApi.fetchEvents();
         setEvents(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error cargando eventos');
+        setError(err instanceof Error ? err.message : t('premium_events.error_loading'));
       } finally {
         setLoading(false);
       }
@@ -34,14 +36,13 @@ const PremiumEventsPage: React.FC = () => {
     <div className="premium-page">
       <div className="premium-hero">
         <div className="premium-hero-inner">
-          <span className="premium-hero-badge">🔥 Nuevo</span>
-          <h1 className="premium-hero-title">Eventos Premium</h1>
+          <span className="premium-hero-badge">{t('premium_events.hero_badge')}</span>
+          <h1 className="premium-hero-title">{t('premium_events.hero_title')}</h1>
           <p className="premium-hero-subtitle">
-            Speed dating organizado por nosotros — experiencias íntimas, curadas y con plazas
-            limitadas.
+            {t('premium_events.hero_subtitle')}
           </p>
           <div className="premium-scarcity-banner">
-            ⏳ Plazas limitadas — estamos validando demanda
+            {t('premium_events.scarcity_banner')}
           </div>
         </div>
       </div>
@@ -51,13 +52,13 @@ const PremiumEventsPage: React.FC = () => {
           {loading && (
             <div className="premium-loading">
               <div className="spinner" />
-              <p>Cargando eventos...</p>
+              <p>{t('premium_events.loading')}</p>
             </div>
           )}
           {error && <p className="error-message">⚠️ {error}</p>}
           {!loading && !error && events.length === 0 && (
             <div className="premium-empty">
-              <p>Próximamente nuevos eventos. ¡Vuelve pronto!</p>
+              <p>{t('premium_events.empty')}</p>
             </div>
           )}
           {!loading && !error && events.length > 0 && (
