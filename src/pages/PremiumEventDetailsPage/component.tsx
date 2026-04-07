@@ -13,9 +13,9 @@ import './component.css';
 
 
 // Replace with your real WhatsApp number (international format, no + or spaces)
-const WHATSAPP_NUMBER = '34600000000';
+const WHATSAPP_NUMBER = import.meta.env.VITE_PHONE_NUMBER_CONTACT;
 const WHATSAPP_MESSAGE = encodeURIComponent(
-  '¡Hola! Quiero más información sobre el evento de speed dating 😊',
+  '¡Hola! Quiero más información sobre el evento de speed dating premium 😊',
 );
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
 
