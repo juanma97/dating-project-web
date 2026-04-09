@@ -39,13 +39,11 @@ const LandingPage: React.FC = () => {
     }
 
     const result = allEvents.filter((event) => {
-      // Age filtering - Only show events where user's age fits within min_age and max_age
-      // Since Seeker has a range (ageMin to ageMax), we show events where the event's age limit
-      // overlaps with the seeker's age limits.
-      // E.g. If Seeker is 20-30, event must allow someone in that range.
-      const overlapsAge =
-        (!event.min_age || event.min_age <= activeFilters.ageMax) &&
-        (!event.max_age || event.max_age >= activeFilters.ageMin);
+      // Age filtering - Only show events where event's age range is contained within seeker's range
+      const effectiveMin = event.min_age ?? 18;
+      const effectiveMax = event.max_age ?? 99;
+      const matchesAge =
+        effectiveMin >= activeFilters.ageMin && effectiveMax <= activeFilters.ageMax;
 
       // Gender / Sexual Orientation filtering
       // If none selected, allow all. If selected, match event.sexual_orientation if it exists.
@@ -80,7 +78,7 @@ const LandingPage: React.FC = () => {
         }
       }
 
-      return overlapsAge && genderMatch && cityMatch && dateMatch;
+      return matchesAge && genderMatch && cityMatch && dateMatch;
     });
 
     setFilteredEvents(result);
