@@ -10,7 +10,7 @@ describe('App Component', () => {
       </BrowserRouter>,
     );
     await waitFor(() => {
-      expect(screen.getByRole('link', { name: /Speed Dating Connect/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /Zapyens/i })).toBeInTheDocument();
     });
   });
 
@@ -21,7 +21,7 @@ describe('App Component', () => {
       </BrowserRouter>,
     );
     await waitFor(() => {
-      expect(screen.getByText(/Connect in the Real World/i)).toBeInTheDocument();
+      expect(screen.getByText(/Back to nature 🌱/i)).toBeInTheDocument();
     });
   });
 });

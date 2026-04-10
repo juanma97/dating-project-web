@@ -31,7 +31,7 @@ describe('Event Components', () => {
     render(
       <BrowserRouter>
         <EventCard event={mockEvent} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(screen.getByText(/Beach Speed Dating/i)).toBeInTheDocument();
     expect(screen.getByText(/Barcelona/i)).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('Event Components', () => {
     render(
       <BrowserRouter>
         <EventsList events={events} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(screen.getByText(/Beach Speed Dating/i)).toBeInTheDocument();
     expect(screen.getByText(/Coffee Connection/i)).toBeInTheDocument();

@@ -47,8 +47,7 @@
     "upcoming_events": "Upcoming Events",
     "loading_events": "Loading events...",
     "no_events": "No events found. Try adjusting your filters.",
-    "hero_title": "Connect in the Real World",
-    "hero_subtitle": "Premium speed dating events for authentic interactions."
+    "hero_title": "Back to nature 🌱"
   },
   "event_details": {
     "not_found": "Event not found",
@@ -74,7 +73,7 @@
     "error_loading": "Error loading events",
     "hero_badge": "🔥 New",
     "hero_title": "Premium Events",
-    "hero_subtitle": "Speed dating organized by us — intimate, curated experiences with limited spots.",
+    "hero_subtitle": "Events organised by us — intimate, carefully curated experiences with limited places.",
     "scarcity_banner": "⏳ Limited spots — we are validating demand",
     "loading": "Loading events...",
     "empty": "New events coming soon. Come back!",
@@ -149,6 +148,16 @@
     "fri": "Fr",
     "sat": "Sa",
     "sun": "Su"
+  },
+  "share": {
+    "title": "Share event",
+    "copy_link": "Copy link",
+    "link_copied": "Link copied to clipboard!",
+    "whatsapp": "Share on WhatsApp",
+    "telegram": "Share on Telegram",
+    "fallback_message": "Check out this event!: {{title}} {{url}}",
+    "open_whatsapp": "Opening WhatsApp...",
+    "open_telegram": "Opening Telegram...",
+    "share_button": "Share"
   }
 }
-

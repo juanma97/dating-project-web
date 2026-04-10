@@ -9,7 +9,7 @@ jest.mock('react-i18next', () => ({
       // Logic to return EN translations in tests
       const parts = key.split('.');
       let result: any = translationEN;
-      
+
       for (const part of parts) {
         if (result && typeof result === 'object' && part in result) {
           result = result[part];
@@ -18,14 +18,14 @@ jest.mock('react-i18next', () => ({
           break;
         }
       }
-      
+
       // Interpolation logic if options exist (basic)
       if (options && typeof result === 'string') {
-        Object.keys(options).forEach(k => {
+        Object.keys(options).forEach((k) => {
           result = result.replace(new RegExp(`{{${k}}}`, 'g'), options[k]);
         });
       }
-      
+
       return result;
     },
     i18n: {

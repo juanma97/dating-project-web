@@ -9,7 +9,7 @@ describe('Logo Component', () => {
         <Logo />
       </BrowserRouter>,
     );
-    const logoElement = screen.getByText(/Speed Dating Connect/i);
+    const logoElement = screen.getByText(/Zapyens/i);
     expect(logoElement).toBeInTheDocument();
     expect(logoElement.closest('a')).toHaveAttribute('href', '/');
   });

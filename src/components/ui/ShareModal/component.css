@@ -1,0 +1,67 @@
+.share-modal-card {
+  max-width: 400px;
+  padding: 32px;
+}
+
+.share-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.share-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary, #2d3436);
+  text-align: left;
+}
+
+.share-option-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background: #f8f9fa;
+}
+
+.share-option-btn.whatsapp:hover {
+  border-color: #25D366;
+  color: #25D366;
+  background: rgba(37, 211, 102, 0.05);
+}
+
+.share-option-btn.telegram:hover {
+  border-color: #0088cc;
+  color: #0088cc;
+  background: rgba(0, 136, 204, 0.05);
+}
+
+.share-option-btn.copy:hover {
+  border-color: var(--accent-color, #ff4d4d);
+  color: var(--accent-color, #ff4d4d);
+  background: rgba(255, 77, 77, 0.05);
+}
+
+.share-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+}
+
+@media (max-width: 480px) {
+  .share-modal-card {
+    padding: 24px;
+    margin: 16px;
+  }
+}

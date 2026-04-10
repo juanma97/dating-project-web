@@ -47,8 +47,7 @@
     "upcoming_events": "Próximos Eventos",
     "loading_events": "Cargando eventos...",
     "no_events": "No se encontraron eventos. Intenta ajustar tus filtros.",
-    "hero_title": "Conecta en el mundo real",
-    "hero_subtitle": "Eventos de speed dating premium para interacciones auténticas."
+    "hero_title": "De vuelta a lo natural 🌱"
   },
   "event_details": {
     "not_found": "Evento no encontrado",
@@ -74,7 +73,7 @@
     "error_loading": "Error al cargar eventos",
     "hero_badge": "🔥 Nuevo",
     "hero_title": "Eventos Premium",
-    "hero_subtitle": "Speed dating organizado por nosotros — experiencias íntimas, curadas y con plazas limitadas.",
+    "hero_subtitle": "Eventos organizado por nosotros — experiencias íntimas, curadas y con plazas limitadas.",
     "scarcity_banner": "⏳ Plazas limitadas — estamos validando demanda",
     "loading": "Cargando eventos...",
     "empty": "Próximamente nuevos eventos. ¡Vuelve pronto!",
@@ -149,6 +148,16 @@
     "fri": "Vi",
     "sat": "Sa",
     "sun": "Do"
+  },
+  "share": {
+    "title": "Compartir evento",
+    "copy_link": "Copiar enlace",
+    "link_copied": "¡Enlace copiado al portapapeles!",
+    "whatsapp": "Compartir por WhatsApp",
+    "telegram": "Compartir por Telegram",
+    "fallback_message": "¡Mira este evento!: {{title}} {{url}}",
+    "open_whatsapp": "Abriendo WhatsApp...",
+    "open_telegram": "Abriendo Telegram...",
+    "share_button": "Compartir"
   }
 }
-

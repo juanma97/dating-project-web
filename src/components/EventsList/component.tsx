@@ -29,4 +29,3 @@ const EventsList: React.FC<EventsListProps> = ({ events }) => {
 };
 
 export default EventsList;
-

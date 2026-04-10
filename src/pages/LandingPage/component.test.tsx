@@ -67,7 +67,7 @@ describe('LandingPage', () => {
         <LandingPage />
       </BrowserRouter>,
     );
-    expect(screen.getByText(/Connect in the Real World/i)).toBeInTheDocument();
+    expect(screen.getByText(/Back to nature 🌱/i)).toBeInTheDocument();
     expect(screen.getByText(/Upcoming Events/i)).toBeInTheDocument();
 
     // Wait for the mock API call to finish

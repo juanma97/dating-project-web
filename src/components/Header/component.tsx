@@ -7,14 +7,10 @@ interface HeaderProps {
   subtitle?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  title,
-  subtitle,
-}) => {
+const Header: React.FC<HeaderProps> = ({ title, subtitle }) => {
   const { t } = useTranslation();
 
   const displayTitle = title || t('landing.hero_title');
-  const displaySubtitle = subtitle || t('landing.hero_subtitle');
 
   return (
     <header className="hero-header">
@@ -29,11 +25,9 @@ const Header: React.FC<HeaderProps> = ({
 
       <div className="hero-content">
         <h1 className="hero-title">{displayTitle}</h1>
-        <p className="hero-subtitle">{displaySubtitle}</p>
       </div>
     </header>
   );
 };
 
 export default Header;
-

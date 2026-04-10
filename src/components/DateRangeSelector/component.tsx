@@ -137,7 +137,9 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
   return (
     <div className="date-range-selector">
       <div className="date-input-wrapper" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
-        <div className="date-input">{startDate ? formatDate(startDate) : t('date_range.start_date')}</div>
+        <div className="date-input">
+          {startDate ? formatDate(startDate) : t('date_range.start_date')}
+        </div>
         <span className="date-separator">—</span>
         <div className="date-input">{endDate ? formatDate(endDate) : t('date_range.end_date')}</div>
       </div>
@@ -172,4 +174,3 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
 };
 
 export default DateRangeSelector;
-

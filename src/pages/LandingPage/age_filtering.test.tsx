@@ -16,16 +16,18 @@ jest.mock('../../components/Seeker/component', () => ({
   __esModule: true,
   default: ({ onChange }: any) => (
     <div data-testid="mock-seeker">
-      <button 
+      <button
         data-testid="filter-25-43"
-        onClick={() => onChange({ 
-          ageMin: 25, 
-          ageMax: 43, 
-          gender: '', 
-          city: '', 
-          dateStart: null, 
-          dateEnd: null 
-        })}
+        onClick={() =>
+          onChange({
+            ageMin: 25,
+            ageMax: 43,
+            gender: '',
+            city: '',
+            dateStart: null,
+            dateEnd: null,
+          })
+        }
       >
         Set Filter 25-43
       </button>
@@ -127,7 +129,7 @@ describe('LandingPage Age Filtering Regression', () => {
     await waitFor(() => {
       // Should show
       expect(screen.getByText('Match Event')).toBeInTheDocument();
-      
+
       // Should NOT show (BUG: current logic shows them because they overlap)
       expect(screen.queryByText('Too Old Event')).not.toBeInTheDocument();
       expect(screen.queryByText('Too Young Event')).not.toBeInTheDocument();

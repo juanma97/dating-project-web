@@ -13,15 +13,13 @@ const resources = {
   },
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: 'es', // idioma por defecto
-    fallbackLng: 'es',
-    interpolation: {
-      escapeValue: false, // React ya previene XSS
-    },
-  });
+i18n.use(initReactI18next).init({
+  resources,
+  lng: 'es', // idioma por defecto
+  fallbackLng: 'es',
+  interpolation: {
+    escapeValue: false, // React ya previene XSS
+  },
+});
 
 export default i18n;

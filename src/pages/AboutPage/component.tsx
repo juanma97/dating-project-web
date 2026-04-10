@@ -12,12 +12,8 @@ const AboutPage: React.FC = () => {
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
-            <h1 className="about-title">
-              {t('about.hero_title')}
-            </h1>
-            <p className="about-subtitle">
-              {t('about.hero_subtitle')}
-            </p>
+            <h1 className="about-title">{t('about.hero_title')}</h1>
+            <p className="about-subtitle">{t('about.hero_subtitle')}</p>
           </div>
         </section>
 
@@ -28,25 +24,19 @@ const AboutPage: React.FC = () => {
             <div className="value-card">
               <div className="value-icon">✨</div>
               <h3 className="value-title">{t('about.value_minimalist_title')}</h3>
-              <p className="value-text">
-                {t('about.value_minimalist_text')}
-              </p>
+              <p className="value-text">{t('about.value_minimalist_text')}</p>
             </div>
 
             <div className="value-card">
               <div className="value-icon">💎</div>
               <h3 className="value-title">{t('about.value_experience_title')}</h3>
-              <p className="value-text">
-                {t('about.value_experience_text')}
-              </p>
+              <p className="value-text">{t('about.value_experience_text')}</p>
             </div>
 
             <div className="value-card">
               <div className="value-icon">🤝</div>
               <h3 className="value-title">{t('about.value_connectivity_title')}</h3>
-              <p className="value-text">
-                {t('about.value_connectivity_text')}
-              </p>
+              <p className="value-text">{t('about.value_connectivity_text')}</p>
             </div>
           </div>
         </section>
@@ -58,15 +48,11 @@ const AboutPage: React.FC = () => {
             <div className="audience-blocks">
               <div className="audience-block">
                 <h3>{t('about.for_individuals_title')}</h3>
-                <p>
-                  {t('about.for_individuals_text')}
-                </p>
+                <p>{t('about.for_individuals_text')}</p>
               </div>
               <div className="audience-block">
                 <h3>{t('about.for_organizers_title')}</h3>
-                <p>
-                  {t('about.for_organizers_text')}
-                </p>
+                <p>{t('about.for_organizers_text')}</p>
               </div>
             </div>
           </div>
@@ -88,4 +74,3 @@ const AboutPage: React.FC = () => {
 };
 
 export default AboutPage;
-

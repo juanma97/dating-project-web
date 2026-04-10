@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Event } from '../../api/model/event';
 import { trackClickPremiumEvent } from '../../utils/analytics';
+import Button from '../ui/Button/component';
+import ShareButton from '../ui/ShareButton/component';
 import './component.css';
 
 interface PremiumEventCardProps {
@@ -26,56 +28,69 @@ const PremiumEventCard: React.FC<PremiumEventCardProps> = ({ event }) => {
   };
 
   return (
-    <div className="event-card premium-event-card" onClick={handleClick}>
-      {event.image && (
-        <div className="event-image-banner">
-          <img src={event.image} alt={event.title} loading="lazy" />
-          <span className="nuevo-badge">{t('premium_event_details.badge_new')}</span>
-        </div>
-      )}
-      {!event.image && <div className="nuevo-badge nuevo-badge--no-image">{t('premium_event_details.badge_new')}</div>}
+    <>
+      <div className="event-card premium-event-card" onClick={handleClick}>
+        {event.image && (
+          <div className="event-image-banner">
+            <img src={event.image} alt={event.title} loading="lazy" />
+            <span className="nuevo-badge">{t('premium_event_details.badge_new')}</span>
+          </div>
+        )}
+        {!event.image && (
+          <div className="nuevo-badge nuevo-badge--no-image">
+            {t('premium_event_details.badge_new')}
+          </div>
+        )}
 
-      <div className="organizado-tag">{t('premium_event_details.badge_premium')}</div>
+        <div className="organizado-tag">{t('premium_event_details.badge_premium')}</div>
 
-      <div className="event-content">
-        <h3 className="event-title">{event.title}</h3>
+        <div className="event-content">
+          <h3 className="event-title">{event.title}</h3>
 
-        <div className="event-meta-chips">
-          <span className="meta-chip">
-            📅 <strong>{event.date}</strong>
-            {event.time ? ` · ${event.time.substring(0, 5)}` : ''}
-          </span>
-
-          <span className="meta-chip">
-            📍 <strong>{event.city}</strong>
-            {event.place ? ` · ${event.place}` : ''}
-          </span>
-
-          {(event.min_age || event.max_age) && (
-            <span className="meta-chip age-chip">
-              {t('premium_event_details.age')} <strong>{event.min_age || 18}–{event.max_age || 99}</strong>
+          <div className="event-meta-chips">
+            <span className="meta-chip">
+              📅 <strong>{event.date}</strong>
+              {event.time ? ` · ${event.time.substring(0, 5)}` : ''}
             </span>
-          )}
 
-          {(event.girls_price !== null || event.boys_price !== null) && (
-            <span className="meta-chip price-chip">
-              💶{' '}
-              {event.girls_price !== null && `${t('premium_event_details.girls')}: €${event.girls_price}`}
-              {event.girls_price !== null && event.boys_price !== null && ' | '}
-              {event.boys_price !== null && `${t('premium_event_details.boys')}: €${event.boys_price}`}
+            <span className="meta-chip">
+              📍 <strong>{event.city}</strong>
+              {event.place ? ` · ${event.place}` : ''}
             </span>
-          )}
+
+            {(event.min_age || event.max_age) && (
+              <span className="meta-chip age-chip">
+                {t('premium_event_details.age')}{' '}
+                <strong>
+                  {event.min_age || 18}–{event.max_age || 99}
+                </strong>
+              </span>
+            )}
+
+            {(event.girls_price !== null || event.boys_price !== null) && (
+              <span className="meta-chip price-chip">
+                💶{' '}
+                {event.girls_price !== null &&
+                  `${t('premium_event_details.girls')}: €${event.girls_price}`}
+                {event.girls_price !== null && event.boys_price !== null && ' | '}
+                {event.boys_price !== null &&
+                  `${t('premium_event_details.boys')}: €${event.boys_price}`}
+              </span>
+            )}
+          </div>
+
+          <div className="scarcity-pill">{t('lead_capture.limited_spots')}</div>
+
+          <div className="card-actions">
+            <Button className="view-btn" onClick={handleClick}>
+              {t('premium_events.view_details')}
+            </Button>
+            <ShareButton title={event.title} eventId={event.id} isPremium={true} size="md" />
+          </div>
         </div>
-
-        <div className="scarcity-pill">{t('lead_capture.limited_spots')}</div>
-
-        <button className="view-btn" onClick={handleClick}>
-          {t('premium_events.view_details')}
-        </button>
       </div>
-    </div>
+    </>
   );
 };
 
 export default PremiumEventCard;
-

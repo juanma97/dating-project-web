@@ -12,9 +12,11 @@ declare global {
 
 export const initGA = () => {
   window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function () {
-    window.dataLayer.push(arguments);
-  };
+  window.gtag =
+    window.gtag ||
+    function () {
+      window.dataLayer.push(arguments);
+    };
 
   const consent = localStorage.getItem('cookieConsent');
   // Opt-out approach: assumes granted UNLESS explicitly denied

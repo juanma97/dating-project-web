@@ -106,19 +106,34 @@
   background-color: rgba(46, 125, 50, 0.05);
 }
 
-.view-btn {
+.card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
   margin-top: auto;
+}
+
+.view-btn {
+  flex: 1;
   text-align: center;
   text-decoration: none;
   background-color: var(--primary-color);
   color: var(--white);
   padding: 0.75rem;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: background-color var(--transition-speed);
+  transition: all var(--transition-speed);
+  border: none;
+  cursor: pointer;
 }
 
 .view-btn:hover {
   background-color: #e63946;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2);
+}
+
+.share-button {
+  flex: 1;
 }

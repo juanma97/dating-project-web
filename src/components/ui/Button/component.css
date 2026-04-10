@@ -1,0 +1,18 @@
+.zapyens-button {
+  border: none;
+  font-family: inherit;
+  outline: none;
+}
+
+.zapyens-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.zapyens-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.zapyens-button.ghost:hover:not(:disabled) {
+  background-color: rgba(58, 125, 107, 0.05);
+}

@@ -38,12 +38,8 @@ const PremiumEventsPage: React.FC = () => {
         <div className="premium-hero-inner">
           <span className="premium-hero-badge">{t('premium_events.hero_badge')}</span>
           <h1 className="premium-hero-title">{t('premium_events.hero_title')}</h1>
-          <p className="premium-hero-subtitle">
-            {t('premium_events.hero_subtitle')}
-          </p>
-          <div className="premium-scarcity-banner">
-            {t('premium_events.scarcity_banner')}
-          </div>
+          <p className="premium-hero-subtitle">{t('premium_events.hero_subtitle')}</p>
+          <div className="premium-scarcity-banner">{t('premium_events.scarcity_banner')}</div>
         </div>
       </div>
 

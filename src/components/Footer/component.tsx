@@ -9,19 +9,19 @@ const Footer: React.FC = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-left">
-          <span className="footer-logo">Speed Dating Connect</span>
+          <span className="footer-logo">Zapyens</span>
           <p className="footer-tagline">{t('footer.tagline')}</p>
         </div>
         <div className="footer-right">
-            <div className="social-links">
-              <a href="#" className="social-link">
-                Instagram
-              </a>
-              <a href="#" className="social-link">
-                Twitter
-              </a>
-            </div>
-          <p className="copyright">&copy; 2026 Speed Dating Connect. {t('footer.rights')}</p>
+          <div className="social-links">
+            <a href="#" className="social-link">
+              Instagram
+            </a>
+            <a href="#" className="social-link">
+              Twitter
+            </a>
+          </div>
+          <p className="copyright">&copy; 2026 Zapyens. {t('footer.rights')}</p>
         </div>
       </div>
     </footer>
@@ -29,4 +29,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-

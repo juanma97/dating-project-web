@@ -144,4 +144,3 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
 };
 
 export default Seeker;
-

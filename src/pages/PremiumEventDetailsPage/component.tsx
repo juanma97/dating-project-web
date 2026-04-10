@@ -8,6 +8,8 @@ import {
   trackPremiumEventCtaClick,
   trackPageView,
 } from '../../utils/analytics';
+import ShareButton from '../../components/ui/ShareButton/component';
+import Toast from '../../components/ui/Toast/component';
 import { useTranslation } from 'react-i18next';
 import '../EventDetailsPage/component.css'; // base layout styles
 import './component.css';
@@ -20,6 +22,10 @@ const PremiumEventDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: 'info' | 'success' | 'error';
+  } | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,12 +80,10 @@ const PremiumEventDetailsPage: React.FC = () => {
     );
   }
 
-  // Google Maps
   const addressParts = [event.street_name, event.street_number, event.city].filter(Boolean);
   const addressQuery = encodeURIComponent(addressParts.join(', '));
   const mapsEmbedUrl = `https://maps.google.com/maps?q=${addressQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
-  // WhatsApp logic
   const WHATSAPP_NUMBER = import.meta.env.VITE_PHONE_NUMBER_CONTACT;
   const WHATSAPP_MESSAGE = encodeURIComponent(t('premium_event_details.whatsapp_message'));
   const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
@@ -87,7 +91,6 @@ const PremiumEventDetailsPage: React.FC = () => {
   return (
     <>
       <div className="event-details-page">
-        {/* Back nav */}
         <div className="event-header-section">
           <button className="back-nav-btn" onClick={() => navigate(-1)}>
             {t('premium_event_details.back_nav')}
@@ -95,21 +98,22 @@ const PremiumEventDetailsPage: React.FC = () => {
         </div>
 
         <div className="event-details-content">
-          {/* Premium badges */}
           <div className="pd-badges-row">
-            <span className="pd-badge pd-badge--premium">{t('premium_event_details.badge_premium')}</span>
+            <span className="pd-badge pd-badge--premium">
+              {t('premium_event_details.badge_premium')}
+            </span>
             <span className="pd-badge pd-badge--nuevo">{t('premium_event_details.badge_new')}</span>
           </div>
 
           <h1 className="event-details-title">{event.title}</h1>
-          {event.organizer && <p className="event-organizer">{t('premium_event_details.by_organizer', { organizer: event.organizer })}</p>}
+          {event.organizer && (
+            <p className="event-organizer">
+              {t('premium_event_details.by_organizer', { organizer: event.organizer })}
+            </p>
+          )}
 
-          {/* Scarcity */}
-          <div className="pd-scarcity-bar">
-            {t('premium_event_details.scarcity')}
-          </div>
+          <div className="pd-scarcity-bar">{t('premium_event_details.scarcity')}</div>
 
-          {/* Meta chips */}
           <div className="event-meta-chips">
             <span className="meta-chip">
               📅 <strong>{event.date}</strong>
@@ -123,21 +127,25 @@ const PremiumEventDetailsPage: React.FC = () => {
 
             {(event.min_age || event.max_age) && (
               <span className="meta-chip age-highlight-chip">
-                {t('premium_event_details.age')} <strong>{event.min_age || 18}–{event.max_age || 99} {t('premium_event_details.years')}</strong>
+                {t('premium_event_details.age')}{' '}
+                <strong>
+                  {event.min_age || 18}–{event.max_age || 99} {t('premium_event_details.years')}
+                </strong>
               </span>
             )}
 
             {(event.girls_price !== null || event.boys_price !== null) && (
               <span className="meta-chip price-highlight-chip">
                 💶{' '}
-                {event.girls_price !== null && `${t('premium_event_details.girls')}: €${event.girls_price}`}
+                {event.girls_price !== null &&
+                  `${t('premium_event_details.girls')}: €${event.girls_price}`}
                 {event.girls_price !== null && event.boys_price !== null && ' | '}
-                {event.boys_price !== null && `${t('premium_event_details.boys')}: €${event.boys_price}`}
+                {event.boys_price !== null &&
+                  `${t('premium_event_details.boys')}: €${event.boys_price}`}
               </span>
             )}
           </div>
 
-          {/* Highlighted price block */}
           {(event.girls_price !== null || event.boys_price !== null) && (
             <div className="pd-price-block">
               {event.girls_price !== null && (
@@ -155,7 +163,6 @@ const PremiumEventDetailsPage: React.FC = () => {
             </div>
           )}
 
-          {/* Description */}
           {event.description && (
             <div className="event-description-box">
               <h3>{t('premium_event_details.about_event')}</h3>
@@ -163,7 +170,6 @@ const PremiumEventDetailsPage: React.FC = () => {
             </div>
           )}
 
-          {/* Map */}
           {addressParts.length > 0 && (
             <div className="event-map-box">
               <h3>{t('premium_event_details.location')}</h3>
@@ -191,11 +197,16 @@ const PremiumEventDetailsPage: React.FC = () => {
           )}
         </div>
 
-        {/* Spacer for sticky bar */}
         <div className="bottom-bar-spacer" />
 
-        {/* Sticky CTA bar */}
         <div className="event-sticky-bottom-bar">
+          <ShareButton
+            title={event.title}
+            eventId={event.id}
+            isPremium={true}
+            variant="outline"
+            className="share-sticky-btn"
+          />
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -210,13 +221,11 @@ const PremiumEventDetailsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Lead capture modal */}
-      {showModal && event && (
-        <LeadCaptureModal event={event} onClose={() => setShowModal(false)} />
-      )}
+      {showModal && event && <LeadCaptureModal event={event} onClose={() => setShowModal(false)} />}
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </>
   );
 };
 
 export default PremiumEventDetailsPage;
-

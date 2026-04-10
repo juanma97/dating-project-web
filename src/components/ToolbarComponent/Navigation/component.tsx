@@ -17,7 +17,9 @@ const Navigation: React.FC = () => {
   // Prevent body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [open]);
 
   return (
@@ -26,12 +28,19 @@ const Navigation: React.FC = () => {
       <nav className="navigation navigation--desktop">
         <ul className="nav-list">
           <li className="nav-item">
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
               {t('nav.home')}
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/about" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            <NavLink
+              to="/about"
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
               {t('nav.about')}
             </NavLink>
           </li>
@@ -71,10 +80,7 @@ const Navigation: React.FC = () => {
           />
 
           {/* Drawer */}
-          <nav
-            className={`navigation--mobile${open ? ' is-open' : ''}`}
-            aria-hidden={!open}
-          >
+          <nav className={`navigation--mobile${open ? ' is-open' : ''}`} aria-hidden={!open}>
             <ul className="nav-list--mobile">
               {/* Priority 1 — Eventos Premium */}
               <li>
@@ -120,4 +126,3 @@ const Navigation: React.FC = () => {
 };
 
 export default Navigation;
-

@@ -82,30 +82,34 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick} role="dialog" aria-modal="true">
       <div className="modal-card">
-        <button className="modal-close-btn" onClick={onClose} aria-label={t('lead_capture.close')}>✕</button>
+        <button className="modal-close-btn" onClick={onClose} aria-label={t('lead_capture.close')}>
+          ✕
+        </button>
 
         {success ? (
           <div className="modal-success">
             <div className="success-emoji">🎉</div>
             <h2>{t('lead_capture.all_set')}</h2>
             <p>{t('lead_capture.success_msg')}</p>
-            <button className="btn-cta-primary" onClick={onClose}>{t('lead_capture.close')}</button>
+            <button className="btn-cta-primary" onClick={onClose}>
+              {t('lead_capture.close')}
+            </button>
           </div>
         ) : (
           <>
             <div className="modal-header">
               <span className="modal-badge">{t('lead_capture.limited_spots')}</span>
               <h2 className="modal-title">{t('lead_capture.reserve_spot')}</h2>
-              <p className="modal-subtitle">
-                {t('lead_capture.validation_msg')}
-              </p>
+              <p className="modal-subtitle">{t('lead_capture.validation_msg')}</p>
             </div>
 
             <div className="modal-event-summary">
               <span>📅 {event.date}</span>
               {event.city && <span>📍 {event.city}</span>}
               {(event.min_age || event.max_age) && (
-                <span>👥 {event.min_age || 18}–{event.max_age || 99} {t('premium_event_details.years')}</span>
+                <span>
+                  👥 {event.min_age || 18}–{event.max_age || 99} {t('premium_event_details.years')}
+                </span>
               )}
             </div>
 
@@ -148,7 +152,9 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
                   >
                     <option value="">{t('common.select')}</option>
                     {GENDER_OPTIONS.map((g) => (
-                      <option key={g.value} value={g.value}>{g.label}</option>
+                      <option key={g.value} value={g.value}>
+                        {g.label}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -165,7 +171,9 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
                   onChange={(e) => setPreferredAgeRange(e.target.value)}
                 >
                   {AGE_RANGE_OPTIONS.map((r) => (
-                    <option key={r.value} value={r.value}>{r.label}</option>
+                    <option key={r.value} value={r.value}>
+                      {r.label}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -180,9 +188,7 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
                 {loading ? t('lead_capture.sending') : t('lead_capture.signup_btn')}
               </button>
 
-              <p className="form-legal">
-                {t('lead_capture.legal_info')}
-              </p>
+              <p className="form-legal">{t('lead_capture.legal_info')}</p>
             </form>
           </>
         )}
@@ -192,4 +198,3 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ event, onClose }) =
 };
 
 export default LeadCaptureModal;
-

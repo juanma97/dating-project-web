@@ -14,4 +14,3 @@ describe('Navigation Component', () => {
     expect(screen.getAllByText(/Premium Events/i).length).toBeGreaterThan(0);
   });
 });
-
