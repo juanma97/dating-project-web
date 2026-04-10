@@ -1,23 +1,20 @@
 .premium-event-card {
   cursor: pointer;
   position: relative;
-  background-color: var(--white);
-  border-radius: 12px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  transition:
-    transform var(--transition-speed),
-    box-shadow var(--transition-speed);
+  box-shadow: var(--shadow-soft);
+  transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  /* Premium gold left accent */
-  border-left: 4px solid #f5a623;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
 }
 
 .premium-event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(245, 166, 35, 0.2);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-medium);
 }
 
 .premium-event-card:hover .event-image-banner img {
@@ -46,14 +43,14 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: linear-gradient(135deg, #ff6b35, #f5a623);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-surface);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--typography-weight-bold);
   padding: 0.25rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   letter-spacing: 0.4px;
-  box-shadow: 0 2px 6px rgba(255, 107, 53, 0.4);
+  box-shadow: var(--shadow-soft);
   white-space: nowrap;
 }
 
@@ -67,11 +64,11 @@
 
 /* "Organizado por nosotros" tag */
 .organizado-tag {
-  background: linear-gradient(90deg, #fff8ec, #fff3d6);
-  border-bottom: 1px solid rgba(245, 166, 35, 0.25);
-  color: #b07a00;
+  background: linear-gradient(90deg, var(--color-background), var(--color-primary-light));
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: var(--typography-weight-bold);
   padding: 0.45rem 1rem;
   letter-spacing: 0.3px;
   display: flex;
@@ -83,12 +80,12 @@
 .scarcity-pill {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 107, 53, 0.08);
-  color: #c84b00;
-  border: 1px solid rgba(255, 107, 53, 0.25);
-  border-radius: 999px;
+  background: rgba(255, 107, 92, 0.08);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-full);
   font-size: 0.76rem;
-  font-weight: 600;
+  font-weight: var(--typography-weight-bold);
   padding: 0.25rem 0.75rem;
   margin-bottom: 1rem;
   width: fit-content;

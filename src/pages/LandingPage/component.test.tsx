@@ -86,10 +86,21 @@ describe('LandingPage', () => {
     // Check loading state
     expect(screen.getByText(/Loading events.../i)).toBeInTheDocument();
 
-    // Check final state
     await waitFor(() => {
       expect(screen.getByText(/Gourmet Speed Dating/i)).toBeInTheDocument();
       expect(screen.getByText(/LGBTQ\+ Mixer/i)).toBeInTheDocument();
+    });
+  });
+
+  test('renders results found badge with correct count', async () => {
+    render(
+      <BrowserRouter>
+        <LandingPage />
+      </BrowserRouter>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/2 events found/i)).toBeInTheDocument();
     });
   });
 });

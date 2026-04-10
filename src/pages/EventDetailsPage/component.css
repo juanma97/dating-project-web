@@ -4,7 +4,7 @@
   padding: 1rem 1rem 6rem;
   min-height: 100vh;
   position: relative;
-  background-color: var(--bg-color);
+  background-color: var(--color-background);
 }
 
 .event-header-section {
@@ -14,8 +14,8 @@
 .back-nav-btn {
   background: none;
   border: none;
-  color: var(--primary-color);
-  font-weight: 600;
+  color: var(--color-primary);
+  font-weight: var(--typography-weight-bold);
   font-size: 1rem;
   cursor: pointer;
   display: flex;
@@ -29,11 +29,11 @@
 }
 
 .event-details-content {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  animation: fadeIn 0.4s ease;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-soft);
+  animation: fadeIn var(--transition-normal);
 }
 
 @keyframes fadeIn {
@@ -49,9 +49,9 @@
 }
 
 .event-details-title {
-  font-size: 2.2rem;
+  font-size: var(--typography-size-xl);
   margin-bottom: 0.25rem;
-  color: var(--text-color);
+  color: var(--color-text-primary);
   line-height: 1.2;
 }
 
@@ -72,29 +72,29 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  background-color: var(--bg-color);
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  border-radius: 999px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
   padding: 0.35rem 0.85rem;
   font-size: 0.88rem;
-  color: var(--text-color);
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
 .event-description-box {
-  background: var(--bg-color);
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
+  background: var(--color-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xl);
 }
 
 .event-description-box h3 {
   margin-bottom: 1rem;
-  color: var(--text-color);
+  color: var(--color-text-primary);
 }
 
 .event-description-box p {
-  color: var(--text-color);
+  color: var(--color-text-primary);
   line-height: 1.6;
   white-space: pre-wrap;
 }
@@ -115,10 +115,10 @@
 
 .map-wrapper-link {
   display: block;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-soft);
+  transition: all var(--transition-fast);
 }
 
 .map-wrapper-link:hover {
@@ -199,9 +199,9 @@
 }
 
 .event-sticky-bottom-bar .btn-secondary {
-  background-color: rgba(255, 77, 77, 0.08);
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
 }
 
 .event-sticky-bottom-bar .btn-secondary:hover {
@@ -209,9 +209,9 @@
 }
 
 .event-sticky-bottom-bar .buy-tickets-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: 2px solid var(--primary-color);
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: 2px solid var(--color-primary);
 }
 
 .event-sticky-bottom-bar .buy-tickets-btn:hover {

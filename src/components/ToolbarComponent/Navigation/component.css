@@ -14,30 +14,30 @@
 
 .nav-link {
   text-decoration: none;
-  color: var(--secondary-color);
-  font-weight: 500;
+  color: var(--color-text-secondary);
+  font-weight: var(--typography-weight-medium);
   font-size: 0.95rem;
-  transition: color var(--transition-speed);
+  transition: color var(--transition-normal);
 }
 
 .nav-link:hover {
-  color: var(--primary-color);
+  color: var(--color-primary);
 }
 
 .nav-link.active {
-  color: var(--primary-color);
-  font-weight: 600;
+  color: var(--color-primary);
+  font-weight: var(--typography-weight-bold);
 }
 
 /* ── Premium pill (desktop) ──────────────────────────────────── */
 .nav-link--premium {
-  background: linear-gradient(135deg, #ff6b35, #f5a623);
-  color: #fff !important;
-  font-weight: 700;
+  background: var(--color-accent);
+  color: var(--color-surface) !important;
+  font-weight: var(--typography-weight-bold);
   padding: 0.3rem 0.85rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.88rem;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35);
+  box-shadow: var(--shadow-soft);
   animation: premiumPulse 2.5s ease-in-out infinite;
   white-space: nowrap;
   text-decoration: none;
@@ -53,8 +53,8 @@
 }
 
 @keyframes premiumPulse {
-  0%, 100% { box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35); }
-  50%       { box-shadow: 0 2px 16px rgba(255, 107, 53, 0.65); }
+  0%, 100% { box-shadow: var(--shadow-soft); }
+  50%       { box-shadow: var(--shadow-medium); }
 }
 
 /* ── Hamburger button ────────────────────────────────────────── */
@@ -86,7 +86,7 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: var(--secondary-color);
+  background: var(--color-text-primary);
   border-radius: 2px;
   transition: transform 0.28s ease, opacity 0.2s ease;
   transform-origin: center;
@@ -132,10 +132,10 @@
   bottom: 0;
   width: 75vw;
   max-width: 300px;
-  background: #ffffff;
+  background: var(--color-surface);
   z-index: 1100;
   padding: 5rem 1.5rem 2rem;
-  box-shadow: -6px 0 32px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--shadow-medium);
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
@@ -189,13 +189,13 @@
   gap: 0.5rem;
   padding: 0.9rem 1rem;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #ff6b35, #f5a623);
-  color: #fff !important;
+  background: var(--color-accent);
+  color: var(--color-surface) !important;
   font-size: 1.05rem;
-  font-weight: 700;
-  border-radius: 12px;
+  font-weight: var(--typography-weight-bold);
+  border-radius: var(--radius-md);
   text-decoration: none;
-  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.35);
+  box-shadow: var(--shadow-soft);
   animation: premiumPulse 2.5s ease-in-out infinite;
 }
 

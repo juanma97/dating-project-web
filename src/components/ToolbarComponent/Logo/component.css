@@ -6,7 +6,7 @@
 
 .logo-text {
   font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--primary-color);
-  letter-spacing: -0.5px;
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-primary);
+  letter-spacing: -1px;
 }

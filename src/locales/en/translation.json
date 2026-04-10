@@ -47,7 +47,10 @@
     "upcoming_events": "Upcoming Events",
     "loading_events": "Loading events...",
     "no_events": "No events found. Try adjusting your filters.",
-    "hero_title": "Back to nature 🌱"
+    "hero_title": "Back to nature 🌱",
+    "results_found_one": "1 event found",
+    "results_found": "{{count}} events found",
+    "clear_filters": "Clear filters"
   },
   "event_details": {
     "not_found": "Event not found",
@@ -90,7 +93,8 @@
     "gay": "Gay",
     "lesbian": "Lesbian",
     "bisexual": "Bisexual",
-    "non_binary": "Non-Binary"
+    "non_binary": "Non-Binary",
+    "show_results": "Show {{count}} events"
   },
   "lead_capture": {
     "all_set": "All set!",

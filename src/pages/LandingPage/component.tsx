@@ -15,6 +15,7 @@ const LandingPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeFilters, setActiveFilters] = useState<SeekerFilters | null>(null);
+  const [isFiltering, setIsFiltering] = useState(false);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -33,55 +34,59 @@ const LandingPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!activeFilters) {
-      setFilteredEvents(allEvents);
-      return;
-    }
+    setIsFiltering(true);
 
-    const result = allEvents.filter((event) => {
-      // Age filtering - Only show events where event's age range is contained within seeker's range
-      const effectiveMin = event.min_age ?? 18;
-      const effectiveMax = event.max_age ?? 99;
-      const matchesAge =
-        effectiveMin >= activeFilters.ageMin && effectiveMax <= activeFilters.ageMax;
+    const timer = setTimeout(() => {
+      const result = allEvents.filter((event) => {
+        // Age filtering
+        const effectiveMin = event.min_age ?? 18;
+        const effectiveMax = event.max_age ?? 99;
+        const matchesAge =
+          !activeFilters ||
+          (effectiveMin >= activeFilters.ageMin && effectiveMax <= activeFilters.ageMax);
 
-      // Gender / Sexual Orientation filtering
-      // If none selected, allow all. If selected, match event.sexual_orientation if it exists.
-      const genderMatch =
-        !activeFilters.gender ||
-        !event.sexual_orientation ||
-        event.sexual_orientation.toLowerCase() === activeFilters.gender.toLowerCase() ||
-        event.sexual_orientation.toLowerCase() === 'all';
+        if (!activeFilters) return true;
 
-      // City filtering
-      const cityMatch =
-        !activeFilters.city ||
-        (event.city && event.city.toLowerCase().includes(activeFilters.city.toLowerCase()));
+        // Gender / Sexual Orientation filtering
+        const genderMatch =
+          !activeFilters.gender ||
+          !event.sexual_orientation ||
+          event.sexual_orientation.toLowerCase() === activeFilters.gender.toLowerCase() ||
+          event.sexual_orientation.toLowerCase() === 'all';
 
-      // Date filtering
-      const eventDateStr = event.date; // format: "YYYY-MM-DD"
-      let dateMatch = true;
-      if (eventDateStr) {
-        const eventDate = new Date(eventDateStr);
-        eventDate.setHours(0, 0, 0, 0);
+        // City filtering
+        const cityMatch =
+          !activeFilters.city ||
+          (event.city && event.city.toLowerCase().includes(activeFilters.city.toLowerCase()));
 
-        if (activeFilters.dateStart && activeFilters.dateEnd) {
-          const start = new Date(activeFilters.dateStart);
-          start.setHours(0, 0, 0, 0);
-          const end = new Date(activeFilters.dateEnd);
-          end.setHours(0, 0, 0, 0);
-          dateMatch = eventDate >= start && eventDate <= end;
-        } else if (activeFilters.dateStart) {
-          const start = new Date(activeFilters.dateStart);
-          start.setHours(0, 0, 0, 0);
-          dateMatch = eventDate >= start;
+        // Date filtering
+        const eventDateStr = event.date; // format: "YYYY-MM-DD"
+        let dateMatch = true;
+        if (eventDateStr) {
+          const eventDate = new Date(eventDateStr);
+          eventDate.setHours(0, 0, 0, 0);
+
+          if (activeFilters.dateStart && activeFilters.dateEnd) {
+            const start = new Date(activeFilters.dateStart);
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(activeFilters.dateEnd);
+            end.setHours(0, 0, 0, 0);
+            dateMatch = eventDate >= start && eventDate <= end;
+          } else if (activeFilters.dateStart) {
+            const start = new Date(activeFilters.dateStart);
+            start.setHours(0, 0, 0, 0);
+            dateMatch = eventDate >= start;
+          }
         }
-      }
 
-      return matchesAge && genderMatch && cityMatch && dateMatch;
-    });
+        return matchesAge && genderMatch && cityMatch && dateMatch;
+      });
 
-    setFilteredEvents(result);
+      setFilteredEvents(result);
+      setIsFiltering(false);
+    }, 300); // Small delay for visual feedback
+
+    return () => clearTimeout(timer);
   }, [allEvents, activeFilters]);
 
   return (
@@ -89,12 +94,29 @@ const LandingPage: React.FC = () => {
       <Header />
 
       <div className="container">
-        <Seeker onChange={setActiveFilters} />
-        <section className="events-section">
-          <h2 className="section-title">{t('landing.upcoming_events')}</h2>
+        <Seeker
+          onChange={setActiveFilters}
+          resultsCount={filteredEvents.length}
+          isFiltering={isFiltering}
+        />
+        <section className="events-section" id="events">
+          <div className="section-header">
+            <h2 className="section-title">{t('landing.upcoming_events')}</h2>
+            {!loading && !error && (
+              <span className={`results-badge ${isFiltering ? 'is-filtering' : ''}`}>
+                {filteredEvents.length === 1
+                  ? t('landing.results_found_one')
+                  : t('landing.results_found', { count: filteredEvents.length })}
+              </span>
+            )}
+          </div>
           {loading && <p className="loading-message">{t('landing.loading_events')}</p>}
           {error && <p className="error-message">{error}</p>}
-          {!loading && !error && <EventsList events={filteredEvents} />}
+          {!loading && !error && (
+            <div className={`events-list-container ${isFiltering ? 'is-filtering' : ''}`}>
+              <EventsList events={filteredEvents} />
+            </div>
+          )}
         </section>
       </div>
 

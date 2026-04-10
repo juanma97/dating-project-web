@@ -1,6 +1,6 @@
 .footer {
-  background-color: var(--secondary-color);
-  color: var(--white);
+  background-color: var(--color-text-primary);
+  color: var(--color-surface);
   padding: 4rem 2rem 2rem;
   margin-top: 4rem;
 }
@@ -41,11 +41,11 @@
 }
 
 .social-link {
-  color: var(--white);
+  color: var(--color-surface);
   text-decoration: none;
   font-size: 0.9rem;
   opacity: 0.8;
-  transition: opacity var(--transition-speed);
+  transition: opacity var(--transition-normal);
 }
 
 .social-link:hover {

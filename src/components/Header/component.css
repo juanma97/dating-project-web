@@ -8,11 +8,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80px;
-  padding: 3rem 1.5rem;
-  background: linear-gradient(-45deg, #ff4d4d, #ff6b6b, #ee5a6f, #c44569, #ff4d4d);
-  background-size: 400% 400%;
-  animation: gradientShift 8s ease infinite;
+  min-height: 120px;
+  padding: var(--spacing-xl) 1.5rem;
+  background: linear-gradient(
+    -45deg,
+    var(--color-background),
+    var(--color-primary-light),
+    var(--color-secondary-blue),
+    var(--color-background)
+  );
+  background-size: 300% 300%;
+  animation: gradientShift 15s ease infinite;
 }
 
 @keyframes gradientShift {
@@ -39,9 +45,10 @@
 
 .floating-shape {
   position: absolute;
-  opacity: 0.35;
+  opacity: 0.25;
   font-size: 2rem;
-  animation: floatUp 10s ease-in-out infinite;
+  animation: floatUp 15s ease-in-out infinite;
+  filter: saturate(0.8);
 }
 
 .shape-1 {
@@ -94,20 +101,20 @@
 
 @keyframes floatUp {
   0% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0) rotate(0deg) scale(0.8);
     opacity: 0;
   }
 
   10% {
-    opacity: 0.35;
+    opacity: 0.25;
   }
 
   90% {
-    opacity: 0.35;
+    opacity: 0.25;
   }
 
   100% {
-    transform: translateY(-500px) rotate(360deg);
+    transform: translateY(-600px) rotate(180deg) scale(1.2);
     opacity: 0;
   }
 }
@@ -121,12 +128,12 @@
 
 .hero-title {
   font-size: 3.5rem;
-  font-weight: 200;
-  color: var(--white);
-  margin: 0 0 1rem;
-  letter-spacing: -1.5px;
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -2px;
   line-height: 1.1;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  text-shadow: none;
 }
 
 .hero-subtitle {

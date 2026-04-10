@@ -8,16 +8,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     padding: 8px 12px;
-    background-color: var(--white);
+    background-color: var(--color-surface);
     cursor: pointer;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .date-input-wrapper:hover {
-    border-color: var(--primary-color);
+    border-color: var(--color-primary);
 }
 
 .date-input {
@@ -47,10 +47,10 @@
     left: 0;
     width: 100%;
     min-width: 280px;
-    background-color: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border: 1px solid #eaeaea;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--color-border);
     padding: 16px;
     z-index: 100;
 }
@@ -64,7 +64,7 @@
 
 .calendar-month-year {
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--color-text-primary);
     text-transform: capitalize;
 }
 
@@ -78,14 +78,14 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    color: var(--secondary-color);
+    color: var(--color-text-secondary);
     font-weight: bold;
-    transition: background-color 0.2s;
+    transition: all var(--transition-fast);
 }
 
 .calendar-nav:hover {
-    background-color: #f3f4f6;
-    color: var(--primary-color);
+    background-color: var(--color-background);
+    color: var(--color-primary);
 }
 
 .calendar-weekdays {
@@ -112,14 +112,14 @@
     background: none;
     border: none;
     font-size: 0.85rem;
-    color: var(--text-color);
+    color: var(--color-text-primary);
     cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
 }
 
 .calendar-day:hover:not(.empty) {
-    background-color: #f3f4f6;
+    background-color: var(--color-background);
 }
 
 .calendar-day.empty {
@@ -128,22 +128,19 @@
 
 .calendar-day.today {
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--color-primary);
 }
 
 .calendar-day.selected {
-    background-color: var(--primary-color);
-    color: var(--white);
+    background-color: var(--color-primary);
+    color: var(--color-surface);
     font-weight: bold;
 }
 
 .calendar-day.in-range,
 .calendar-day.in-hover-range {
-    background-color: rgba(var(--primary-color-rgb), 0.1);
-    /* Fallback in case var isn't defined */
-    background-color: #fce7f3;
-    /* Assuming a pinkish primary color based on finding */
-    color: var(--primary-color);
+    background-color: rgba(58, 125, 107, 0.1);
+    color: var(--color-primary);
     border-radius: 0;
 }
 

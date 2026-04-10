@@ -6,8 +6,16 @@
 
 /* Hero */
 .premium-hero {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-  padding: 3.5rem 1.5rem 2.5rem;
+  background: linear-gradient(
+    -45deg,
+    var(--color-text-primary),
+    #2a4d44,
+    #1F3D36,
+    var(--color-text-primary)
+  );
+  background-size: 300% 300%;
+  animation: gradientShift 15s ease infinite;
+  padding: 4rem 1.5rem 3rem;
   text-align: center;
 }
 
@@ -18,22 +26,23 @@
 
 .premium-hero-badge {
   display: inline-block;
-  background: linear-gradient(135deg, #ff6b35, #f5a623);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-surface);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--typography-weight-bold);
   padding: 0.25rem 0.8rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   margin-bottom: 1rem;
   letter-spacing: 0.5px;
 }
 
 .premium-hero-title {
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: #fff;
+  font-size: 3rem;
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-surface);
   margin: 0 0 0.75rem;
   line-height: 1.15;
+  letter-spacing: -1.5px;
 }
 
 .premium-hero-subtitle {
@@ -47,13 +56,13 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(245, 166, 35, 0.15);
-  border: 1px solid rgba(245, 166, 35, 0.4);
-  color: #f5c842;
+  background: rgba(255, 107, 92, 0.1);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--typography-weight-bold);
   padding: 0.5rem 1.2rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
 }
 
 /* Container (reuse landing page pattern) */

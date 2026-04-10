@@ -17,9 +17,11 @@ const CITIES = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga
 
 interface SeekerProps {
   onChange?: (filters: SeekerFilters) => void;
+  resultsCount?: number;
+  isFiltering?: boolean;
 }
 
-const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
+const Seeker: React.FC<SeekerProps> = ({ onChange, resultsCount = 0, isFiltering = false }) => {
   const { t } = useTranslation();
 
   const GENDERS = [
@@ -88,7 +90,7 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
         </div>
 
         <div className="filter-group date-range-group">
-          <label>{t('seeker.dates')}</label>
+          <label className={isFiltering ? 'is-filtering' : ''}>{t('seeker.dates')}</label>
           <DateRangeSelector
             initialStartDate={filters.dateStart}
             initialEndDate={filters.dateEnd}
@@ -97,7 +99,9 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
         </div>
 
         <div className="filter-group">
-          <label htmlFor="gender">{t('seeker.gender')}</label>
+          <label htmlFor="gender" className={isFiltering ? 'is-filtering' : ''}>
+            {t('seeker.gender')}
+          </label>
           <div className="custom-select-wrapper">
             <select
               name="gender"
@@ -117,7 +121,9 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
         </div>
 
         <div className="filter-group city-autocomplete">
-          <label htmlFor="city">{t('seeker.city')}</label>
+          <label htmlFor="city" className={isFiltering ? 'is-filtering' : ''}>
+            {t('seeker.city')}
+          </label>
           <input
             type="text"
             name="city"
@@ -137,6 +143,24 @@ const Seeker: React.FC<SeekerProps> = ({ onChange }) => {
               ))}
             </ul>
           )}
+        </div>
+      </div>
+
+      {/* Mobile Sticky Results Bar */}
+      <div className={`mobile-results-bar ${resultsCount > 0 ? 'visible' : ''}`}>
+        <div className="mobile-results-content">
+          <span className="mobile-results-count">
+            {isFiltering ? '...' : t('seeker.show_results', { count: resultsCount })}
+          </span>
+          <button
+            className="mobile-scroll-button"
+            onClick={() => {
+              const element = document.getElementById('events');
+              element?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            👇
+          </button>
         </div>
       </div>
     </section>

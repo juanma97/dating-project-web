@@ -47,7 +47,10 @@
     "upcoming_events": "Próximos Eventos",
     "loading_events": "Cargando eventos...",
     "no_events": "No se encontraron eventos. Intenta ajustar tus filtros.",
-    "hero_title": "De vuelta a lo natural 🌱"
+    "hero_title": "De vuelta a lo natural 🌱",
+    "results_found_one": "Se ha encontrado 1 evento",
+    "results_found": "Se han encontrado {{count}} eventos",
+    "clear_filters": "Limpiar filtros"
   },
   "event_details": {
     "not_found": "Evento no encontrado",
@@ -90,7 +93,8 @@
     "gay": "Gay",
     "lesbian": "Lesbiana",
     "bisexual": "Bisexual",
-    "non_binary": "No binario"
+    "non_binary": "No binario",
+    "show_results": "Ver {{count}} eventos"
   },
   "lead_capture": {
     "all_set": "¡Todo listo!",
