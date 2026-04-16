@@ -37,8 +37,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .large-badge {
@@ -123,7 +130,7 @@
 
 .map-wrapper-link:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .map-container {
@@ -150,8 +157,15 @@
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translate(-50%, -20px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 .toast-icon {
@@ -246,7 +260,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .back-btn {
@@ -263,9 +279,10 @@
   .event-details-content {
     padding: 1.5rem;
   }
-  
+
   .bottom-bar-spacer {
-    height: 140px; /* larger spacer because buttons stack on mobile */
+    height: 140px;
+    /* larger spacer because buttons stack on mobile */
   }
 
   .event-sticky-bottom-bar {
@@ -275,7 +292,7 @@
     gap: 0.5rem;
     align-items: stretch;
   }
-  
+
   .event-sticky-bottom-bar a.btn-secondary,
   .event-sticky-bottom-bar button.btn-primary,
   .event-sticky-bottom-bar .share-sticky-btn {

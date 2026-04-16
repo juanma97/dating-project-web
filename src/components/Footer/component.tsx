@@ -14,11 +14,11 @@ const Footer: React.FC = () => {
         </div>
         <div className="footer-right">
           <div className="social-links">
-            <a href="#" className="social-link">
+            <a href="https://www.instagram.com/zapyens.madrid/" className="social-link">
               Instagram
             </a>
             <a href="#" className="social-link">
-              Twitter
+              TikTok
             </a>
           </div>
           <p className="copyright">&copy; 2026 Zapyens. {t('footer.rights')}</p>

@@ -116,9 +116,37 @@
 
 .card-actions {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.card-urgency-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: rgba(230, 57, 70, 0.1);
+  color: #c0392b;
+  border: 1px solid rgba(230, 57, 70, 0.25);
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.card-actions-row {
+  display: flex;
   gap: 8px;
   align-items: stretch;
-  margin-top: auto;
+}
+
+.card-cta-microcopy {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  opacity: 0.75;
 }
 
 .view-btn {
@@ -134,6 +162,7 @@
   transition: all var(--transition-normal);
   border: none;
   cursor: pointer;
+  width: 100%;
 }
 
 .view-btn:hover {

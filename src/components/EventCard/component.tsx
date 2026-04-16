@@ -106,9 +106,11 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           </div>
 
           <div className="card-actions">
+            <div className="card-urgency-badge">{t('event_card.urgency_high_demand')}</div>
             <Button className="view-btn" onClick={handleEventClick}>
-              {t('premium_events.view_details')}
+              {t('event_card.view_details')}
             </Button>
+            <p className="card-cta-microcopy">{t('event_card.microcopy')}</p>
             <ShareButton title={event.title} eventId={event.id} isPremium={false} size="md" />
           </div>
         </div>

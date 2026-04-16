@@ -8,6 +8,13 @@ import { eventsApi } from '../../api/supabase/events';
 import { useTranslation } from 'react-i18next';
 import './component.css';
 
+const HOW_IT_WORKS_STEPS = [
+  { icon: 'how_it_works_step1_icon', title: 'how_it_works_step1_title', desc: 'how_it_works_step1_desc' },
+  { icon: 'how_it_works_step2_icon', title: 'how_it_works_step2_title', desc: 'how_it_works_step2_desc' },
+  { icon: 'how_it_works_step3_icon', title: 'how_it_works_step3_title', desc: 'how_it_works_step3_desc' },
+  { icon: 'how_it_works_step4_icon', title: 'how_it_works_step4_title', desc: 'how_it_works_step4_desc' },
+];
+
 const LandingPage: React.FC = () => {
   const { t } = useTranslation();
   const [allEvents, setAllEvents] = useState<Event[]>([]);
@@ -54,11 +61,6 @@ const LandingPage: React.FC = () => {
           event.sexual_orientation.toLowerCase() === activeFilters.gender.toLowerCase() ||
           event.sexual_orientation.toLowerCase() === 'all';
 
-        // City filtering
-        const cityMatch =
-          !activeFilters.city ||
-          (event.city && event.city.toLowerCase().includes(activeFilters.city.toLowerCase()));
-
         // Date filtering
         const eventDateStr = event.date; // format: "YYYY-MM-DD"
         let dateMatch = true;
@@ -79,7 +81,7 @@ const LandingPage: React.FC = () => {
           }
         }
 
-        return matchesAge && genderMatch && cityMatch && dateMatch;
+        return matchesAge && genderMatch && dateMatch;
       });
 
       setFilteredEvents(result);
@@ -92,6 +94,32 @@ const LandingPage: React.FC = () => {
   return (
     <div className="landing-page">
       <Header />
+
+      {/* Social Proof Strip */}
+      <div className="social-proof-strip">
+        <span className="social-proof-stat">{t('landing.social_proof_stat1')}</span>
+        <span className="social-proof-divider">·</span>
+        <span className="social-proof-stat">{t('landing.social_proof_stat2')}</span>
+        <span className="social-proof-divider">·</span>
+        <span className="social-proof-stat">{t('landing.social_proof_stat3')}</span>
+      </div>
+
+      {/* How It Works */}
+      <div className="container">
+        <section className="how-it-works-section">
+          <h2 className="how-it-works-title">{t('landing.how_it_works_title')}</h2>
+          <div className="how-it-works-steps">
+            {HOW_IT_WORKS_STEPS.map((step, i) => (
+              <div key={i} className="hiw-step">
+                <div className="hiw-step-icon">{t(`landing.${step.icon}`)}</div>
+                <div className="hiw-step-number">{i + 1}</div>
+                <h3 className="hiw-step-title">{t(`landing.${step.title}`)}</h3>
+                <p className="hiw-step-desc">{t(`landing.${step.desc}`)}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
 
       <div className="container">
         <Seeker

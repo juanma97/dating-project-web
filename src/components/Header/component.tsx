@@ -24,6 +24,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
       <div className="hero-content">
         <h1 className="hero-title">{displayTitle}</h1>
+        <p className="hero-subtitle">{t('landing.hero_subtitle')}</p>
       </div>
     </header>
   );

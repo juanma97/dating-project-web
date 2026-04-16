@@ -8,12 +8,9 @@ export interface SeekerFilters {
   ageMin: number;
   ageMax: number;
   gender: string;
-  city: string;
   dateStart: Date | null;
   dateEnd: Date | null;
 }
-
-const CITIES = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga'];
 
 interface SeekerProps {
   onChange?: (filters: SeekerFilters) => void;
@@ -36,13 +33,9 @@ const Seeker: React.FC<SeekerProps> = ({ onChange, resultsCount = 0, isFiltering
     ageMin: 25,
     ageMax: 40,
     gender: '',
-    city: '',
     dateStart: null,
     dateEnd: null,
   });
-
-  const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     if (onChange) {
@@ -56,25 +49,6 @@ const Seeker: React.FC<SeekerProps> = ({ onChange, resultsCount = 0, isFiltering
 
   const handleDateRangeChange = (range: { startDate: Date | null; endDate: Date | null }) => {
     setFilters((prev) => ({ ...prev, dateStart: range.startDate, dateEnd: range.endDate }));
-  };
-
-  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFilters((prev) => ({ ...prev, city: value }));
-
-    if (value.length > 0) {
-      const filtered = CITIES.filter((city) => city.toLowerCase().startsWith(value.toLowerCase()));
-      setCitySuggestions(filtered);
-      setShowSuggestions(true);
-    } else {
-      setCitySuggestions([]);
-      setShowSuggestions(false);
-    }
-  };
-
-  const selectCity = (city: string) => {
-    setFilters((prev) => ({ ...prev, city }));
-    setShowSuggestions(false);
   };
 
   return (
@@ -118,31 +92,6 @@ const Seeker: React.FC<SeekerProps> = ({ onChange, resultsCount = 0, isFiltering
               ))}
             </select>
           </div>
-        </div>
-
-        <div className="filter-group city-autocomplete">
-          <label htmlFor="city" className={isFiltering ? 'is-filtering' : ''}>
-            {t('seeker.city')}
-          </label>
-          <input
-            type="text"
-            name="city"
-            id="city"
-            placeholder={t('seeker.search_city')}
-            value={filters.city}
-            onChange={handleCityChange}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-            autoComplete="off"
-          />
-          {showSuggestions && citySuggestions.length > 0 && (
-            <ul className="suggestions-list">
-              {citySuggestions.map((city) => (
-                <li key={city} onClick={() => selectCity(city)}>
-                  {city}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </div>
 

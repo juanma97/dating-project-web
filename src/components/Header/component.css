@@ -137,11 +137,12 @@
 }
 
 .hero-subtitle {
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
+  font-size: 1.15rem;
+  color: var(--color-text-secondary);
+  margin: 0.5rem 0 0;
   font-weight: 400;
   line-height: 1.6;
+  opacity: 0.85;
 }
 
 /* Responsive */
