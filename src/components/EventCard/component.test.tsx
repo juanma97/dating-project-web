@@ -35,7 +35,7 @@ describe('Event Components', () => {
     );
     expect(screen.getByText(/Beach Speed Dating/i)).toBeInTheDocument();
     expect(screen.getByText(/Barcelona/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /View Details/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Reserve my spot/i })).toBeInTheDocument();
   });
 
   test('EventsList renders a grid of events', () => {

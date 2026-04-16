@@ -4,7 +4,7 @@ import Header from './component';
 describe('Header Component', () => {
   test('renders default title', () => {
     render(<Header />);
-    expect(screen.getByText('Back to nature 🌱')).toBeInTheDocument();
+    expect(screen.getByText(/Stop swiping\. Start meeting\./i)).toBeInTheDocument();
   });
 
   test('renders custom title', () => {

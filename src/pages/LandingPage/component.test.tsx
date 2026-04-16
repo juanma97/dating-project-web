@@ -67,7 +67,7 @@ describe('LandingPage', () => {
         <LandingPage />
       </BrowserRouter>,
     );
-    expect(screen.getByText(/Back to nature 🌱/i)).toBeInTheDocument();
+    expect(screen.getByText(/Stop swiping\. Start meeting\./i)).toBeInTheDocument();
     expect(screen.getByText(/Upcoming Events/i)).toBeInTheDocument();
 
     // Wait for the mock API call to finish
@@ -84,7 +84,7 @@ describe('LandingPage', () => {
     );
 
     // Check loading state
-    expect(screen.getByText(/Loading events.../i)).toBeInTheDocument();
+    expect(screen.getByText(/Finding events near you/i)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText(/Gourmet Speed Dating/i)).toBeInTheDocument();

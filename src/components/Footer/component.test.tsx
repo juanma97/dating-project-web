@@ -13,6 +13,6 @@ describe('Footer Component', () => {
   test('renders social links', () => {
     render(<Footer />);
     expect(screen.getByText(/Instagram/i)).toBeInTheDocument();
-    expect(screen.getByText(/Twitter/i)).toBeInTheDocument();
+    expect(screen.getByText(/TikTok/i)).toBeInTheDocument();
   });
 });

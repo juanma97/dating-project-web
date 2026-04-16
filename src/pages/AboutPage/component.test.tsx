@@ -13,19 +13,19 @@ describe('AboutPage Component', () => {
 
     // Assert main Hero title
     expect(
-      screen.getByText(/Bridge the gap between digital discovery and physical interaction/i),
+      screen.getByText(/Dating apps had their moment/i),
     ).toBeInTheDocument();
 
     // Assert Core Values exist
-    expect(screen.getByText(/Minimalist Design/i)).toBeInTheDocument();
-    expect(screen.getByText(/Excellent Experience/i)).toBeInTheDocument();
-    expect(screen.getByText(/Real-World Connectivity/i)).toBeInTheDocument();
+    expect(screen.getByText(/No friction/i)).toBeInTheDocument();
+    expect(screen.getByText(/Quality over quantity/i)).toBeInTheDocument();
+    expect(screen.getByText(/Real-world connections/i)).toBeInTheDocument();
 
     // Assert audience targets exist
-    expect(screen.getByText(/For Individuals/i)).toBeInTheDocument();
-    expect(screen.getByText(/For Organizers/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tired of apps/i)).toBeInTheDocument();
+    expect(screen.getByText(/Event organisers/i)).toBeInTheDocument();
 
     // Assert CTA button is there
-    expect(screen.getByRole('link', { name: /Find Events/i })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: /Browse events/i })).toHaveAttribute('href', '/');
   });
 });

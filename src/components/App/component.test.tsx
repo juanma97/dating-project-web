@@ -21,7 +21,7 @@ describe('App Component', () => {
       </BrowserRouter>,
     );
     await waitFor(() => {
-      expect(screen.getByText(/Back to nature 🌱/i)).toBeInTheDocument();
+      expect(screen.getByText(/Stop swiping\. Start meeting\./i)).toBeInTheDocument();
     });
   });
 });
