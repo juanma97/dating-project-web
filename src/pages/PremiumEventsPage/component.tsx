@@ -3,7 +3,7 @@ import Footer from '../../components/Footer/component';
 import PremiumEventCard from '../../components/PremiumEventCard/component';
 import { Event } from '../../api/model/event';
 import { premiumEventsApi } from '../../api/supabase/premiumEvents';
-import { trackViewPremiumEvents, trackPageView } from '../../utils/analytics';
+import { trackViewPremiumEvents } from '../../utils/analytics';
 import { useTranslation } from 'react-i18next';
 import './component.css';
 
@@ -15,7 +15,6 @@ const PremiumEventsPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    trackPageView('/premium-events');
     trackViewPremiumEvents();
 
     const fetchData = async () => {

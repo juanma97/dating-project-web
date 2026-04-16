@@ -15,14 +15,18 @@ export const initGA = () => {
   window.gtag =
     window.gtag ||
     function () {
+      // eslint-disable-next-line prefer-rest-params
       window.dataLayer.push(arguments);
     };
+
+  window.gtag('js', new Date());
 
   const consent = localStorage.getItem('cookieConsent');
   // Opt-out approach: assumes granted UNLESS explicitly denied
   const isGranted = consent !== 'denied';
 
   // Set default GA4 consent mode based on user's previous choice
+  // This MUST happen before ReactGA.initialize
   window.gtag('consent', 'default', {
     ad_storage: isGranted ? 'granted' : 'denied',
     ad_user_data: isGranted ? 'granted' : 'denied',

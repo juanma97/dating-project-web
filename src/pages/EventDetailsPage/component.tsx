@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Event } from '../../api/model/event';
 import { eventsApi } from '../../api/supabase/events';
-import { trackEventSourceClick, trackBuyTicketsIntent, trackPageView } from '../../utils/analytics';
+import { trackEventSourceClick, trackBuyTicketsIntent } from '../../utils/analytics';
 import ShareButton from '../../components/ui/ShareButton/component';
 import Toast from '../../components/ui/Toast/component';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,6 @@ const EventDetailsPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    trackPageView(`/events/${id}`);
 
     const fetchEvent = async () => {
       if (!id) return;

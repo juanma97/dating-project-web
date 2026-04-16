@@ -6,11 +6,13 @@ import EventDetailsPage from '../../pages/EventDetailsPage/component';
 import PremiumEventsPage from '../../pages/PremiumEventsPage/component';
 import PremiumEventDetailsPage from '../../pages/PremiumEventDetailsPage/component';
 import DesignShowcase from '../../pages/DesignShowcase/component';
+import AnalyticsTracker from '../AnalyticsTracker/component';
 import './component.css';
 
 const App: React.FC = () => {
   return (
     <div className="app-container">
+      <AnalyticsTracker />
       <Toolbar />
       <main className="app-main">
         <Routes>

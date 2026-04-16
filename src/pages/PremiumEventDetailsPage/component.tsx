@@ -6,7 +6,6 @@ import LeadCaptureModal from '../../components/LeadCaptureModal/component';
 import {
   trackViewPremiumEventDetail,
   trackPremiumEventCtaClick,
-  trackPageView,
 } from '../../utils/analytics';
 import ShareButton from '../../components/ui/ShareButton/component';
 import Toast from '../../components/ui/Toast/component';
@@ -29,7 +28,6 @@ const PremiumEventDetailsPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    trackPageView(`/premium-events/${id}`);
 
     const fetchEvent = async () => {
       if (!id) return;
