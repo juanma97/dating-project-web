@@ -151,10 +151,8 @@
 }
 
 @media (max-width: 768px) {
-  .how-it-works-steps {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
+  /* ── Social proof strip ── */
   .social-proof-divider {
     display: none;
   }
@@ -163,11 +161,76 @@
     flex-direction: column;
     gap: 0.25rem;
   }
+
+  /* ── How It Works: compact horizontal scroll on mobile ── */
+  .how-it-works-section {
+    padding: 0.75rem 0 0.5rem;
+    /* no overflow:hidden — badges stick out of cards and must not be clipped */
+  }
+
+  .how-it-works-title {
+    font-size: var(--typography-size-sm);
+    margin-bottom: 0.6rem;
+    text-align: left;
+  }
+
+  /* Turn the grid into a single-row horizontal scroll */
+  .how-it-works-steps {
+    display: flex;
+    flex-direction: row;
+    grid-template-columns: unset;
+    gap: 0.5rem;
+    overflow-x: auto;
+    overflow-y: visible;
+    /* allow badges to protrude above the strip */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    /* hide scrollbar visually but keep scrollability */
+    scrollbar-width: none;
+    /* top padding gives room for the badge that sits -8px above each card */
+    padding: 8px;
+  }
+
+  .how-it-works-steps::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hiw-step {
+    flex: 0 0 auto;
+    width: 130px;
+    scroll-snap-align: start;
+    padding: 0.65rem 0.6rem 0.6rem;
+    border-radius: var(--radius-md);
+    overflow: visible;
+    /* let the number badge render outside the card bounds */
+  }
+
+  .hiw-step-icon {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .hiw-step-title {
+    font-size: 0.72rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .hiw-step-desc {
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  .hiw-step-number {
+    width: 20px;
+    height: 20px;
+    font-size: 0.62rem;
+    top: -8px;
+    left: -8px;
+  }
 }
 
 @media (max-width: 480px) {
-  .how-it-works-steps {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+  .hiw-step {
+    width: 115px;
   }
 }
