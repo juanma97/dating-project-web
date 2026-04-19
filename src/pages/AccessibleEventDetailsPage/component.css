@@ -1,0 +1,121 @@
+/* ─── Accessible Event Details Page ─────────────────────────────────────── */
+
+/* Loading spinner */
+.accessible-detail-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(56, 128, 107, 0.2);
+  border-top-color: #38806b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Badges ── */
+.accessible-detail-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.accessible-detail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: 0.5px;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+}
+
+.accessible-detail-badge--main {
+  background: linear-gradient(135deg, #38806b, #4aa88d);
+  color: #fff;
+}
+
+.accessible-detail-badge--smoke {
+  background: rgba(56, 128, 107, 0.1);
+  color: #1e6652;
+  border: 1px solid rgba(56, 128, 107, 0.25);
+}
+
+/* ── Welcome bar (replaces scarcity bar) ── */
+.accessible-welcome-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(56, 128, 107, 0.08);
+  border: 1px solid rgba(56, 128, 107, 0.2);
+  color: #1e6652;
+  font-size: 0.85rem;
+  font-weight: var(--typography-weight-semibold, 600);
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Price block ── */
+.accessible-price-block {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.accessible-price-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: rgba(56, 128, 107, 0.06);
+  border: 1px solid rgba(56, 128, 107, 0.15);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1.1rem;
+  min-width: 100px;
+  text-align: center;
+}
+
+.accessible-price-label {
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.accessible-price-value {
+  font-size: 1.4rem;
+  font-weight: var(--typography-weight-bold);
+  color: #1e6652;
+}
+
+/* ── CTA button — full-width WhatsApp in sticky bar ── */
+.accessible-whatsapp-full-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  flex: 1;
+  padding: 0.85rem 1.5rem;
+  background: #25d366;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: var(--typography-weight-bold);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 2px 12px rgba(37, 211, 102, 0.35);
+}
+
+.accessible-whatsapp-full-btn:hover {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+}
+
+.accessible-whatsapp-full-btn:active {
+  transform: translateY(0);
+}

@@ -16,6 +16,7 @@
     "about": "Sobre nosotros",
     "premium_events": "🔥 Eventos Premium",
     "venues": "🏠 Para locales",
+    "accessible_events": "♿ Eventos Accesibles",
     "events": "Eventos",
     "close_menu": "Cerrar menú",
     "open_menu": "Abrir menú"
@@ -245,5 +246,46 @@
       "success_msg": "Nos pondremos en contacto contigo en menos de 48 horas. ¡Gracias por tu interés!",
       "legal": "Sin compromiso. Solo te contactamos para explorar la colaboración."
     }
+  },
+  "accessible_events": {
+    "hero_badge": "♿ Espacio para todas las personas",
+    "hero_title": "Speed Dating Accesible",
+    "hero_subtitle": "Eventos diseñados para personas con diversidad funcional — accesibles, acogedores y sin barreras. Conecta con personas que comparten tu realidad.",
+    "commitment_banner": "🤝 Entorno accesible · Sin barreras · Bienvenida toda la diversidad",
+    "value_wheelchair": "Acceso para silla de ruedas",
+    "value_welcome": "Ambiente acogedor",
+    "value_inclusive": "Diversidad funcional bienvenida",
+    "events_title": "Próximos eventos accesibles",
+    "badge_accessible": "Accesible",
+    "badge_event": "Evento accesible",
+    "age": "Edad",
+    "entry": "Entrada",
+    "view_details": "Ver detalles →",
+    "whatsapp_cta": "Me interesa — contactar por WhatsApp",
+    "loading": "Cargando eventos...",
+    "empty": "Próximamente. Estamos explorando la demanda en este espacio — si quieres participar, escríbenos por WhatsApp.",
+    "error_loading": "Error al cargar los eventos accesibles"
+  },
+  "accessible_event_details": {
+    "whatsapp_message": "¡Hola! Me interesa participar en el evento de speed dating accesible 😊",
+    "loading": "Cargando evento...",
+    "error_not_found": "Evento no encontrado",
+    "error_loading": "Error cargando el evento",
+    "oops": "Oops!",
+    "not_found_desc": "No se encontró el evento.",
+    "back": "Volver",
+    "back_nav": "← Volver",
+    "badge_accessible": "♿ Evento Accesible",
+    "badge_smoke_test": "🔍 Próximamente",
+    "by_organizer": "por {{organizer}}",
+    "welcome_bar": "🤝 Evento diseñado para ser accesible y acogedor para todas las personas",
+    "age": "👥 Rango de edad:",
+    "years": "años",
+    "participant": "Participante",
+    "about_event": "Qué esperar",
+    "location": "Lugar",
+    "map_instruction": "Toca el mapa para abrir en Google Maps",
+    "more_info": "💬 Hacer una pregunta",
+    "reserve_spot": "👉 Me interesa — contactar"
   }
 }

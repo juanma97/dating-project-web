@@ -16,6 +16,7 @@
     "about": "About",
     "premium_events": "🔥 Premium Events",
     "venues": "🏠 For Venues",
+    "accessible_events": "♿ Accessible Events",
     "events": "Events",
     "close_menu": "Close menu",
     "open_menu": "Open menu"
@@ -245,5 +246,46 @@
       "success_msg": "We’ll get back to you within 48 hours. Thanks for your interest!",
       "legal": "No commitment. We’ll only reach out to explore the partnership."
     }
+  },
+  "accessible_events": {
+    "hero_badge": "♿ A space for everyone",
+    "hero_title": "Accessible Speed Dating",
+    "hero_subtitle": "Events designed for people with disabilities — accessible venues, welcoming atmosphere, no barriers. Connect with people who share your reality.",
+    "commitment_banner": "🤝 Accessible venue · Barrier-free · All abilities welcome",
+    "value_wheelchair": "Wheelchair access",
+    "value_welcome": "Welcoming atmosphere",
+    "value_inclusive": "All disabilities welcome",
+    "events_title": "Upcoming accessible events",
+    "badge_accessible": "Accessible",
+    "badge_event": "Accessible event",
+    "age": "Age",
+    "entry": "Entry",
+    "view_details": "View details →",
+    "whatsapp_cta": "I'm interested — contact on WhatsApp",
+    "loading": "Loading events...",
+    "empty": "Coming soon. We're exploring demand in this space — if you'd like to participate, message us on WhatsApp.",
+    "error_loading": "Error loading accessible events"
+  },
+  "accessible_event_details": {
+    "whatsapp_message": "Hi! I'm interested in joining the accessible speed dating event 😊",
+    "loading": "Loading event...",
+    "error_not_found": "Event not found",
+    "error_loading": "Error loading event",
+    "oops": "Oops!",
+    "not_found_desc": "Event not found.",
+    "back": "Back",
+    "back_nav": "← Back",
+    "badge_accessible": "♿ Accessible Event",
+    "badge_smoke_test": "🔍 Coming Soon",
+    "by_organizer": "by {{organizer}}",
+    "welcome_bar": "🤝 This event is designed to be accessible and welcoming for everyone",
+    "age": "👥 Age range:",
+    "years": "years",
+    "participant": "Participant",
+    "about_event": "What to expect",
+    "location": "Venue",
+    "map_instruction": "Tap the map to open in Google Maps",
+    "more_info": "💬 Ask a question",
+    "reserve_spot": "👉 I'm interested — get in touch"
   }
 }

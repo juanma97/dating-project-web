@@ -1,0 +1,220 @@
+/* ─── Accessible Events Page ─────────────────────────────────────────────── */
+
+.accessible-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-background, #f9f7f4);
+}
+
+/* ── Hero ── */
+.accessible-hero {
+  background: linear-gradient(
+    -45deg,
+    #1a4d3a,
+    #2d6e55,
+    #38806b,
+    #1a4d3a
+  );
+  background-size: 300% 300%;
+  animation: accessibleGradientShift 18s ease infinite;
+  padding: 4.5rem 1.5rem 3.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.accessible-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+@keyframes accessibleGradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.accessible-hero-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.accessible-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: var(--typography-weight-bold);
+  padding: 0.3rem 1rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.accessible-hero-title {
+  font-size: 3rem;
+  font-weight: var(--typography-weight-bold);
+  color: #fff;
+  margin: 0 0 0.85rem;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+}
+
+.accessible-hero-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0 0 1.75rem;
+  line-height: 1.65;
+  max-width: 520px;
+  margin-inline: auto;
+  margin-bottom: 1.75rem;
+}
+
+.accessible-commitment-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.85rem;
+  font-weight: var(--typography-weight-semibold, 600);
+  padding: 0.55rem 1.3rem;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(4px);
+}
+
+/* ── Values strip ── */
+.accessible-values-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: #fff;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.9rem 1.5rem;
+}
+
+.accessible-value {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: var(--typography-weight-semibold, 600);
+  color: var(--color-text-secondary);
+}
+
+.accessible-value-icon {
+  font-size: 1rem;
+}
+
+.accessible-value-divider {
+  color: var(--color-border);
+  font-weight: 300;
+}
+
+/* ── Container & section ── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+.events-section {
+  padding: 2rem 0 3rem;
+}
+
+.accessible-section-title {
+  font-size: 1.5rem;
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+/* ── Grid ── */
+.accessible-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ── Loading ── */
+.accessible-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 0;
+  gap: 1rem;
+  color: #888;
+}
+
+.accessible-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(56, 128, 107, 0.2);
+  border-top-color: #38806b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Empty state ── */
+.accessible-empty {
+  text-align: center;
+  padding: 5rem 0 3rem;
+  color: var(--color-text-secondary, #888);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.accessible-empty-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+/* ── Error ── */
+.error-message {
+  text-align: center;
+  color: #c0392b;
+  padding: 2rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .accessible-hero-title {
+    font-size: 2rem;
+  }
+
+  .accessible-hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .accessible-values-strip {
+    gap: 0.6rem;
+  }
+
+  .accessible-value-divider {
+    display: none;
+  }
+}

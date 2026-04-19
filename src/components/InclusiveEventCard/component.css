@@ -1,0 +1,141 @@
+/* ─── InclusiveEventCard / Accessible Event Card ─────────────────────────── */
+
+.inclusive-event-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-left: 4px solid #38806b;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+}
+
+.inclusive-event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* ── Image banner ── */
+.event-image-banner {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.event-image-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.inclusive-event-card:hover .event-image-banner img {
+  transform: scale(1.04);
+}
+
+/* ── Badges ── */
+.inclusive-badge {
+  font-size: 0.72rem;
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: 0.4px;
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.6rem;
+  color: #fff;
+  background: linear-gradient(135deg, #38806b, #4aa88d);
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+}
+
+.inclusive-badge--overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.inclusive-badge--no-image {
+  position: static;
+  display: inline-flex;
+  margin: 0.75rem 1rem 0;
+  box-shadow: none;
+}
+
+/* ── Organizer tag ── */
+.inclusive-organizado-tag {
+  background: linear-gradient(90deg, var(--color-background), rgba(56, 128, 107, 0.08));
+  border-bottom: 1px solid var(--color-border);
+  color: #1e6652;
+  font-size: 0.78rem;
+  font-weight: var(--typography-weight-bold);
+  padding: 0.45rem 1rem;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── Content area ── */
+.event-content {
+  padding: 0.85rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+/* ── Meta chips ── */
+.event-meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.inclusive-event-card .age-chip {
+  background: rgba(56, 128, 107, 0.08);
+  color: #1e6652;
+  border-color: rgba(56, 128, 107, 0.2);
+}
+
+.inclusive-event-card .price-chip {
+  background: rgba(56, 128, 107, 0.06);
+  color: #1e6652;
+  border-color: rgba(56, 128, 107, 0.18);
+}
+
+/* ── Card actions — pushed to bottom ── */
+.inclusive-card-actions {
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+/* ── WhatsApp CTA button ── */
+.inclusive-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: #25d366;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: var(--typography-weight-bold);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+}
+
+.inclusive-whatsapp-btn:hover {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+}
+
+.inclusive-whatsapp-btn:active {
+  transform: translateY(0);
+}

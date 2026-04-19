@@ -6,6 +6,8 @@ import EventDetailsPage from '../../pages/EventDetailsPage/component';
 import PremiumEventsPage from '../../pages/PremiumEventsPage/component';
 import PremiumEventDetailsPage from '../../pages/PremiumEventDetailsPage/component';
 import VenuePartnersPage from '../../pages/VenuePartnersPage/component';
+import AccessibleEventsPage from '../../pages/AccessibleEventsPage/component';
+import AccessibleEventDetailsPage from '../../pages/AccessibleEventDetailsPage/component';
 import DesignShowcase from '../../pages/DesignShowcase/component';
 import AnalyticsTracker from '../AnalyticsTracker/component';
 import './component.css';
@@ -23,6 +25,8 @@ const App: React.FC = () => {
           <Route path="/premium-events" element={<PremiumEventsPage />} />
           <Route path="/premium-events/:id" element={<PremiumEventDetailsPage />} />
           <Route path="/venues" element={<VenuePartnersPage />} />
+          <Route path="/accessible-events" element={<AccessibleEventsPage />} />
+          <Route path="/accessible-events/:id" element={<AccessibleEventDetailsPage />} />
           <Route path="/design-system" element={<DesignShowcase />} />
         </Routes>
       </main>

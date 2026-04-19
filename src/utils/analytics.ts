@@ -153,3 +153,41 @@ export const trackVenuePartnerFormSubmit = (params: {
     city: params.city,
   });
 };
+
+// ─── Accessible Events Tracking ────────────────────────────────────────────
+
+export const trackViewAccessibleEvents = () => {
+  ReactGA.event('view_accessible_events');
+};
+
+export const trackClickAccessibleEvent = (eventData: {
+  id: string;
+  city: string | null;
+  min_age: number | null;
+  max_age: number | null;
+}) => {
+  ReactGA.event('click_accessible_event', {
+    event_id: eventData.id,
+    city: eventData.city,
+    min_age: eventData.min_age,
+    max_age: eventData.max_age,
+  });
+};
+
+export const trackViewAccessibleEventDetail = (eventId: string) => {
+  ReactGA.event('view_accessible_event_detail', { event_id: eventId });
+};
+
+export const trackAccessibleEventCtaClick = (eventId: string) => {
+  ReactGA.event('accessible_event_cta_click', { event_id: eventId });
+};
+
+export const trackAccessibleEventLeadSubmit = (params: {
+  event_id: string;
+  city: string | null;
+}) => {
+  ReactGA.event('accessible_event_lead_submit', {
+    event_id: params.event_id,
+    city: params.city,
+  });
+};
