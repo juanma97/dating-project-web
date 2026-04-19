@@ -154,10 +154,49 @@ export const trackVenuePartnerFormSubmit = (params: {
   });
 };
 
+/**
+ * Fires when the user interacts with the form for the first time.
+ * Useful to measure engagement vs. bounce after seeing the hero.
+ */
+export const trackVenuePartnerFormStart = () => {
+  ReactGA.event('venue_partner_form_start');
+};
+
+/**
+ * Fires if the form submission fails (API / network error).
+ * Helps detect backend reliability issues affecting conversion.
+ */
+export const trackVenuePartnerFormError = (reason: string) => {
+  ReactGA.event('venue_partner_form_error', { reason });
+};
+
 // ─── Accessible Events Tracking ────────────────────────────────────────────
 
 export const trackViewAccessibleEvents = () => {
   ReactGA.event('view_accessible_events');
+};
+
+/**
+ * Fires after events are fetched, reporting how many are available.
+ * Distinguishes "empty state" visits from visits with real events.
+ */
+export const trackAccessibleEventsLoaded = (count: number) => {
+  ReactGA.event('accessible_events_loaded', { events_count: count });
+};
+
+/**
+ * Fires when the accessible events API call fails.
+ */
+export const trackAccessibleEventsLoadError = () => {
+  ReactGA.event('accessible_events_load_error');
+};
+
+/**
+ * Fires when a user clicks the WhatsApp CTA shown in the empty state.
+ * Key signal of demand even before real events are published.
+ */
+export const trackAccessibleEventsEmptyWhatsappClick = () => {
+  ReactGA.event('accessible_events_empty_whatsapp_click');
 };
 
 export const trackClickAccessibleEvent = (eventData: {

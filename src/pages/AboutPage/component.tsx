@@ -1,10 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Footer from '../../components/Footer/component';
+import { useSEO } from '../../hooks/useSEO';
 import './component.css';
 
 const AboutPage: React.FC = () => {
   const { t } = useTranslation();
+
+  useSEO({
+    title: 'Zapyens — Sobre Nosotros | La alternativa real a las apps de citas',
+    description:
+      'Somos Zapyens. Organizamos speed dating en persona porque las apps de citas no funcionan. Sin swipes, sin ghosting, sin algoritmos. Solo personas reales.',
+    canonical: 'https://zapyens.com/about',
+  });
 
   return (
     <div className="about-page">

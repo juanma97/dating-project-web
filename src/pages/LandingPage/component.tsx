@@ -6,6 +6,7 @@ import Footer from '../../components/Footer/component';
 import { Event } from '../../api/model/event';
 import { eventsApi } from '../../api/supabase/events';
 import { useTranslation } from 'react-i18next';
+import { useSEO } from '../../hooks/useSEO';
 import './component.css';
 
 const HOW_IT_WORKS_STEPS = [
@@ -17,6 +18,14 @@ const HOW_IT_WORKS_STEPS = [
 
 const LandingPage: React.FC = () => {
   const { t } = useTranslation();
+
+  useSEO({
+    title: 'Zapyens — Speed Dating en persona | Sin apps, sin swipes',
+    description:
+      'Eventos de speed dating en tu ciudad. Conoce 10 personas reales en citas de 5 minutos — sin apps, sin swipes. ¡Reserva tu plaza hoy!',
+    canonical: 'https://zapyens.com/',
+  });
+
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);

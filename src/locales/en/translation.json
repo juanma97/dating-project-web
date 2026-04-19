@@ -264,6 +264,8 @@
     "whatsapp_cta": "I'm interested — contact on WhatsApp",
     "loading": "Loading events...",
     "empty": "Coming soon. We're exploring demand in this space — if you'd like to participate, message us on WhatsApp.",
+    "empty_whatsapp_cta": "💬 I want to join — message us",
+    "empty_whatsapp_message": "Hi! I'm interested in joining an accessible speed dating event 😊 Can you let me know when dates are available?",
     "error_loading": "Error loading accessible events"
   },
   "accessible_event_details": {

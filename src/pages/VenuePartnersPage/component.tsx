@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import Footer from '../../components/Footer/component';
 import { submitVenuePartnerLead } from '../../api/supabase/venuePartnerLeads';
 import { useTranslation } from 'react-i18next';
-import { trackVenuePartnerPageView, trackVenuePartnerFormSubmit, trackVenuePartnerCtaClick } from '../../utils/analytics';
+import {
+  trackVenuePartnerPageView,
+  trackVenuePartnerFormSubmit,
+  trackVenuePartnerCtaClick,
+  trackVenuePartnerFormStart,
+  trackVenuePartnerFormError,
+} from '../../utils/analytics';
+import { useSEO } from '../../hooks/useSEO';
 import './component.css';
 
 const VENUE_TYPES = [
@@ -39,19 +46,40 @@ const emptyForm: FormState = {
 
 const VenuePartnersPage: React.FC = () => {
   const { t } = useTranslation();
+
+  useSEO({
+    title: 'Zapyens — Tu local, nuestros eventos | Colabora con nosotros',
+    description:
+      '¿Tienes un bar, restaurante o espacio con encanto? Colabora con Zapyens y llena tus mesas con eventos de speed dating. Sin riesgo. Contacta hoy.',
+    canonical: 'https://zapyens.com/venues',
+  });
+
   const [form, setForm] = useState<FormState>(emptyForm);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hasTrackedFormStart = React.useRef(false);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
     trackVenuePartnerPageView();
   }, []);
 
+  /**
+   * Fires 'venue_partner_form_start' the first time the user focuses any field.
+   * Using a ref so the event fires exactly once per page visit.
+   */
+  const handleFormStart = () => {
+    if (!hasTrackedFormStart.current) {
+      hasTrackedFormStart.current = true;
+      trackVenuePartnerFormStart();
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
+    handleFormStart();
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -80,7 +108,9 @@ const VenuePartnersPage: React.FC = () => {
       setSuccess(true);
       setForm(emptyForm);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('venue_partners.form.error'));
+      const errorMsg = err instanceof Error ? err.message : t('venue_partners.form.error');
+      setError(errorMsg);
+      trackVenuePartnerFormError(errorMsg);
     } finally {
       setSubmitting(false);
     }

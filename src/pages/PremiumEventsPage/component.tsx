@@ -5,10 +5,19 @@ import { Event } from '../../api/model/event';
 import { premiumEventsApi } from '../../api/supabase/premiumEvents';
 import { trackViewPremiumEvents } from '../../utils/analytics';
 import { useTranslation } from 'react-i18next';
+import { useSEO } from '../../hooks/useSEO';
 import './component.css';
 
 const PremiumEventsPage: React.FC = () => {
   const { t } = useTranslation();
+
+  useSEO({
+    title: 'Zapyens — Eventos Premium de Speed Dating | Organizados por nosotros',
+    description:
+      'Experiencias de speed dating premium en locales íntimos con ratios equilibrados. Organizados por nuestro equipo. Plazas muy limitadas.',
+    canonical: 'https://zapyens.com/premium-events',
+  });
+
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

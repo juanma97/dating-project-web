@@ -3,12 +3,26 @@ import Footer from '../../components/Footer/component';
 import InclusiveEventCard from '../../components/InclusiveEventCard/component';
 import { Event } from '../../api/model/event';
 import { accessibleEventsApi } from '../../api/supabase/accessibleEvents';
-import { trackViewAccessibleEvents } from '../../utils/analytics';
+import {
+  trackViewAccessibleEvents,
+  trackAccessibleEventsLoaded,
+  trackAccessibleEventsLoadError,
+  trackAccessibleEventsEmptyWhatsappClick,
+} from '../../utils/analytics';
 import { useTranslation } from 'react-i18next';
+import { useSEO } from '../../hooks/useSEO';
 import './component.css';
 
 const AccessibleEventsPage: React.FC = () => {
   const { t } = useTranslation();
+
+  useSEO({
+    title: 'Zapyens — Speed Dating Accesible | Sin barreras',
+    description:
+      'Eventos de speed dating diseñados para personas con diversidad funcional. Accesibles, acogedores y sin barreras. Conecta con personas que comparten tu realidad.',
+    canonical: 'https://zapyens.com/accessible-events',
+  });
+
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,8 +35,10 @@ const AccessibleEventsPage: React.FC = () => {
       try {
         const data = await accessibleEventsApi.fetchEvents();
         setEvents(data);
+        trackAccessibleEventsLoaded(data.length);
       } catch (err) {
         setError(err instanceof Error ? err.message : t('accessible_events.error_loading'));
+        trackAccessibleEventsLoadError();
       } finally {
         setLoading(false);
       }
@@ -79,6 +95,15 @@ const AccessibleEventsPage: React.FC = () => {
             <div className="accessible-empty">
               <span className="accessible-empty-icon">♿</span>
               <p>{t('accessible_events.empty')}</p>
+              <a
+                href={`https://wa.me/${import.meta.env.VITE_PHONE_NUMBER_CONTACT}?text=${encodeURIComponent(t('accessible_events.empty_whatsapp_message'))}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="accessible-empty-whatsapp-btn"
+                onClick={trackAccessibleEventsEmptyWhatsappClick}
+              >
+                {t('accessible_events.empty_whatsapp_cta')}
+              </a>
             </div>
           )}
           {!loading && !error && events.length > 0 && (
