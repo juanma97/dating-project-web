@@ -8,7 +8,8 @@
 
   <!-- Primary SEO -->
   <title>Zapyens — Speed Dating en persona | Sin apps, sin swipes</title>
-  <meta name="description" content="Eventos de speed dating en persona en tu ciudad. Conoce personas reales en citas de 5 minutos — sin apps, sin swipes, sin algoritmos. ¡Reserva tu plaza hoy!" />
+  <meta name="description"
+    content="Eventos de speed dating en persona en tu ciudad. Conoce personas reales en citas de 5 minutos — sin apps, sin swipes, sin algoritmos. ¡Reserva tu plaza hoy!" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#2d6a4f" />
 
@@ -17,7 +18,8 @@
   <meta property="og:url" content="https://zapyens.com/" />
   <meta property="og:site_name" content="Zapyens" />
   <meta property="og:title" content="Zapyens — Speed Dating en persona | Sin apps, sin swipes" />
-  <meta property="og:description" content="Eventos de speed dating en persona en tu ciudad. Conoce personas reales en citas de 5 minutos — sin apps, sin swipes, sin algoritmos." />
+  <meta property="og:description"
+    content="Eventos de speed dating en persona en tu ciudad. Conoce personas reales en citas de 5 minutos — sin apps, sin swipes, sin algoritmos." />
   <meta property="og:image" content="https://zapyens.com/og-image.png" />
   <meta property="og:locale" content="es_ES" />
   <meta property="og:locale:alternate" content="en_GB" />
@@ -26,7 +28,8 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@zapyens" />
   <meta name="twitter:title" content="Zapyens — Speed Dating en persona" />
-  <meta name="twitter:description" content="Eventos de speed dating en persona. Conoce personas reales sin apps ni swipes." />
+  <meta name="twitter:description"
+    content="Eventos de speed dating en persona. Conoce personas reales sin apps ni swipes." />
   <meta name="twitter:image" content="https://zapyens.com/og-image.png" />
 
   <!-- Canonical -->
@@ -53,6 +56,36 @@
     "name": "Zapyens",
     "url": "https://zapyens.com"
   }
+  </script>
+
+  <!--
+    Google Analytics 4 — G-8S6RD6Y128
+    Order is critical:
+      1. Define dataLayer + gtag function + consent defaults (sync, inline)
+      2. Load gtag.js (async)
+      3. Send 'js' timestamp + 'config' (sync, inline)
+    This allows GA4's tag verification crawler to detect the tag statically.
+  -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+
+    // Consent mode MUST be set before gtag.js loads.
+    // Reads previous user choice from localStorage (set by CookieBanner).
+    // Defaults to 'granted' (opt-out model) if no choice was stored.
+    var _cookieConsent = localStorage.getItem('cookieConsent');
+    var _analyticsGranted = 'granted';
+    gtag('consent', 'default', {
+      ad_storage: _analyticsGranted,
+      ad_user_data: _analyticsGranted,
+      ad_personalization: _analyticsGranted,
+      analytics_storage: _analyticsGranted,
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8S6RD6Y128"></script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-8S6RD6Y128');
   </script>
 </head>
 
