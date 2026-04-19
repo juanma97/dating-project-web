@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
             <a href="https://www.instagram.com/zapyens.madrid/" className="social-link">
               Instagram
             </a>
-            <a href="#" className="social-link">
+            <a href="https://www.tiktok.com/@zapyens.madrid" className="social-link">
               TikTok
             </a>
           </div>

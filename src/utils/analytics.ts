@@ -133,3 +133,23 @@ export const trackPremiumEventLeadSubmit = (params: {
     boys_price: params.boys_price,
   });
 };
+
+// ─── Venue Partners Tracking ───────────────────────────────────────────────
+
+export const trackVenuePartnerPageView = () => {
+  ReactGA.event('view_venue_partners');
+};
+
+export const trackVenuePartnerCtaClick = () => {
+  ReactGA.event('venue_partner_cta_click');
+};
+
+export const trackVenuePartnerFormSubmit = (params: {
+  venue_type: string;
+  city: string;
+}) => {
+  ReactGA.event('venue_partner_form_submit', {
+    venue_type: params.venue_type,
+    city: params.city,
+  });
+};

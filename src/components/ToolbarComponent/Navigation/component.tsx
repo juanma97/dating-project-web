@@ -54,6 +54,16 @@ const Navigation: React.FC = () => {
               {t('nav.premium_events')}
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              to="/venues"
+              className={({ isActive }) =>
+                isActive ? 'nav-link nav-link--venues active' : 'nav-link nav-link--venues'
+              }
+            >
+              {t('nav.venues')}
+            </NavLink>
+          </li>
         </ul>
       </nav>
 
@@ -114,6 +124,17 @@ const Navigation: React.FC = () => {
                   }
                 >
                   {t('nav.about')}
+                </NavLink>
+              </li>
+              {/* Priority 4 — Venues */}
+              <li className="nav-item--secondary">
+                <NavLink
+                  to="/venues"
+                  className={({ isActive }) =>
+                    isActive ? 'nav-link-mobile active' : 'nav-link-mobile'
+                  }
+                >
+                  {t('nav.venues')}
                 </NavLink>
               </li>
             </ul>

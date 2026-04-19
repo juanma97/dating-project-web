@@ -57,6 +57,29 @@
   50%       { box-shadow: var(--shadow-medium); }
 }
 
+/* ── Venues pill (desktop) ───────────────────────────────────── */
+.nav-link--venues {
+  background: var(--color-primary);
+  color: var(--color-surface) !important;
+  font-weight: var(--typography-weight-bold);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  box-shadow: var(--shadow-soft);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.nav-link--venues:hover {
+  opacity: 0.88;
+  color: #fff !important;
+}
+
+.nav-link--venues.active {
+  box-shadow: 0 2px 12px rgba(58, 125, 107, 0.45);
+}
+
 /* ── Hamburger button ────────────────────────────────────────── */
 /* Hidden on desktop, shown on mobile via media query */
 .hamburger-btn {
