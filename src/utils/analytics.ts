@@ -244,3 +244,24 @@ export const trackAccessibleEventLeadSubmit = (params: {
     city: params.city,
   });
 };
+
+// ─── Landing Page Conversion Tracking ─────────────────────────────────────
+
+/** Fires when a user submits email via the sticky bottom lead-capture bar. */
+export const trackStickyBarLeadSubmit = (email: string): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'generate_lead', {
+    source: 'sticky-bar',
+    method: 'email',
+    // Never log PII — just a boolean presence flag
+    has_email: Boolean(email),
+  });
+};
+
+/** Fires when a user taps "Avísame cuando haya plazas" on the Premium promo card. */
+export const trackPremiumPromoNotifyClick = (): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'premium_promo_notify_click', {
+    source: 'landing-promo-card',
+  });
+};

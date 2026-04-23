@@ -74,7 +74,13 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         )}
         <div className="event-content">
           <h3 className="event-title">{event.title}</h3>
-
+          {event.description && (
+            <p className="event-description-teaser">
+              {event.description.length > 80
+                ? `${event.description.slice(0, 80)}…`
+                : event.description}
+            </p>
+          )}
           <div className="event-meta-chips">
             <span className="meta-chip">
               📅 <strong>{event.date}</strong>

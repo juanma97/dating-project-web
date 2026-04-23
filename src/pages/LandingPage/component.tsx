@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import SeekerModal from '../../components/SeekerModal/component';
 import { SeekerFilters } from '../../components/Seeker/component';
 import EventsList from '../../components/EventsList/component';
+import { EventCardSkeletonList } from '../../components/EventCardSkeleton/component';
+import NotifyMeModal, { NotifyMeSource } from '../../components/NotifyMeModal/component';
 import Footer from '../../components/Footer/component';
 import { Event } from '../../api/model/event';
 import { eventsApi } from '../../api/supabase/events';
@@ -11,7 +13,7 @@ import './component.css';
 
 const DEFAULT_FILTERS: SeekerFilters = {
   ageMin: 25,
-  ageMax: 40,
+  ageMax: 45,
   gender: '',
   dateStart: null,
   dateEnd: null,
@@ -33,7 +35,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   useSEO({
     title: 'Zapyens — Speed Dating en persona | Sin apps, sin swipes',
     description:
-      'Eventos de speed dating en tu ciudad. Conoce 10 personas reales en citas de 5 minutos — sin apps, sin swipes. ¡Reserva tu plaza hoy!',
+      'Eventos de speed dating en Madrid. Conoce 10 personas reales en citas de 5 minutos — sin apps, sin swipes. ¡Reserva tu plaza hoy!',
     canonical: 'https://zapyens.com/',
   });
 
@@ -43,6 +45,21 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [activeFilters, setActiveFilters] = useState<SeekerFilters>(DEFAULT_FILTERS);
   const [isFiltering, setIsFiltering] = useState(false);
+
+  // NotifyMeModal state
+  const [notifyModalOpen, setNotifyModalOpen] = useState(false);
+  const [notifySource, setNotifySource] = useState<NotifyMeSource>('sticky-bar');
+
+  // Sticky bar state
+  const [stickyVisible, setStickyVisible] = useState(false);
+  const [stickyDismissed, setStickyDismissed] = useState(false);
+
+  // Show sticky bar after 3 seconds
+  useEffect(() => {
+    if (stickyDismissed) return;
+    const timer = setTimeout(() => setStickyVisible(true), 3000);
+    return () => clearTimeout(timer);
+  }, [stickyDismissed]);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -56,7 +73,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
         setLoading(false);
       }
     };
-
     fetchEventData();
   }, []);
 
@@ -66,7 +82,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
     const timer = setTimeout(() => {
       const result = allEvents.filter((event) => {
-        // Age filtering
         const effectiveMin = event.min_age ?? 18;
         const effectiveMax = event.max_age ?? 99;
         const matchesAge =
@@ -75,20 +90,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
         if (!activeFilters) return true;
 
-        // Gender / Sexual Orientation filtering
         const genderMatch =
           !activeFilters.gender ||
           !event.sexual_orientation ||
           event.sexual_orientation.toLowerCase() === activeFilters.gender.toLowerCase() ||
           event.sexual_orientation.toLowerCase() === 'all';
 
-        // Date filtering
-        const eventDateStr = event.date; // format: "YYYY-MM-DD"
+        const eventDateStr = event.date;
         let dateMatch = true;
         if (eventDateStr) {
           const eventDate = new Date(eventDateStr);
           eventDate.setHours(0, 0, 0, 0);
-
           if (activeFilters.dateStart && activeFilters.dateEnd) {
             const start = new Date(activeFilters.dateStart);
             start.setHours(0, 0, 0, 0);
@@ -101,14 +113,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
             dateMatch = eventDate >= start;
           }
         }
-
         return matchesAge && genderMatch && dateMatch;
       });
 
       setFilteredEvents(result);
       setIsFiltering(false);
       onFilteringChange?.(false);
-    }, 300); // Small delay for visual feedback
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [allEvents, activeFilters]);
@@ -117,59 +128,55 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setActiveFilters(filters);
   };
 
+  /** Opens NotifyMe modal from the sticky bar */
+  const handleStickyAvísame = () => {
+    setStickyDismissed(true);
+    setStickyVisible(false);
+    setNotifySource('sticky-bar');
+    setNotifyModalOpen(true);
+  };
+
+  const handleDismissSticky = () => {
+    setStickyDismissed(true);
+    setStickyVisible(false);
+  };
+
+  /** Opens NotifyMe modal from the Premium promo card */
+  const handlePremiumNotifyMe = () => {
+    setNotifySource('premium-promo');
+    setNotifyModalOpen(true);
+  };
+
   return (
     <div className="landing-page">
-      {/*<Header />*/}
 
-      {/* Social Proof Strip */}
-      {/*<div className="social-proof-strip">
-        <span className="social-proof-stat">{t('landing.social_proof_stat1')}</span>
-        <span className="social-proof-divider">·</span>
-        <span className="social-proof-stat">{t('landing.social_proof_stat2')}</span>
-        <span className="social-proof-divider">·</span>
-        <span className="social-proof-stat">{t('landing.social_proof_stat3')}</span>
-      </div>*/}
+      {/* ── Compact value strip ───────────────────────────── */}
+      <div className="value-strip">
+        <p className="value-strip-headline">
+          Deja de hacer swipe. Conoce personas reales.
+        </p>
+        <p className="value-strip-proof">
+          +500 personas el mes pasado · 82% consiguió un match
+        </p>
+      </div>
 
-      {/* How It Works */}
-      {/*<div className="container">
-        <section className="how-it-works-section">
-          <h2 className="how-it-works-title">{t('landing.how_it_works_title')}</h2>
-          <div className="how-it-works-steps">
-            {HOW_IT_WORKS_STEPS.map((step, i) => (
-              <div key={i} className="hiw-step">
-                <div className="hiw-step-icon">{t(`landing.${step.icon}`)}</div>
-                <div className="hiw-step-number">{i + 1}</div>
-                <h3 className="hiw-step-title">{t(`landing.${step.title}`)}</h3>
-                <p className="hiw-step-desc">{t(`landing.${step.desc}`)}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>*/}
-
+      {/* ── Events section ───────────────────────────────── */}
       <div className="container">
         <section className="events-section" id="events">
-          <div className="section-header">
-            {/*<h2 className="section-title">{t('landing.upcoming_events')}</h2>*/}
-            {/*{!loading && !error && (
-              <span className={`results-badge ${isFiltering ? 'is-filtering' : ''}`}>
-                {filteredEvents.length === 1
-                  ? t('landing.results_found_one')
-                  : t('landing.results_found', { count: filteredEvents.length })}
-              </span>
-            )}*/}
-          </div>
-          {loading && <p className="loading-message">{t('landing.loading_events')}</p>}
+          {loading && <EventCardSkeletonList count={3} />}
           {error && <p className="error-message">{error}</p>}
           {!loading && !error && (
             <div className={`events-list-container ${isFiltering ? 'is-filtering' : ''}`}>
-              <EventsList events={filteredEvents} />
+              <EventsList
+                events={filteredEvents}
+                onPremiumNotifyMe={handlePremiumNotifyMe}
+              />
             </div>
           )}
         </section>
       </div>
 
-      {/* Seeker Filter Modal */}
+      {/* ── Seeker Filter Modal ───────────────────────────── */}
       <SeekerModal
         isOpen={filterModalOpen}
         onClose={() => onFilterModalClose?.()}
@@ -179,10 +186,39 @@ const LandingPage: React.FC<LandingPageProps> = ({
         isFiltering={isFiltering}
       />
 
+      {/* ── Notify Me Modal (shared: sticky + premium) ─────── */}
+      <NotifyMeModal
+        isOpen={notifyModalOpen}
+        onClose={() => setNotifyModalOpen(false)}
+        source={notifySource}
+      />
+
+      {/* ── Sticky lead capture bar (mobile only) ────────── */}
+      {stickyVisible && !stickyDismissed && (
+        <div className="sticky-bar" role="complementary" aria-label="Notificación de eventos">
+          <div className="sticky-bar-content">
+            <p className="sticky-bar-label">¿No ves nada que te convenza?</p>
+            <button
+              id="sticky-bar-avísame-btn"
+              className="sticky-bar-btn"
+              onClick={handleStickyAvísame}
+            >
+              Avísame del próximo 🔔
+            </button>
+          </div>
+          <button
+            className="sticky-bar-dismiss"
+            onClick={handleDismissSticky}
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
 };
 
 export default LandingPage;
-

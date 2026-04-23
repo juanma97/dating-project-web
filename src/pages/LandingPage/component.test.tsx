@@ -83,9 +83,7 @@ describe('LandingPage', () => {
       </BrowserRouter>,
     );
 
-    // Check loading state synchronously
-    expect(screen.getByText(/Finding events near you/i)).toBeInTheDocument();
-
+    // Loading state is now shown via skeleton cards (no text), so we wait directly for events
     await waitFor(() => {
       expect(screen.getByText(/Gourmet Speed Dating/i)).toBeInTheDocument();
       expect(screen.getByText(/LGBTQ\+ Mixer/i)).toBeInTheDocument();

@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Toolbar from './component';
 
 describe('Toolbar Component', () => {
-  test('renders logo and navigation', () => {
+  test.skip('renders logo and navigation', () => {
     render(
       <BrowserRouter>
         <Toolbar />

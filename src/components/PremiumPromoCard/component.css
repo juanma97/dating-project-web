@@ -1,0 +1,115 @@
+.premium-promo-card {
+  position: relative;
+  background: linear-gradient(135deg, #1F3D36 0%, #2d5a4a 100%);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  color: #fff;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(31, 61, 54, 0.25);
+
+  /* Decorative shimmer overlay */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top right, rgba(168, 213, 186, 0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+}
+
+.premium-promo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 0.85rem;
+}
+
+.premium-promo-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+}
+
+.premium-promo-body {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0 0 1.25rem;
+  line-height: 1.5;
+}
+
+.premium-promo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.premium-promo-btn-primary {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.premium-promo-btn-primary:hover,
+.premium-promo-btn-primary:active {
+  background: var(--color-primary-light);
+  transform: translateY(-1px);
+}
+
+.premium-promo-btn-secondary {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.premium-promo-btn-secondary:hover,
+.premium-promo-btn-secondary:active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+@media (min-width: 769px) {
+  .premium-promo-card {
+    padding: 2rem;
+  }
+
+  .premium-promo-title {
+    font-size: 1.3rem;
+  }
+
+  .premium-promo-actions {
+    flex-direction: row;
+  }
+
+  .premium-promo-btn-primary,
+  .premium-promo-btn-secondary {
+    width: auto;
+    flex: 1;
+  }
+}
