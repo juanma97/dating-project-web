@@ -14,14 +14,14 @@ describe('App Component', () => {
     });
   });
 
-  test('renders the hero section text', async () => {
+  test('renders the filter search button in the toolbar on the home route', async () => {
     render(
       <BrowserRouter>
         <App />
       </BrowserRouter>,
     );
     await waitFor(() => {
-      expect(screen.getByText(/Stop swiping\. Start meeting\./i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Abrir filtros de búsqueda/i })).toBeInTheDocument();
     });
   });
 });

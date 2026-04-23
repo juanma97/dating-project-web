@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../components/Header/component';
-import Seeker, { SeekerFilters } from '../../components/Seeker/component';
+import SeekerModal from '../../components/SeekerModal/component';
+import { SeekerFilters } from '../../components/Seeker/component';
 import EventsList from '../../components/EventsList/component';
 import Footer from '../../components/Footer/component';
 import { Event } from '../../api/model/event';
@@ -9,14 +9,25 @@ import { useTranslation } from 'react-i18next';
 import { useSEO } from '../../hooks/useSEO';
 import './component.css';
 
-const HOW_IT_WORKS_STEPS = [
-  { icon: 'how_it_works_step1_icon', title: 'how_it_works_step1_title', desc: 'how_it_works_step1_desc' },
-  { icon: 'how_it_works_step2_icon', title: 'how_it_works_step2_title', desc: 'how_it_works_step2_desc' },
-  { icon: 'how_it_works_step3_icon', title: 'how_it_works_step3_title', desc: 'how_it_works_step3_desc' },
-  { icon: 'how_it_works_step4_icon', title: 'how_it_works_step4_title', desc: 'how_it_works_step4_desc' },
-];
+const DEFAULT_FILTERS: SeekerFilters = {
+  ageMin: 25,
+  ageMax: 40,
+  gender: '',
+  dateStart: null,
+  dateEnd: null,
+};
 
-const LandingPage: React.FC = () => {
+interface LandingPageProps {
+  filterModalOpen?: boolean;
+  onFilterModalClose?: () => void;
+  onFilteringChange?: (isFiltering: boolean) => void;
+}
+
+const LandingPage: React.FC<LandingPageProps> = ({
+  filterModalOpen = false,
+  onFilterModalClose,
+  onFilteringChange,
+}) => {
   const { t } = useTranslation();
 
   useSEO({
@@ -30,7 +41,7 @@ const LandingPage: React.FC = () => {
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeFilters, setActiveFilters] = useState<SeekerFilters | null>(null);
+  const [activeFilters, setActiveFilters] = useState<SeekerFilters>(DEFAULT_FILTERS);
   const [isFiltering, setIsFiltering] = useState(false);
 
   useEffect(() => {
@@ -51,6 +62,7 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     setIsFiltering(true);
+    onFilteringChange?.(true);
 
     const timer = setTimeout(() => {
       const result = allEvents.filter((event) => {
@@ -95,26 +107,31 @@ const LandingPage: React.FC = () => {
 
       setFilteredEvents(result);
       setIsFiltering(false);
+      onFilteringChange?.(false);
     }, 300); // Small delay for visual feedback
 
     return () => clearTimeout(timer);
   }, [allEvents, activeFilters]);
 
+  const handleApplyFilters = (filters: SeekerFilters) => {
+    setActiveFilters(filters);
+  };
+
   return (
     <div className="landing-page">
-      <Header />
+      {/*<Header />*/}
 
       {/* Social Proof Strip */}
-      <div className="social-proof-strip">
+      {/*<div className="social-proof-strip">
         <span className="social-proof-stat">{t('landing.social_proof_stat1')}</span>
         <span className="social-proof-divider">·</span>
         <span className="social-proof-stat">{t('landing.social_proof_stat2')}</span>
         <span className="social-proof-divider">·</span>
         <span className="social-proof-stat">{t('landing.social_proof_stat3')}</span>
-      </div>
+      </div>*/}
 
       {/* How It Works */}
-      <div className="container">
+      {/*<div className="container">
         <section className="how-it-works-section">
           <h2 className="how-it-works-title">{t('landing.how_it_works_title')}</h2>
           <div className="how-it-works-steps">
@@ -128,24 +145,19 @@ const LandingPage: React.FC = () => {
             ))}
           </div>
         </section>
-      </div>
+      </div>*/}
 
       <div className="container">
-        <Seeker
-          onChange={setActiveFilters}
-          resultsCount={filteredEvents.length}
-          isFiltering={isFiltering}
-        />
         <section className="events-section" id="events">
           <div className="section-header">
-            <h2 className="section-title">{t('landing.upcoming_events')}</h2>
-            {!loading && !error && (
+            {/*<h2 className="section-title">{t('landing.upcoming_events')}</h2>*/}
+            {/*{!loading && !error && (
               <span className={`results-badge ${isFiltering ? 'is-filtering' : ''}`}>
                 {filteredEvents.length === 1
                   ? t('landing.results_found_one')
                   : t('landing.results_found', { count: filteredEvents.length })}
               </span>
-            )}
+            )}*/}
           </div>
           {loading && <p className="loading-message">{t('landing.loading_events')}</p>}
           {error && <p className="error-message">{error}</p>}
@@ -157,9 +169,20 @@ const LandingPage: React.FC = () => {
         </section>
       </div>
 
+      {/* Seeker Filter Modal */}
+      <SeekerModal
+        isOpen={filterModalOpen}
+        onClose={() => onFilterModalClose?.()}
+        onApply={handleApplyFilters}
+        currentFilters={activeFilters}
+        resultsCount={filteredEvents.length}
+        isFiltering={isFiltering}
+      />
+
       <Footer />
     </div>
   );
 };
 
 export default LandingPage;
+

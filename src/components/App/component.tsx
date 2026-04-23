@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Toolbar from '../ToolbarComponent/Toolbar/component';
 import LandingPage from '../../pages/LandingPage/component';
 import AboutPage from '../../pages/AboutPage/component';
@@ -12,14 +13,32 @@ import DesignShowcase from '../../pages/DesignShowcase/component';
 import AnalyticsTracker from '../AnalyticsTracker/component';
 import './component.css';
 
-const App: React.FC = () => {
+const AppInner: React.FC = () => {
+  const location = useLocation();
+  const isLanding = location.pathname === '/';
+
+  const [filterModalOpen, setFilterModalOpen] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false);
+
   return (
     <div className="app-container">
       <AnalyticsTracker />
-      <Toolbar />
+      <Toolbar
+        onFilterClick={isLanding ? () => setFilterModalOpen(true) : undefined}
+        isFiltering={isFiltering}
+      />
       <main className="app-main">
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/"
+            element={
+              <LandingPage
+                filterModalOpen={filterModalOpen}
+                onFilterModalClose={() => setFilterModalOpen(false)}
+                onFilteringChange={setIsFiltering}
+              />
+            }
+          />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/events/:id" element={<EventDetailsPage />} />
           <Route path="/premium-events" element={<PremiumEventsPage />} />
@@ -35,4 +54,7 @@ const App: React.FC = () => {
   );
 };
 
+const App: React.FC = () => <AppInner />;
+
 export default App;
+

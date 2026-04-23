@@ -41,3 +41,42 @@
   }
 }
 
+/* ── Filter / Search icon button ─────────────────────────── */
+.toolbar-filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background 0.18s ease, color 0.18s ease, transform 0.15s ease;
+  position: relative;
+}
+
+.toolbar-filter-btn:hover {
+  background: rgba(58, 125, 107, 0.1);
+  color: var(--color-primary);
+}
+
+.toolbar-filter-btn:active {
+  transform: scale(0.92);
+}
+
+/* Pulse when filter is actively processing */
+.toolbar-filter-btn.is-filtering .toolbar-filter-icon {
+  animation: filterIconPulse 1s ease-in-out infinite;
+}
+
+@keyframes filterIconPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.toolbar-filter-icon {
+  width: 20px;
+  height: 20px;
+}

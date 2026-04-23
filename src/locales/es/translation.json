@@ -113,7 +113,9 @@
     "lesbian": "Lesbiana",
     "bisexual": "Bisexual",
     "non_binary": "No binario",
-    "show_results": "Ver {{count}} eventos"
+    "show_results": "Ver {{count}} eventos",
+    "filters_title": "Filtrar eventos",
+    "apply_filters": "Ver {{count}} eventos"
   },
   "event_card": {
     "urgency_almost_full": "🔥 Casi lleno",

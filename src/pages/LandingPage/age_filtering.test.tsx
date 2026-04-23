@@ -11,28 +11,28 @@ jest.mock('../../api/supabase/events', () => ({
   },
 }));
 
-// Mock Seeker to easily control filters
-jest.mock('../../components/Seeker/component', () => ({
+// Mock SeekerModal to easily control filters (LandingPage now uses SeekerModal, not Seeker)
+jest.mock('../../components/SeekerModal/component', () => ({
   __esModule: true,
-  default: ({ onChange }: any) => (
-    <div data-testid="mock-seeker">
-      <button
-        data-testid="filter-25-43"
-        onClick={() =>
-          onChange({
-            ageMin: 25,
-            ageMax: 43,
-            gender: '',
-            city: '',
-            dateStart: null,
-            dateEnd: null,
-          })
-        }
-      >
-        Set Filter 25-43
-      </button>
-    </div>
-  ),
+  default: ({ onApply, isOpen }: any) =>
+    isOpen ? (
+      <div data-testid="mock-seeker-modal">
+        <button
+          data-testid="filter-25-43"
+          onClick={() =>
+            onApply({
+              ageMin: 25,
+              ageMax: 43,
+              gender: '',
+              dateStart: null,
+              dateEnd: null,
+            })
+          }
+        >
+          Set Filter 25-43
+        </button>
+      </div>
+    ) : null,
 }));
 
 const mockEvents: Event[] = [
@@ -110,28 +110,29 @@ describe('LandingPage Age Filtering Regression', () => {
   test('seeker filter 25-43 should only show events within that range', async () => {
     render(
       <BrowserRouter>
-        <LandingPage />
+        <LandingPage filterModalOpen={true} onFilterModalClose={() => {}} onFilteringChange={() => {}} />
       </BrowserRouter>,
     );
 
-    // Initial load shows all events (since filters are null initially)
+    // Wait for events to load — "Match Event" (30-40) is within DEFAULT_FILTERS (25-40), shows
+    // "Too Old Event" (34-63) has max_age 63 > 40, filtered out by default filters
+    // "Too Young Event" (18-24) has min_age 18 < 25, filtered out by default filters
     await waitFor(() => {
       expect(screen.getByText('Match Event')).toBeInTheDocument();
-      expect(screen.getByText('Too Old Event')).toBeInTheDocument();
-      expect(screen.getByText('Too Young Event')).toBeInTheDocument();
     });
 
-    // Apply the filter
+    // The modal is open — click the filter button to apply 25-43 range
     const filterBtn = screen.getByTestId('filter-25-43');
     fireEvent.click(filterBtn);
 
     // Wait for the filtering to apply
     await waitFor(() => {
-      // Should show
+      // "Match Event" (30-40) should still show — it's within 25-43
       expect(screen.getByText('Match Event')).toBeInTheDocument();
 
-      // Should NOT show (BUG: current logic shows them because they overlap)
+      // "Too Old Event" (34-63) max_age 63 > 43 — should NOT show
       expect(screen.queryByText('Too Old Event')).not.toBeInTheDocument();
+      // "Too Young Event" (18-24) min_age 18 < 25 — should NOT show
       expect(screen.queryByText('Too Young Event')).not.toBeInTheDocument();
     });
   });
