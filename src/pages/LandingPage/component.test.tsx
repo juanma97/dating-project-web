@@ -76,14 +76,29 @@ describe('LandingPage', () => {
     });
   });
 
-  test('renders mock events after loading', async () => {
+  // v2 funnel: events are only shown AFTER the wizard is completed.
+  // The test below verifies the hero CTA is visible (new entry point),
+  // and skips the raw event-list test which no longer applies to the main flow.
+  test('renders the hero CTA button', async () => {
     render(
       <BrowserRouter>
         <LandingPage />
       </BrowserRouter>,
     );
 
-    // Loading state is now shown via skeleton cards (no text), so we wait directly for events
+    // The landing now has two CTAs: hero + final section — both valid
+    const ctaBtns = screen.getAllByRole('button', { name: /Encontrar mi evento/i });
+    expect(ctaBtns.length).toBeGreaterThanOrEqual(1);
+  });
+
+  test.skip('renders mock events after loading (v1 flow — wizard replaces this)', async () => {
+    render(
+      <BrowserRouter>
+        <LandingPage />
+      </BrowserRouter>,
+    );
+
+    // In v2, events are behind the wizard — this test is kept as documentation.
     await waitFor(() => {
       expect(screen.getByText(/Gourmet Speed Dating/i)).toBeInTheDocument();
       expect(screen.getByText(/LGBTQ\+ Mixer/i)).toBeInTheDocument();

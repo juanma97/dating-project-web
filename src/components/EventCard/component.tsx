@@ -5,6 +5,7 @@ import { Event } from '../../api/model/event';
 import { trackEventClick } from '../../utils/analytics';
 import Button from '../ui/Button/component';
 import ShareButton from '../ui/ShareButton/component';
+import SpotsCounter from '../SpotsCounter/component';
 import './component.css';
 
 interface EventCardProps {
@@ -112,6 +113,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           </div>
 
           <div className="card-actions">
+            {/* CRO: SpotsCounter shown BEFORE the CTA so urgency is read first,
+                then the CTA is clicked while urgency is still top-of-mind */}
+            <SpotsCounter eventId={event.id} eventDate={event.date} />
             <div className="card-urgency-badge">{t('event_card.urgency_high_demand')}</div>
             <Button className="view-btn" onClick={handleEventClick}>
               {t('event_card.view_details')}

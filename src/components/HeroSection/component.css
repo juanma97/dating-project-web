@@ -1,0 +1,298 @@
+/* ── Hero Section ─────────────────────────────────────────────────────────── */
+
+.hero-section {
+  position: relative;
+  min-height: 100svh; /* svh = viewport minus browser chrome on mobile */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ── Animated gradient background ───────────────────────────────────────── */
+/* CRO: Vivid, moving background creates immediate emotional impact.
+   Uses transform + opacity only → 60fps on mid-range mobile. */
+
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    #1a3a2e 0%,
+    #2a5a48 25%,
+    #1f4a3c 50%,
+    #3a2a1a 75%,
+    #1a2a3a 100%
+  );
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+  z-index: 0;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Floating orbs (depth effect) ────────────────────────────────────────── */
+/* Pure CSS, GPU-composited. Each orb uses a unique animation duration
+   to avoid a mechanical, synchronized feel. */
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+  animation: orbFloat linear infinite;
+}
+
+.hero-orb--1 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #3a7d6b 0%, transparent 70%);
+  top: -80px;
+  right: -60px;
+  animation-duration: 12s;
+}
+
+.hero-orb--2 {
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, #f7a9a0 0%, transparent 70%);
+  bottom: 10%;
+  left: -40px;
+  animation-duration: 9s;
+  animation-direction: reverse;
+}
+
+.hero-orb--3 {
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #7fd1c2 0%, transparent 70%);
+  top: 40%;
+  right: 15%;
+  animation-duration: 15s;
+}
+
+@keyframes orbFloat {
+  0%   { transform: translateY(0px) scale(1); }
+  33%  { transform: translateY(-20px) scale(1.05); }
+  66%  { transform: translateY(10px) scale(0.97); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+/* ── Content ─────────────────────────────────────────────────────────────── */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 560px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ── Location badge ──────────────────────────────────────────────────────── */
+/* CRO: Establishes geographic context in first 300ms of visual scan */
+
+.hero-location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+  animation: fadeSlideDown 0.5s ease 0.1s both;
+}
+
+.hero-location-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7fd1c2;
+  box-shadow: 0 0 0 3px rgba(127, 209, 194, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(127, 209, 194, 0.3); }
+  50%       { box-shadow: 0 0 0 6px rgba(127, 209, 194, 0.15); }
+}
+
+/* ── Headline ─────────────────────────────────────────────────────────────── */
+
+.hero-headline {
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  animation: fadeSlideDown 0.5s ease 0.2s both;
+}
+
+.hero-headline-accent {
+  /* CRO: "swipe" is the pain word — make it visually distinct */
+  background: linear-gradient(135deg, #ff6b5c, #f7a9a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Subheadline ─────────────────────────────────────────────────────────── */
+
+.hero-subheadline {
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  animation: fadeSlideDown 0.5s ease 0.3s both;
+}
+
+/* ── Social proof ────────────────────────────────────────────────────────── */
+/* CRO: Numbers directly below headline reduce risk before the first click */
+
+.hero-social-proof {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+  animation: fadeSlideDown 0.5s ease 0.4s both;
+}
+
+.hero-proof-item {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-proof-item strong {
+  color: #7fd1c2;
+  font-weight: 700;
+}
+
+.hero-proof-divider {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── CTA Button ──────────────────────────────────────────────────────────── */
+/* CRO: High-contrast, pill shape. Glow effect draws the eye.
+   Scale on hover communicates interactivity on desktop. */
+
+.hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1rem 2.25rem;
+  background: linear-gradient(135deg, #3a7d6b 0%, #2d6358 100%);
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow:
+    0 0 0 0 rgba(58, 125, 107, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeSlideDown 0.5s ease 0.5s both, ctaPulse 3s ease 1.5s infinite;
+  letter-spacing: 0.01em;
+}
+
+.hero-cta-btn:hover,
+.hero-cta-btn:focus-visible {
+  transform: scale(1.04) translateY(-2px);
+  box-shadow:
+    0 0 0 6px rgba(58, 125, 107, 0.25),
+    0 12px 40px rgba(0, 0, 0, 0.35);
+  outline: none;
+}
+
+.hero-cta-btn:active {
+  transform: scale(0.98);
+}
+
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(58, 125, 107, 0.4), 0 8px 32px rgba(0,0,0,0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(58, 125, 107, 0.1), 0 8px 32px rgba(0,0,0,0.3); }
+}
+
+/* ── CTA microcopy ───────────────────────────────────────────────────────── */
+
+.hero-cta-microcopy {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.75rem;
+  animation: fadeSlideDown 0.5s ease 0.6s both;
+}
+
+/* ── Scroll indicator ────────────────────────────────────────────────────── */
+
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.5;
+  animation: fadeSlideDown 0.5s ease 1s both;
+}
+
+.hero-scroll-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%       { transform: translateY(8px); opacity: 0.3; }
+}
+
+/* ── Shared entrance animation ───────────────────────────────────────────── */
+
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Desktop adjustments ─────────────────────────────────────────────────── */
+
+@media (min-width: 769px) {
+  .hero-section {
+    padding: 3rem 2rem 5rem;
+  }
+
+  .hero-orb--1 { width: 500px; height: 500px; }
+  .hero-orb--2 { width: 360px; height: 360px; }
+  .hero-orb--3 { width: 250px; height: 250px; }
+
+  .hero-cta-btn {
+    padding: 1.1rem 2.75rem;
+    font-size: 1.1rem;
+  }
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Toolbar from '../ToolbarComponent/Toolbar/component';
 import LandingPage from '../../pages/LandingPage/component';
+import FindEventPage from '../../pages/FindEventPage/component';
 import AboutPage from '../../pages/AboutPage/component';
 import EventDetailsPage from '../../pages/EventDetailsPage/component';
 import PremiumEventsPage from '../../pages/PremiumEventsPage/component';
@@ -39,6 +40,7 @@ const AppInner: React.FC = () => {
               />
             }
           />
+          <Route path="/encontrar" element={<FindEventPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/events/:id" element={<EventDetailsPage />} />
           <Route path="/premium-events" element={<PremiumEventsPage />} />

@@ -245,6 +245,82 @@ export const trackAccessibleEventLeadSubmit = (params: {
   });
 };
 
+// ─── v2 Funnel Tracking ────────────────────────────────────────────────────
+
+/**
+ * Fires when the user clicks the Hero CTA that opens the wizard.
+ * Key top-of-funnel signal — separates bouncers from engaged visitors.
+ */
+export const trackHeroCtaClick = (): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'hero_cta_click', { cta_text: 'Encontrar mi evento' });
+};
+
+/**
+ * Fires when the user sees (enters viewport) the MatchGuaranteeModule.
+ * Measures how deep users scroll into the funnel before dropping.
+ */
+export const trackMatchGuaranteeView = (): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'match_guarantee_view');
+};
+
+/**
+ * Fires each time the user advances a wizard step.
+ * Tracks funnel drop-off per step to identify friction points.
+ */
+export const trackWizardStep = (params: {
+  step_number: 1 | 2 | 3;
+  value: string; // e.g. "25-35", "este-mes"
+}): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'wizard_step_complete', {
+    step_number: params.step_number,
+    step_value: params.value,
+  });
+};
+
+/**
+ * Fires when the wizard is fully complete (step 3 reached = events shown).
+ * Core conversion event of the v2 funnel — user is now "qualified".
+ */
+export const trackWizardComplete = (params: {
+  age_range: string;   // e.g. "25-35"
+  date_preset: string; // e.g. "este-mes"
+  results_count: number;
+}): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'wizard_complete', {
+    age_range: params.age_range,
+    date_preset: params.date_preset,
+    results_count: params.results_count,
+  });
+};
+
+/**
+ * Fires at scroll depth milestones (25%, 50%, 75%, 100%).
+ * Also used to trigger the StickyBar at the 40% threshold.
+ */
+export const trackScrollDepth = (depthPct: 25 | 50 | 75 | 100): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'scroll_depth', { depth_pct: depthPct });
+};
+
+/**
+ * Fires when SpotsCounter shows a low-availability warning (< 5 spots).
+ * Measures urgency effectiveness — did urgency lead to a subsequent click?
+ */
+export const trackSpotsUrgencyShown = (params: {
+  event_id: string;
+  spots_count: number;
+}): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'spots_urgency_shown', {
+    event_id: params.event_id,
+    spots_count: params.spots_count,
+  });
+};
+
 // ─── Landing Page Conversion Tracking ─────────────────────────────────────
 
 /** Fires when a user submits email via the sticky bottom lead-capture bar. */

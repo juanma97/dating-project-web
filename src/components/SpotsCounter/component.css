@@ -1,0 +1,41 @@
+/* ── SpotsCounter ─────────────────────────────────────────────────────────── */
+
+.spots-counter {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  animation: spotsAppear 0.3s ease both;
+}
+
+@keyframes spotsAppear {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Critical: ≤ 3 plazas — red, pulsing ── */
+/* CRO: Pulse animation draws the eye even when users are scanning quickly */
+
+.spots-counter--critical {
+  background: rgba(255, 107, 92, 0.12);
+  color: #c0392b;
+  border: 1px solid rgba(255, 107, 92, 0.3);
+  animation: spotsAppear 0.3s ease both, spotsPulse 2s ease-in-out 0.5s infinite;
+}
+
+@keyframes spotsPulse {
+  0%, 100% { border-color: rgba(255, 107, 92, 0.3); }
+  50%       { border-color: rgba(255, 107, 92, 0.7); }
+}
+
+/* ── Low: 4–9 plazas — amber ── */
+
+.spots-counter--low {
+  background: rgba(255, 165, 0, 0.1);
+  color: #b7770d;
+  border: 1px solid rgba(255, 165, 0, 0.25);
+}
