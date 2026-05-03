@@ -15,7 +15,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onFilterClick, isFiltering = false })
         <div className="toolbar-left">
           <Logo />
         </div>
-        <div className="toolbar-right">
+        {/*<div className="toolbar-right">
           {onFilterClick && (
             <button
               className={`toolbar-filter-btn${isFiltering ? ' is-filtering' : ''}`}
@@ -39,9 +39,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ onFilterClick, isFiltering = false })
               </svg>
             </button>
           )}
-          <div className="divider" />
-          <Navigation />
-        </div>
+          <div className="divider" />*/}
+        <Navigation />
       </div>
     </header>
   );

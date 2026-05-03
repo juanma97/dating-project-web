@@ -1,97 +1,333 @@
-.premium-event-card {
-  cursor: pointer;
-  position: relative;
-  background-color: var(--color-surface);
+/* ── PremiumEventCard ─────────────────────────────────────────────────────── */
+/* Mirrors EventCard layout exactly. Premium differentiators:
+   - Gold/purple accent stripe (vs green for standard events)
+   - Purple-tinted placeholder gradient
+   - Gold price value colour
+   - "✨ Premium" badge on image
+   Everything else (structure, typography, CTA shape) is identical → coherent UX */
+
+.pec-card {
+  background: var(--color-surface);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  border: 1px solid var(--color-border);
+  /* Gold accent stripe at top */
+  border-top: 3px solid var(--color-accent);
   box-shadow: var(--shadow-soft);
-  transition: all var(--transition-normal);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-accent);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  position: relative;
 }
 
-.premium-event-card:hover {
+.pec-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-medium);
 }
 
-.premium-event-card:hover .event-image-banner img {
-  transform: scale(1.04);
-}
+/* ── 1. IMAGE ─────────────────────────────────────────────────────────────── */
 
-/* Image banner */
-.event-image-banner {
+.pec-image-wrap {
   position: relative;
   width: 100%;
-  height: 140px;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
+  background: #1a1a2e;
   flex-shrink: 0;
 }
 
-.event-image-banner img {
+.pec-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.45s ease;
 }
 
-/* 🔥 Nuevo badge — over image */
-.nuevo-badge {
+.pec-card:hover .pec-image {
+  transform: scale(1.05);
+}
+
+.pec-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pec-placeholder-icon {
+  font-size: 2.5rem;
+  opacity: 0.5;
+}
+
+/* Premium badge — top-right corner */
+.pec-premium-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   background: var(--color-accent);
-  color: var(--color-surface);
-  font-size: 0.72rem;
-  font-weight: var(--typography-weight-bold);
-  padding: 0.25rem 0.6rem;
+  color: #fff;
   border-radius: var(--radius-full);
-  letter-spacing: 0.4px;
-  box-shadow: var(--shadow-soft);
+  padding: 0.25rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* "Nuevo" badge — bottom-left (same position as orientation in EventCard) */
+.pec-new-badge {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── 2. CARD BODY ─────────────────────────────────────────────────────────── */
+
+.pec-body {
+  padding: 1.1rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+}
+
+/* ── 2a. Title ─────────────────────────────────────────────────────────────── */
+
+.pec-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── 2b. Meta chips ────────────────────────────────────────────────────────── */
+
+.pec-meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.pec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.65rem;
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
   white-space: nowrap;
 }
 
-/* Badge when there's no image */
-.nuevo-badge--no-image {
-  position: static;
-  display: inline-flex;
-  margin: 0.75rem 1rem 0;
-  box-shadow: none;
+.pec-chip strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
 }
 
-/* "Organizado por nosotros" tag */
-.organizado-tag {
-  background: linear-gradient(90deg, var(--color-background), var(--color-primary-light));
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-primary);
-  font-size: 0.78rem;
-  font-weight: var(--typography-weight-bold);
-  padding: 0.45rem 1rem;
-  letter-spacing: 0.3px;
+/* ── 2c. Urgency ───────────────────────────────────────────────────────────── */
+
+.pec-urgency-row {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-/* Scarcity pill */
-.scarcity-pill {
+/* Premium scarcity uses gold-red tone — more exclusive feel than standard red */
+.pec-scarcity-badge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 107, 92, 0.08);
+  padding: 0.2rem 0.6rem;
+  background: rgba(245, 166, 35, 0.1);
   color: var(--color-accent);
-  border: 1px solid var(--color-accent);
+  border: 1px solid rgba(245, 166, 35, 0.35);
   border-radius: var(--radius-full);
-  font-size: 0.76rem;
-  font-weight: var(--typography-weight-bold);
-  padding: 0.25rem 0.75rem;
-  margin-bottom: 1rem;
-  width: fit-content;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
-/* Age chip highlight */
-.meta-chip.age-chip strong {
-  color: #7b5ea7;
+/* ── 2d. Price row ─────────────────────────────────────────────────────────── */
+/* Gold-tinted background signals "exclusive pricing" */
+
+.pec-price-row {
+  display: flex;
+  align-items: stretch;
+  background: rgba(245, 166, 35, 0.06);
+  border: 1px solid rgba(245, 166, 35, 0.2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.pec-price-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.5rem;
+  gap: 0.1rem;
+}
+
+.pec-price-label {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.pec-price-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.pec-price-divider {
+  width: 1px;
+  background: rgba(245, 166, 35, 0.2);
+  flex-shrink: 0;
+  margin: 0.4rem 0;
+}
+
+/* ── 2e. CTA buttons ───────────────────────────────────────────────────────── */
+
+.pec-cta-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.pec-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.pec-cta-btn:active {
+  transform: scale(0.97);
+}
+
+/* Ladies: rose (mirrors EventCard) */
+.pec-cta-btn--ladies {
+  background: var(--color-secondary-pink);
+  color: var(--color-text-primary);
+}
+
+.pec-cta-btn--ladies:hover,
+.pec-cta-btn--ladies:focus-visible {
+  background: #f59489;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(247, 169, 160, 0.45);
+  outline: none;
+}
+
+/* Men: gold/accent for premium feel */
+.pec-cta-btn--men {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.pec-cta-btn--men:hover,
+.pec-cta-btn--men:focus-visible {
+  background: #d4911f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(245, 166, 35, 0.4);
+  outline: none;
+}
+
+/* Single CTA (no gendered price) */
+.pec-cta-btn--single {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.pec-cta-btn--single:hover,
+.pec-cta-btn--single:focus-visible {
+  background: #d4911f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(245, 166, 35, 0.4);
+  outline: none;
+}
+
+.pec-cta-price {
+  opacity: 0.85;
+  font-weight: 600;
+  font-size: 0.85em;
+}
+
+/* ── 2f. Footer ────────────────────────────────────────────────────────────── */
+
+.pec-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.pec-microcopy {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── Desktop: side-by-side CTAs ────────────────────────────────────────────── */
+
+@media (min-width: 480px) {
+  .pec-cta-group:has(.pec-cta-btn--ladies):has(.pec-cta-btn--men) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 769px) {
+  .pec-image-wrap {
+    aspect-ratio: 3 / 2;
+  }
+
+  .pec-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .pec-title {
+    font-size: 1.1rem;
+  }
 }

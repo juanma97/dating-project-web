@@ -27,13 +27,11 @@ const EVENTS_PREVIEW_COUNT = 3;
 interface LandingPageProps {
   filterModalOpen?: boolean;
   onFilterModalClose?: () => void;
-  onFilteringChange?: (isFiltering: boolean) => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({
   filterModalOpen = false,
   onFilterModalClose,
-  onFilteringChange,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -47,11 +45,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   // ── Data ────────────────────────────────────────────────────────────────
   const [allEvents, setAllEvents] = useState<Event[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isFiltering, setIsFiltering] = useState(false);
+
+  // SeekerModal filter state — kept for resultsCount display in modal footer
+  // (even though the actual navigation happens on Apply, the count shown while
+  //  the user drags sliders gives them useful real-time feedback)
   const [activeFilters, setActiveFilters] = useState<SeekerFilters>(DEFAULT_FILTERS);
+  const [filteredCount, setFilteredCount] = useState(0);
 
   // ── NotifyMe ────────────────────────────────────────────────────────────
   const [notifyModalOpen, setNotifyModalOpen] = useState(false);
@@ -78,7 +79,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       try {
         const data = await eventsApi.fetchEvents();
         setAllEvents(data);
-        setFilteredEvents(data);
+        setFilteredCount(data.length);
       } catch (err) {
         setError(err instanceof Error ? err.message : t('landing.error_fetch'));
       } finally {
@@ -88,55 +89,33 @@ const LandingPage: React.FC<LandingPageProps> = ({
     fetchEventData();
   }, []);
 
-  // ── SeekerModal filtering (fix: restore debounced filter logic) ──────────
+  // ── Live filter count for SeekerModal footer ─────────────────────────────
+  // Runs as the user drags sliders — shows count WITHOUT navigating
   useEffect(() => {
-    setIsFiltering(true);
-    onFilteringChange?.(true);
-
-    const timer = setTimeout(() => {
-      const result = allEvents.filter((event) => {
-        const eMin = event.min_age ?? 18;
-        const eMax = event.max_age ?? 99;
-        const matchesAge = eMin <= activeFilters.ageMax && eMax >= activeFilters.ageMin;
-
-        const genderMatch =
-          !activeFilters.gender ||
-          !event.sexual_orientation ||
-          event.sexual_orientation.toLowerCase() === activeFilters.gender.toLowerCase() ||
-          event.sexual_orientation.toLowerCase() === 'all';
-
-        let dateMatch = true;
-        if (event.date && (activeFilters.dateStart || activeFilters.dateEnd)) {
-          const eventDate = new Date(event.date);
-          eventDate.setHours(0, 0, 0, 0);
-          if (activeFilters.dateStart && activeFilters.dateEnd) {
-            const start = new Date(activeFilters.dateStart);
-            const end = new Date(activeFilters.dateEnd);
-            start.setHours(0, 0, 0, 0);
-            end.setHours(0, 0, 0, 0);
-            dateMatch = eventDate >= start && eventDate <= end;
-          } else if (activeFilters.dateStart) {
-            const start = new Date(activeFilters.dateStart);
-            start.setHours(0, 0, 0, 0);
-            dateMatch = eventDate >= start;
-          }
-        }
-
-        return matchesAge && genderMatch && dateMatch;
-      });
-
-      setFilteredEvents(result);
-      setIsFiltering(false);
-      onFilteringChange?.(false);
-    }, 300);
-
-    return () => clearTimeout(timer);
+    const result = allEvents.filter((event) => {
+      const eMin = event.min_age ?? 18;
+      const eMax = event.max_age ?? 99;
+      const matchesAge = eMin <= activeFilters.ageMax && eMax >= activeFilters.ageMin;
+      const genderMatch =
+        !activeFilters.gender ||
+        !event.sexual_orientation ||
+        event.sexual_orientation.toLowerCase() === activeFilters.gender.toLowerCase() ||
+        event.sexual_orientation.toLowerCase() === 'all';
+      return matchesAge && genderMatch;
+    });
+    setFilteredCount(result.length);
   }, [allEvents, activeFilters]);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
 
   const handleApplyFilters = useCallback((filters: SeekerFilters) => {
-    setActiveFilters(filters);
+    // Store filters for FindEventPage to consume
+    try {
+      sessionStorage.setItem('seekerFilters', JSON.stringify(filters));
+    } catch {
+      // sessionStorage unavailable — navigate anyway, wizard will show instead
+    }
+    navigate('/encontrar');
   }, []);
 
   const handleStickyAvísame = () => {
@@ -156,9 +135,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setNotifyModalOpen(true);
   };
 
-  // Preview: first N events from filtered set
-  const eventsPreview = filteredEvents.slice(0, EVENTS_PREVIEW_COUNT);
-  const hasMoreEvents = filteredEvents.length > EVENTS_PREVIEW_COUNT;
+  // Preview: first 3 events — no filtering on the landing (filters navigate to /encontrar)
+  const eventsPreview = allEvents.slice(0, EVENTS_PREVIEW_COUNT);
+  const hasMoreEvents = allEvents.length > EVENTS_PREVIEW_COUNT;
 
   return (
     <div className="landing-page">
@@ -182,7 +161,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
           {!loading && !error && (
             <>
-              <div className={`lp-events-list ${isFiltering ? 'is-filtering' : ''}`}>
+              <div className="lp-events-list">
                 {eventsPreview.length > 0 ? (
                   <EventsList
                     events={eventsPreview}
@@ -199,7 +178,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
               <div className="lp-events-cta-row">
                 {hasMoreEvents && (
                   <span className="lp-more-label">
-                    +{filteredEvents.length - EVENTS_PREVIEW_COUNT} eventos más disponibles
+                  +{allEvents.length - EVENTS_PREVIEW_COUNT} eventos más disponibles
                   </span>
                 )}
                 <button
@@ -356,13 +335,16 @@ const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* ── SeekerModal (secondary — Toolbar filter icon) ───────────── */}
+      {/* onApply navigates to /encontrar with filters stored in sessionStorage */}
+      {/* onChangeFilters updates filteredCount for the live "X eventos" label */}
       <SeekerModal
         isOpen={filterModalOpen}
         onClose={() => onFilterModalClose?.()}
         onApply={handleApplyFilters}
+        onChangeFilters={setActiveFilters}
         currentFilters={activeFilters}
-        resultsCount={filteredEvents.length}
-        isFiltering={isFiltering}
+        resultsCount={filteredCount}
+        isFiltering={false}
       />
 
       {/* ── NotifyMe Modal ───────────────────────────────────────────── */}

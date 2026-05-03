@@ -10,6 +10,8 @@ interface SeekerModalProps {
   isOpen: boolean;
   onClose: () => void;
   onApply: (filters: SeekerFilters) => void;
+  /** Fires on every draft change — used for live resultsCount in footer */
+  onChangeFilters?: (filters: SeekerFilters) => void;
   currentFilters: SeekerFilters;
   resultsCount?: number;
   isFiltering?: boolean;
@@ -27,6 +29,7 @@ const SeekerModal: React.FC<SeekerModalProps> = ({
   isOpen,
   onClose,
   onApply,
+  onChangeFilters,
   currentFilters,
   resultsCount = 0,
   isFiltering = false,
@@ -55,6 +58,12 @@ const SeekerModal: React.FC<SeekerModalProps> = ({
     onApply(draft);
     onClose();
   };
+
+  // Update parent's live count whenever draft changes
+  useEffect(() => {
+    if (isOpen) onChangeFilters?.(draft);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draft, isOpen]);
 
   const handleReset = () => {
     const reset: SeekerFilters = {
@@ -164,7 +173,7 @@ const SeekerModal: React.FC<SeekerModalProps> = ({
           </button>
           <button className="seeker-modal-apply-btn" onClick={handleApply}>
             {isFiltering
-              ? '...'
+              ? 'Buscando...'
               : t('seeker.apply_filters', { count: resultsCount })}
           </button>
         </div>

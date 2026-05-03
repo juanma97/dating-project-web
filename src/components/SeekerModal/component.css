@@ -38,7 +38,7 @@
     bottom: auto;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 560px;
+    max-width: 480px;
     border-radius: var(--radius-lg);
     animation: dialogPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -64,8 +64,8 @@
 }
 
 .seeker-modal-title {
-  font-size: var(--typography-size-lg);
-  font-weight: var(--typography-weight-bold);
+  font-size: 1.05rem;
+  font-weight: 800;
   color: var(--color-text-primary);
   margin: 0;
 }
@@ -75,7 +75,7 @@
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -83,6 +83,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.2s, color 0.2s;
+  font-family: inherit;
 }
 
 .seeker-modal-close:hover {
@@ -105,30 +106,54 @@
 }
 
 .seeker-modal-label {
-  font-size: var(--typography-size-sm);
-  font-weight: var(--typography-weight-bold);
-  color: var(--color-text-secondary);
-  letter-spacing: 0.02em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 /* ── Select ────────────────────────────────────────────────── */
+/* The wrapper adds a CSS-drawn chevron since appearance:none removes the native one */
 .seeker-modal-select-wrapper {
   position: relative;
 }
 
+.seeker-modal-select-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--color-text-muted);
+  pointer-events: none;
+  transition: border-top-color 0.2s;
+}
+
+.seeker-modal-select-wrapper:focus-within::after {
+  border-top-color: var(--color-primary);
+}
+
 .seeker-modal-select {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--color-border);
+  padding: 0.8rem 2.5rem 0.8rem 1rem; /* extra right padding for the chevron */
+  border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
   font-size: 0.95rem;
   font-family: inherit;
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  transition: all var(--transition-normal);
+  transition: border-color 0.2s, box-shadow 0.2s;
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
+  /* Ensures the select is above the wrapper::after chevron visually */
+  position: relative;
+  z-index: 0;
 }
 
 .seeker-modal-select:focus {
@@ -136,6 +161,34 @@
   border-color: var(--color-primary);
   background-color: var(--color-surface);
   box-shadow: 0 0 0 3px rgba(58, 125, 107, 0.12);
+}
+
+.seeker-modal-select:hover {
+  border-color: var(--color-primary);
+}
+
+/* ── Age range section ─────────────────────────────────────── */
+/* Override AgeRangeSelector internal label so it aligns with the modal style */
+.seeker-modal-filter-group .age-range-selector .age-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.seeker-modal-filter-group .age-range-selector .age-values {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Slightly more touch-friendly handles inside the modal */
+.seeker-modal-filter-group .age-range-handle {
+  width: 24px;
+  height: 24px;
 }
 
 /* ── Footer ────────────────────────────────────────────────── */
@@ -152,13 +205,15 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: var(--typography-weight-medium);
-  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-text-muted);
   text-decoration: underline;
   text-underline-offset: 3px;
   padding: 0.5rem 0;
   transition: color 0.2s;
+  white-space: nowrap;
 }
 
 .seeker-modal-reset-btn:hover {
@@ -171,9 +226,10 @@
   background: var(--color-primary);
   color: #fff;
   border: none;
-  padding: 0.85rem 1.5rem;
+  padding: 0.875rem 1.5rem;
   font-size: 1rem;
-  font-weight: var(--typography-weight-bold);
+  font-weight: 700;
+  font-family: inherit;
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
@@ -182,7 +238,7 @@
 }
 
 .seeker-modal-apply-btn:hover {
-  background: var(--color-primary-dark, #2e6b5b);
+  background: #2d6358;
   transform: translateY(-1px);
 }
 

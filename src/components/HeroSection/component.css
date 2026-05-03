@@ -37,6 +37,52 @@
   100% { background-position: 0% 50%; }
 }
 
+/* ── Video background (variant B only) ───────────────────────────────────── */
+/* Performance notes:
+   - preload="none" → no bytes fetched until autoplay starts.
+   - opacity starts at 0 so users see the gradient, not a black frame.
+   - Transition to opacity:1 fires only once onCanPlay is called.
+   - filter:blur(3px) softens the video and hides compression artefacts.
+   - will-change:opacity hints the GPU to promote this layer.              */
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(3px);
+  transform: scale(1.05); /* hides blur edge bleed */
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  will-change: opacity;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Revealed once the video fires canplay */
+.hero-video--visible {
+  opacity: 1;
+}
+
+/* ── Dark overlay ─────────────────────────────────────────────────────────── */
+/* Ensures WCAG AA contrast (≥ 4.5:1) on all text regardless of variant.
+   Video footage can be brighter than the gradient → slightly heavier for video. */
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 22, 18, 0.45);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-overlay--video {
+  background: rgba(10, 22, 18, 0.58);
+}
+
+
 /* ── Floating orbs (depth effect) ────────────────────────────────────────── */
 /* Pure CSS, GPU-composited. Each orb uses a unique animation duration
    to avoid a mechanical, synchronized feel. */

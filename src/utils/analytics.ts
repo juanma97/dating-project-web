@@ -249,11 +249,61 @@ export const trackAccessibleEventLeadSubmit = (params: {
 
 /**
  * Fires when the user clicks the Hero CTA that opens the wizard.
- * Key top-of-funnel signal — separates bouncers from engaged visitors.
+ * Includes ab_variant so GA4 can segment hero_cta_click rates by variant.
+ * This is the PRIMARY conversion metric for the hero A/B test.
  */
-export const trackHeroCtaClick = (): void => {
+export const trackHeroCtaClick = (abVariant?: string): void => {
   if (typeof window.gtag !== 'function') return;
-  window.gtag('event', 'hero_cta_click', { cta_text: 'Encontrar mi evento' });
+  window.gtag('event', 'hero_cta_click', {
+    cta_text: 'Encontrar mi evento',
+    ...(abVariant ? { ab_variant: abVariant } : {}),
+  });
+};
+
+/**
+ * Fires when the user sees (enters viewport) the MatchGuaranteeModule.
+ * Measures how deep users scroll into the funnel before dropping.
+ */
+
+// ─── A/B Test Tracking ────────────────────────────────────────────────────
+
+/**
+ * Fires once per browser session when a user is assigned to an A/B variant.
+ * is_new_assignment=true: first ever assignment.
+ * is_new_assignment=false: returning user with existing assignment.
+ * Use GA4 → Explore → Funnel to compare hero_cta_click rates by ab_variant.
+ */
+export const trackAbTestAssigned = (params: {
+  test_name: string;
+  variant: string;
+  is_new_assignment: boolean;
+}): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'ab_test_assigned', {
+    test_name: params.test_name,
+    ab_variant: params.variant,
+    is_new_assignment: params.is_new_assignment,
+  });
+};
+
+/**
+ * Fires when the hero video has buffered enough to start playback (canplay).
+ * CRO: if time-to-play is high, it may be hurting conversion for the video group.
+ * Compare avg time-on-page between users who saw this event vs those who didn't.
+ */
+export const trackHeroVideoLoaded = (variant: string): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'hero_video_loaded', { ab_variant: variant });
+};
+
+/**
+ * Fires if the video element errors out (network, codec, etc.).
+ * These users receive the gradient fallback — important for data quality:
+ * if error rate is high, the video group is artificially contaminated.
+ */
+export const trackHeroVideoError = (variant: string): void => {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'hero_video_error', { ab_variant: variant });
 };
 
 /**
