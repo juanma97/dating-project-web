@@ -11,12 +11,16 @@ import VenuePartnersPage from '../../pages/VenuePartnersPage/component';
 import AccessibleEventsPage from '../../pages/AccessibleEventsPage/component';
 import AccessibleEventDetailsPage from '../../pages/AccessibleEventDetailsPage/component';
 import DesignShowcase from '../../pages/DesignShowcase/component';
+import LandingManPage from '../../pages/LandingManPage/component';
+import LandingWomenPage from '../../pages/LandingWomenPage/component';
 import AnalyticsTracker from '../AnalyticsTracker/component';
 import './component.css';
 
 const AppInner: React.FC = () => {
   const location = useLocation();
   const isLanding = location.pathname === '/';
+  // Standalone landing pages have their own minimal header — suppress the global Toolbar
+  const isStandalonePage = ['/man', '/women'].includes(location.pathname);
 
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
@@ -24,10 +28,12 @@ const AppInner: React.FC = () => {
   return (
     <div className="app-container">
       <AnalyticsTracker />
-      <Toolbar
-        onFilterClick={isLanding ? () => setFilterModalOpen(true) : undefined}
-        isFiltering={isFiltering}
-      />
+      {!isStandalonePage && (
+        <Toolbar
+          onFilterClick={isLanding ? () => setFilterModalOpen(true) : undefined}
+          isFiltering={isFiltering}
+        />
+      )}
       <main className="app-main">
         <Routes>
           <Route
@@ -49,6 +55,9 @@ const AppInner: React.FC = () => {
           <Route path="/accessible-events" element={<AccessibleEventsPage />} />
           <Route path="/accessible-events/:id" element={<AccessibleEventDetailsPage />} />
           <Route path="/design-system" element={<DesignShowcase />} />
+          {/* Curated Dating Events MVP — standalone landing pages */}
+          <Route path="/man" element={<LandingManPage />} />
+          <Route path="/women" element={<LandingWomenPage />} />
         </Routes>
       </main>
       {/*<CookieBanner />*/}

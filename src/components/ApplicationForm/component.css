@@ -1,0 +1,407 @@
+/* ─────────────────────────────────────────────────────────────
+   ApplicationForm — Multi-step conversion form
+   Mobile-first. Works inside both LandingManPage and LandingWomenPage.
+   The --af-accent CSS variable is injected by the parent page for
+   gender-specific colour without duplicating styles.
+───────────────────────────────────────────────────────────── */
+
+.af-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ── Progress bar ─────────────────────────────────────────── */
+
+.af-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.af-progress-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.af-progress-fill {
+  height: 100%;
+  background: var(--af-accent, #3A7D6B);
+  border-radius: 9999px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.af-progress-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ── Step container ───────────────────────────────────────── */
+
+.af-step {
+  animation: af-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes af-slide-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.af-step-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+
+.af-step-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 24px;
+}
+
+/* ── Option buttons (intent, key_preference) ─────────────── */
+
+.af-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.af-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.af-option-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.af-option-btn--selected {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--af-accent, #3A7D6B);
+  color: #fff;
+  box-shadow: 0 0 0 1px var(--af-accent, #3A7D6B);
+}
+
+.af-option-emoji {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.af-option-label {
+  flex: 1;
+}
+
+/* ── Pill buttons (age range) ─────────────────────────────── */
+
+.af-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.af-pill {
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.af-pill:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.af-pill--selected {
+  background: var(--af-accent, #3A7D6B);
+  border-color: var(--af-accent, #3A7D6B);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Timeline grid ────────────────────────────────────────── */
+
+.af-timeline-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.af-timeline-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.af-timeline-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.af-timeline-btn--selected {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--af-accent, #3A7D6B);
+  box-shadow: 0 0 0 1px var(--af-accent, #3A7D6B);
+}
+
+.af-timeline-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.af-timeline-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Form fields ──────────────────────────────────────────── */
+
+.af-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.af-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.af-optional {
+  font-weight: 400;
+  text-transform: none;
+  font-size: 12px;
+  opacity: 0.6;
+  letter-spacing: 0;
+}
+
+.af-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 16px; /* 16px prevents iOS auto-zoom */
+  font-family: inherit;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.af-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.af-input:focus {
+  border-color: var(--af-accent, #3A7D6B);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Remove number input arrows */
+.af-input[type="number"]::-webkit-inner-spin-button,
+.af-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.af-input[type="number"] { -moz-appearance: textfield; }
+
+/* ── Navigation ───────────────────────────────────────────── */
+
+.af-step-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+
+.af-btn-primary {
+  flex: 1;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--af-accent, #3A7D6B);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+
+/* Full width when there's no Back button (Step 1) */
+.af-step:first-child .af-btn-primary,
+#af-step-1 .af-btn-primary {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.af-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.af-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.af-btn-ghost {
+  padding: 16px 14px;
+  border-radius: 14px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.af-btn-ghost:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.af-btn-cta {
+  flex: 1;
+  padding: 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--af-accent, #3A7D6B), var(--af-accent-dark, #2c5f51));
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.af-btn-cta:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.af-btn-cta:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Error & Privacy ─────────────────────────────────────── */
+
+.af-error {
+  font-size: 13px;
+  color: #FF6B5C;
+  padding: 10px 14px;
+  background: rgba(255, 107, 92, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 107, 92, 0.25);
+  margin-top: 8px;
+}
+
+.af-privacy {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 16px;
+}
+
+/* ── Success state ───────────────────────────────────────── */
+
+.af-success {
+  text-align: center;
+  padding: 32px 16px;
+  animation: af-slide-in 0.4s ease forwards;
+}
+
+.af-success-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.af-success-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.af-success-body {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
+.af-debug {
+  margin-top: 20px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: left;
+}
+
+.af-debug summary {
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.af-debug code {
+  display: block;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  word-break: break-all;
+}
