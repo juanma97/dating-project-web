@@ -1,62 +1,85 @@
 -- ============================================================
--- Migration: create application_leads table
--- For: Curated Dating Events MVP — /man and /women landing pages
+-- Migration: application_leads v2
+-- Curated Dating Events MVP — /man and /women landing pages
+-- Replaces previous version. Run in Supabase SQL Editor.
 -- ============================================================
--- Run this in your Supabase SQL Editor
 
-create table if not exists public.application_leads (
-  id            uuid primary key default gen_random_uuid(),
+-- Drop existing table if re-running (safe for dev environments)
+-- Comment out in production and use ALTER TABLE instead
+drop table if exists public.application_leads;
+
+-- Drop custom enum if it exists
+drop type if exists public.contact_method_enum;
+
+-- ── Custom Enum ────────────────────────────────────────────────────────
+create type public.contact_method_enum as enum ('whatsapp', 'email');
+
+-- ── Table ──────────────────────────────────────────────────────────────
+create table public.application_leads (
+  id                uuid         primary key default gen_random_uuid(),
+  created_at        timestamptz  not null default now(),
 
   -- Segment identity
-  gender        text not null check (gender in ('male', 'female', 'other')),
-  age           smallint not null check (age >= 18 and age <= 65),
-  city          text,
+  gender            text         not null check (gender in ('male', 'female', 'other')),
 
-  -- Step 1 — Intent
-  intent        text not null,   -- 'relationship' | 'social' | 'explore'
+  -- Step 1: Plan Preference
+  -- "¿Qué plan te va más?" → afterwork | dinner | social
+  preferred_plan    text         not null check (preferred_plan in ('afterwork', 'dinner', 'social')),
 
-  -- Step 3 — Preferences (gender-branched)
-  -- Male: preferred_age_range  e.g. '25-35'
-  -- Female: key_preference     e.g. 'safety' | 'small_group' | 'age_match' | 'shared_interests'
-  preferred_age_range   text,
-  key_preference        text,
+  -- Step 2: Personality Type
+  -- "¿Cómo eres en un plan nuevo?" → extrovert | situational | quiet
+  personality_type  text         not null check (personality_type in ('extrovert', 'situational', 'quiet')),
 
-  -- Step 4 — Commitment
-  first_name    text not null,
-  email         text not null,
-  timeline      text not null check (timeline in ('this_month', 'next_month', 'exploring')),
+  -- Step 3: Connection Goal (open-ended)
+  -- "¿Con quién te gustaría conectar?" — free-text bio, max 400 chars
+  connection_goal   text         not null,
 
-  -- Auto-generated tag string for CRM segmentation
-  -- e.g. 'Lead_Male_25 | Intent_Relationship | Pref_AgeRange_25-35 | Timeline_Hot'
-  tags          text[],
+  -- Step 4: Contact method + conditional contact fields
+  -- Exactly one of (phone, email) must be non-null depending on contact_method
+  contact_method    public.contact_method_enum not null,
+  phone             text,          -- populated when contact_method = 'whatsapp'
+  email             text,          -- populated when contact_method = 'email'
+
+  -- Vibe fields (reserved for future enrichment / scoring layer)
+  vibe_energy       text,          -- e.g. 'high' | 'medium' | 'low'
+  vibe_style        text,          -- e.g. 'adventurous' | 'cosy' | 'intellectual'
+  vibe_intention    text,          -- e.g. 'relationship' | 'social' | 'explore'
 
   -- Source tracking
-  source        text not null default 'landing_page', -- 'landing_man' | 'landing_women'
-  utm_source    text,
-  utm_medium    text,
-  utm_campaign  text,
+  source            text         not null default 'landing_page',  -- 'landing_man' | 'landing_women'
+  utm_source        text,
+  utm_medium        text,
+  utm_campaign      text,
 
-  created_at    timestamptz not null default now()
+  -- ── Constraints ──────────────────────────────────────────────────────
+  -- Enforce: WhatsApp leads must have phone; Email leads must have email.
+  constraint chk_whatsapp_has_phone
+    check (contact_method <> 'whatsapp' or phone is not null),
+  constraint chk_email_has_email
+    check (contact_method <> 'email' or email is not null),
+  -- Prevent a lead from storing both contact fields simultaneously
+  constraint chk_single_contact_method
+    check (not (phone is not null and email is not null))
 );
 
--- ── Indexes ──────────────────────────────────────────────────
-create index if not exists app_leads_gender_idx    on public.application_leads (gender);
-create index if not exists app_leads_intent_idx    on public.application_leads (intent);
-create index if not exists app_leads_timeline_idx  on public.application_leads (timeline);
-create index if not exists app_leads_created_idx   on public.application_leads (created_at desc);
-create index if not exists app_leads_email_idx     on public.application_leads (email);
+-- ── Indexes ───────────────────────────────────────────────────────────
+create index app_leads_gender_idx         on public.application_leads (gender);
+create index app_leads_preferred_plan_idx on public.application_leads (preferred_plan);
+create index app_leads_personality_idx    on public.application_leads (personality_type);
+create index app_leads_contact_method_idx on public.application_leads (contact_method);
+create index app_leads_created_idx        on public.application_leads (created_at desc);
 
--- ── Row Level Security ─────────────────────────────────────────
+-- ── Row Level Security ────────────────────────────────────────────────
 alter table public.application_leads enable row level security;
 
--- Allow anonymous users (no login) to submit — critical for landing page conversion
+-- Anon users (no login) can submit — required for landing page conversion
 create policy "Anyone can submit an application lead"
   on public.application_leads
   for insert
   to anon
   with check (true);
 
--- Only authenticated users (admin/service role) can read leads
+-- Only authenticated users / service role can read leads
 create policy "Only authenticated users can read application leads"
   on public.application_leads
   for select

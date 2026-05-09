@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import {
   submitApplicationLead,
   type Gender,
-  type Intent,
-  type Timeline,
-  type KeyPreference,
+  type PreferredPlan,
+  type PersonalityType,
+  type ContactMethod,
 } from '../../api/supabase/applicationLeads';
 import './component.css';
 
@@ -12,117 +12,116 @@ import './component.css';
 
 interface ApplicationFormProps {
   gender: 'male' | 'female';
-  /** Called on successful submission with the generated tags */
   onSuccess?: (tags: string[]) => void;
 }
 
 interface FormState {
-  intent: Intent | '';
-  age: string;
-  city: string;
-  preferred_age_range: string;
-  key_preference: KeyPreference | '';
-  first_name: string;
-  email: string;
-  timeline: Timeline | '';
+  preferred_plan:   PreferredPlan | '';
+  personality_type: PersonalityType | '';
+  connection_goal:  string;
+  contact_method:   ContactMethod | '';
+  phone:            string;
+  email:            string;
 }
 
 // ─── Static Data ────────────────────────────────────────────────────────────
 
-const INTENT_OPTIONS = [
-  { value: 'relationship' as Intent, label: 'Buscar una relación', emoji: '💫' },
-  { value: 'social'       as Intent, label: 'Ampliar mi círculo social', emoji: '🤝' },
-  { value: 'explore'      as Intent, label: 'Simplemente explorar', emoji: '🌱' },
+const PLAN_OPTIONS: { value: PreferredPlan; label: string; desc: string; emoji: string }[] = [
+  { value: 'afterwork', label: 'Afterwork',  desc: 'Tras la jornada, ambiente relajado', emoji: '🥂' },
+  { value: 'dinner',    label: 'Cena',       desc: 'Conversación tranquila, mesa compartida', emoji: '🕯️' },
+  { value: 'social',    label: 'Social',     desc: 'Actividad o juego, más movimiento', emoji: '🎲' },
 ];
 
-const AGE_RANGE_OPTIONS = [
-  '18–24', '25–29', '30–34', '35–39', '40–45',
+const PERSONALITY_OPTIONS: { value: PersonalityType; label: string; desc: string; emoji: string }[] = [
+  { value: 'extrovert',   label: 'Extrovertido/a', desc: 'Me lanzo, rompo el hielo fácil', emoji: '⚡' },
+  { value: 'situational', label: 'Depende del día', desc: 'Cuando el ambiente me da', emoji: '🌊' },
+  { value: 'quiet',       label: 'Reservado/a',    desc: 'Prefiero que me pregunten', emoji: '🌿' },
 ];
 
-const KEY_PREFERENCE_OPTIONS: { value: KeyPreference; label: string; emoji: string }[] = [
-  { value: 'safety',           label: 'Seguridad y verificación', emoji: '🛡️' },
-  { value: 'small_group',      label: 'Grupos pequeños y cómodos', emoji: '🌿' },
-  { value: 'age_match',        label: 'Personas de mi rango de edad', emoji: '⏳' },
-  { value: 'shared_interests', label: 'Intereses en común', emoji: '✨' },
+const CONTACT_OPTIONS: { value: ContactMethod; label: string; icon: string }[] = [
+  { value: 'whatsapp', label: 'WhatsApp', icon: '📱' },
+  { value: 'email',    label: 'Email',    icon: '✉️' },
 ];
 
-const TIMELINE_OPTIONS = [
-  { value: 'this_month' as Timeline, label: 'Este mes',          desc: 'Estoy listo/a' },
-  { value: 'next_month' as Timeline, label: 'El mes que viene',  desc: 'Me lo estoy pensando' },
-  { value: 'exploring'  as Timeline, label: 'Solo explorando',   desc: 'Sin compromiso' },
-];
+// ─── Validation helpers ─────────────────────────────────────────────────────
+
+const PHONE_REGEX = /^\+?[\d\s\-().]{8,20}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ─── Component ──────────────────────────────────────────────────────────────
 
 const TOTAL_STEPS = 4;
 
 const ApplicationForm: React.FC<ApplicationFormProps> = ({ gender, onSuccess }) => {
-  const [step, setStep] = useState(1);
+  const [step, setStep]           = useState(1);
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted]  = useState(false);
+  const [error, setError]          = useState<string | null>(null);
   const [generatedTags, setGeneratedTags] = useState<string[]>([]);
 
   const [form, setForm] = useState<FormState>({
-    intent: '',
-    age: '',
-    city: '',
-    preferred_age_range: '',
-    key_preference: '',
-    first_name: '',
-    email: '',
-    timeline: '',
+    preferred_plan:   '',
+    personality_type: '',
+    connection_goal:  '',
+    contact_method:   '',
+    phone:            '',
+    email:            '',
   });
 
   // ── Handlers ───────────────────────────────────────────────────────────
 
-  const setField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+  const setField = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm(prev => ({ ...prev, [key]: value }));
-  };
 
   const nextStep = () => setStep(s => Math.min(s + 1, TOTAL_STEPS));
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
+  // ── Step Validation ────────────────────────────────────────────────────
+
+  const canProceedStep1 = form.preferred_plan !== '';
+  const canProceedStep2 = form.personality_type !== '';
+  const canProceedStep3 = form.connection_goal.trim().length >= 10;
+
+  const canSubmit = (() => {
+    if (form.contact_method === 'whatsapp') return PHONE_REGEX.test(form.phone);
+    if (form.contact_method === 'email')    return EMAIL_REGEX.test(form.email);
+    return false;
+  })();
+
+  // ── Submit ─────────────────────────────────────────────────────────────
+
   const handleSubmit = async () => {
-    if (!form.intent || !form.age || !form.first_name || !form.email || !form.timeline) return;
+    if (!canSubmit) return;
     setSubmitting(true);
     setError(null);
 
     try {
       const { tags } = await submitApplicationLead({
-        gender: gender as Gender,
-        age: parseInt(form.age, 10),
-        city: form.city || undefined,
-        intent: form.intent as Intent,
-        preferred_age_range: form.preferred_age_range || undefined,
-        key_preference: (form.key_preference as KeyPreference) || undefined,
-        first_name: form.first_name,
-        email: form.email,
-        timeline: form.timeline as Timeline,
-        source: gender === 'male' ? 'landing_man' : 'landing_women',
+        gender:           gender as Gender,
+        preferred_plan:   form.preferred_plan as PreferredPlan,
+        personality_type: form.personality_type as PersonalityType,
+        connection_goal:  form.connection_goal.trim(),
+        contact_method:   form.contact_method as ContactMethod,
+        phone:            form.contact_method === 'whatsapp' ? form.phone : undefined,
+        email:            form.contact_method === 'email'    ? form.email : undefined,
+        source:           gender === 'male' ? 'landing_man' : 'landing_women',
       });
       setGeneratedTags(tags);
       setSubmitted(true);
       onSuccess?.(tags);
-    } catch {
+    } catch (err) {
       setError('Algo salió mal. Por favor, inténtalo de nuevo.');
+      console.error(err);
     } finally {
       setSubmitting(false);
     }
   };
 
-  // ── Step validation ────────────────────────────────────────────────────
-
-  const canProceedStep1 = form.intent !== '';
-  const canProceedStep2 = form.age !== '' && parseInt(form.age, 10) >= 18 && parseInt(form.age, 10) <= 65;
-  const canProceedStep3 = gender === 'male' ? form.preferred_age_range !== '' : form.key_preference !== '';
-  const canSubmit = form.first_name.trim() !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) && form.timeline !== '';
-
   // ── Progress ────────────────────────────────────────────────────────────
 
   const progressPct = ((step - 1) / TOTAL_STEPS) * 100;
 
-  // ── Submitted state ─────────────────────────────────────────────────────
+  // ── Success ─────────────────────────────────────────────────────────────
 
   if (submitted) {
     return (
@@ -130,12 +129,13 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ gender, onSuccess }) 
         <div className="af-success-icon">🎉</div>
         <h3 className="af-success-title">¡Solicitud recibida!</h3>
         <p className="af-success-body">
-          Te contactaremos en las próximas 48h con los detalles del próximo evento.
+          {form.contact_method === 'whatsapp'
+            ? 'Te confirmaremos tu plaza por WhatsApp en menos de 48h.'
+            : 'Te enviaremos los detalles por email en menos de 48h.'}
         </p>
-        {/* Dev-only: show generated tags for verification */}
-        {process.env.NODE_ENV === 'development' && (
+        {import.meta.env.DEV && (
           <details className="af-debug">
-            <summary>Tags generados (dev only)</summary>
+            <summary>Tags (dev)</summary>
             <code>{generatedTags.join(' | ')}</code>
           </details>
         )}
@@ -154,28 +154,31 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ gender, onSuccess }) 
         <span className="af-progress-label">Paso {step} de {TOTAL_STEPS}</span>
       </div>
 
-      {/* ── Step 1: Intent ── */}
+      {/* ── Step 1: Plan Preference ── */}
       {step === 1 && (
         <div className="af-step" id="af-step-1">
-          <h3 className="af-step-title">¿Qué te trae por aquí?</h3>
-          <p className="af-step-subtitle">Sin filtros. Solo curiosidad.</p>
-          <div className="af-options" role="group" aria-label="Motivo de registro">
-            {INTENT_OPTIONS.map(opt => (
+          <h3 className="af-step-title">¿Qué plan te va más?</h3>
+          <p className="af-step-subtitle">Así diseñamos el evento que encaja contigo.</p>
+          <div className="af-options" role="group" aria-label="Tipo de plan preferido">
+            {PLAN_OPTIONS.map(opt => (
               <button
                 key={opt.value}
-                id={`af-intent-${opt.value}`}
-                className={`af-option-btn ${form.intent === opt.value ? 'af-option-btn--selected' : ''}`}
-                onClick={() => { setField('intent', opt.value); }}
-                aria-pressed={form.intent === opt.value}
+                id={`af-plan-${opt.value}`}
+                className={`af-option-btn ${form.preferred_plan === opt.value ? 'af-option-btn--selected' : ''}`}
+                onClick={() => setField('preferred_plan', opt.value)}
+                aria-pressed={form.preferred_plan === opt.value}
               >
                 <span className="af-option-emoji">{opt.emoji}</span>
-                <span className="af-option-label">{opt.label}</span>
+                <span className="af-option-text">
+                  <span className="af-option-label">{opt.label}</span>
+                  <span className="af-option-desc">{opt.desc}</span>
+                </span>
               </button>
             ))}
           </div>
           <button
             id="af-next-1"
-            className="af-btn-primary"
+            className="af-btn-primary af-btn-full"
             onClick={nextStep}
             disabled={!canProceedStep1}
           >
@@ -184,40 +187,28 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ gender, onSuccess }) 
         </div>
       )}
 
-      {/* ── Step 2: Profile ── */}
+      {/* ── Step 2: Personality Type ── */}
       {step === 2 && (
         <div className="af-step" id="af-step-2">
-          <h3 className="af-step-title">Cuéntanos un poco sobre ti</h3>
-          <p className="af-step-subtitle">Necesitamos esto para encontrar tu grupo ideal.</p>
-
-          <div className="af-field-group">
-            <label className="af-label" htmlFor="af-age">Tu edad</label>
-            <input
-              id="af-age"
-              className="af-input"
-              type="number"
-              min={18}
-              max={65}
-              placeholder="Ej: 28"
-              value={form.age}
-              onChange={e => setField('age', e.target.value)}
-              aria-label="Tu edad"
-            />
+          <h3 className="af-step-title">¿Cómo eres en un plan nuevo?</h3>
+          <p className="af-step-subtitle">Sin juicios. Solo para cuadrar los grupos.</p>
+          <div className="af-options" role="group" aria-label="Tipo de personalidad">
+            {PERSONALITY_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                id={`af-personality-${opt.value}`}
+                className={`af-option-btn ${form.personality_type === opt.value ? 'af-option-btn--selected' : ''}`}
+                onClick={() => setField('personality_type', opt.value)}
+                aria-pressed={form.personality_type === opt.value}
+              >
+                <span className="af-option-emoji">{opt.emoji}</span>
+                <span className="af-option-text">
+                  <span className="af-option-label">{opt.label}</span>
+                  <span className="af-option-desc">{opt.desc}</span>
+                </span>
+              </button>
+            ))}
           </div>
-
-          <div className="af-field-group">
-            <label className="af-label" htmlFor="af-city">Ciudad <span className="af-optional">(opcional)</span></label>
-            <input
-              id="af-city"
-              className="af-input"
-              type="text"
-              placeholder="Ej: Madrid"
-              value={form.city}
-              onChange={e => setField('city', e.target.value)}
-              aria-label="Tu ciudad"
-            />
-          </div>
-
           <div className="af-step-nav">
             <button className="af-btn-ghost" onClick={prevStep}>← Atrás</button>
             <button
@@ -232,51 +223,32 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ gender, onSuccess }) 
         </div>
       )}
 
-      {/* ── Step 3: Preferences (gender-branched) ── */}
+      {/* ── Step 3: Connection Goal (open-ended) ── */}
       {step === 3 && (
         <div className="af-step" id="af-step-3">
-          {gender === 'male' ? (
-            <>
-              <h3 className="af-step-title">¿Qué rango de edad te interesa?</h3>
-              <p className="af-step-subtitle">Cuanto más específico, mejor el cuadre.</p>
-              <div className="af-pills" role="group" aria-label="Rango de edad preferido">
-                {AGE_RANGE_OPTIONS.map(range => {
-                  const val = range.replace('–', '-');
-                  return (
-                    <button
-                      key={val}
-                      id={`af-age-range-${val}`}
-                      className={`af-pill ${form.preferred_age_range === val ? 'af-pill--selected' : ''}`}
-                      onClick={() => setField('preferred_age_range', val)}
-                      aria-pressed={form.preferred_age_range === val}
-                    >
-                      {range}
-                    </button>
-                  );
-                })}
-              </div>
-            </>
-          ) : (
-            <>
-              <h3 className="af-step-title">¿Qué es lo más importante para ti?</h3>
-              <p className="af-step-subtitle">Así ajustamos cada evento a tus expectativas.</p>
-              <div className="af-options" role="group" aria-label="Preferencia principal">
-                {KEY_PREFERENCE_OPTIONS.map(opt => (
-                  <button
-                    key={opt.value}
-                    id={`af-pref-${opt.value}`}
-                    className={`af-option-btn ${form.key_preference === opt.value ? 'af-option-btn--selected' : ''}`}
-                    onClick={() => setField('key_preference', opt.value)}
-                    aria-pressed={form.key_preference === opt.value}
-                  >
-                    <span className="af-option-emoji">{opt.emoji}</span>
-                    <span className="af-option-label">{opt.label}</span>
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-
+          <h3 className="af-step-title">¿Con quién te gustaría conectar?</h3>
+          <p className="af-step-subtitle">
+            Sin filtros, en tus palabras. Cuanto más específico/a, mejor el cuadre.
+          </p>
+          <div className="af-field-group">
+            <textarea
+              id="af-connection-goal"
+              className="af-textarea"
+              placeholder={
+                gender === 'male'
+                  ? 'Ej: Alguien que tenga carácter, que sepa lo que quiere y que no tenga miedo de decirlo...'
+                  : 'Ej: Alguien tranquilo, con ambición pero sin prisa, que valore una conversación buena sobre la cantidad...'
+              }
+              value={form.connection_goal}
+              onChange={e => setField('connection_goal', e.target.value)}
+              rows={4}
+              maxLength={400}
+              aria-label="Con quién te gustaría conectar"
+            />
+            <span className="af-char-count">
+              {form.connection_goal.length}/400
+            </span>
+          </div>
           <div className="af-step-nav">
             <button className="af-btn-ghost" onClick={prevStep}>← Atrás</button>
             <button
@@ -291,57 +263,69 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ gender, onSuccess }) 
         </div>
       )}
 
-      {/* ── Step 4: Commitment ── */}
+      {/* ── Step 4: Contact Method (conditional) ── */}
       {step === 4 && (
         <div className="af-step" id="af-step-4">
-          <h3 className="af-step-title">Casi listo</h3>
-          <p className="af-step-subtitle">Solo necesitamos saber cómo contactarte.</p>
+          <h3 className="af-step-title">¿Dónde te avisamos si encajas?</h3>
+          <p className="af-step-subtitle">Solo te contactamos si hay plaza para ti.</p>
 
-          <div className="af-field-group">
-            <label className="af-label" htmlFor="af-first-name">Nombre</label>
-            <input
-              id="af-first-name"
-              className="af-input"
-              type="text"
-              placeholder="Tu nombre"
-              value={form.first_name}
-              onChange={e => setField('first_name', e.target.value)}
-              autoComplete="given-name"
-              aria-label="Tu nombre"
-            />
+          {/* Contact method selector */}
+          <div className="af-contact-toggle" role="group" aria-label="Método de contacto">
+            {CONTACT_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                id={`af-contact-${opt.value}`}
+                className={`af-contact-btn ${form.contact_method === opt.value ? 'af-contact-btn--selected' : ''}`}
+                onClick={() => {
+                  setField('contact_method', opt.value);
+                  // Clear the other field when switching
+                  if (opt.value === 'whatsapp') setField('email', '');
+                  else setField('phone', '');
+                }}
+                aria-pressed={form.contact_method === opt.value}
+              >
+                <span className="af-contact-icon">{opt.icon}</span>
+                <span className="af-contact-label">{opt.label}</span>
+              </button>
+            ))}
           </div>
 
-          <div className="af-field-group">
-            <label className="af-label" htmlFor="af-email">Email</label>
-            <input
-              id="af-email"
-              className="af-input"
-              type="email"
-              placeholder="tu@email.com"
-              value={form.email}
-              onChange={e => setField('email', e.target.value)}
-              autoComplete="email"
-              aria-label="Tu email"
-            />
-          </div>
-
-          <div className="af-field-group">
-            <label className="af-label">¿Cuándo estás disponible?</label>
-            <div className="af-timeline-grid" role="group" aria-label="Disponibilidad temporal">
-              {TIMELINE_OPTIONS.map(opt => (
-                <button
-                  key={opt.value}
-                  id={`af-timeline-${opt.value}`}
-                  className={`af-timeline-btn ${form.timeline === opt.value ? 'af-timeline-btn--selected' : ''}`}
-                  onClick={() => setField('timeline', opt.value)}
-                  aria-pressed={form.timeline === opt.value}
-                >
-                  <span className="af-timeline-label">{opt.label}</span>
-                  <span className="af-timeline-desc">{opt.desc}</span>
-                </button>
-              ))}
+          {/* Conditional WhatsApp field */}
+          {form.contact_method === 'whatsapp' && (
+            <div className="af-field-group af-field-animated" key="whatsapp-field">
+              <label className="af-label" htmlFor="af-phone">Tu número de WhatsApp</label>
+              <input
+                id="af-phone"
+                className="af-input"
+                type="tel"
+                placeholder="+34 600 000 000"
+                value={form.phone}
+                onChange={e => setField('phone', e.target.value)}
+                autoComplete="tel"
+                aria-label="Número de WhatsApp"
+              />
+              <p className="af-microcopy">
+                📲 Confirmamos plazas por WhatsApp 24-48h antes del evento. Sin grupos, sin spam.
+              </p>
             </div>
-          </div>
+          )}
+
+          {/* Conditional Email field */}
+          {form.contact_method === 'email' && (
+            <div className="af-field-group af-field-animated" key="email-field">
+              <label className="af-label" htmlFor="af-email">Tu email</label>
+              <input
+                id="af-email"
+                className="af-input"
+                type="email"
+                placeholder="tu@email.com"
+                value={form.email}
+                onChange={e => setField('email', e.target.value)}
+                autoComplete="email"
+                aria-label="Tu email"
+              />
+            </div>
+          )}
 
           {error && <p className="af-error" role="alert">{error}</p>}
 
@@ -358,9 +342,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ gender, onSuccess }) 
             </button>
           </div>
 
-          <p className="af-privacy">
-            Sin spam. Solo te contactaremos para confirmar tu plaza.
-          </p>
+          <p className="af-privacy">Sin spam. Solo te contactamos si hay plaza para ti.</p>
         </div>
       )}
     </div>

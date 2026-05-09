@@ -110,7 +110,7 @@ describe('LandingPage Age Filtering Regression', () => {
   test.skip('seeker filter 25-43 should only show events within that range', async () => {
     render(
       <BrowserRouter>
-        <LandingPage filterModalOpen={true} onFilterModalClose={() => { }} onFilteringChange={() => { }} />
+        <LandingPage filterModalOpen={true} onFilterModalClose={() => { }} />
       </BrowserRouter>,
     );
 

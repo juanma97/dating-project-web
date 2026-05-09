@@ -1,100 +1,128 @@
 import { supabase } from './client';
 
-// ─── Types ─────────────────────────────────────────────────────────────────
+// ─── Enums & Types ──────────────────────────────────────────────────────────
 
-export type Gender = 'male' | 'female' | 'other';
-export type Intent = 'relationship' | 'social' | 'explore';
-export type Timeline = 'this_month' | 'next_month' | 'exploring';
-export type KeyPreference = 'safety' | 'small_group' | 'age_match' | 'shared_interests';
+export type Gender        = 'male' | 'female' | 'other';
+export type PreferredPlan = 'afterwork' | 'dinner' | 'social';
+export type PersonalityType = 'extrovert' | 'situational' | 'quiet';
+export type ContactMethod = 'whatsapp' | 'email';
 
 export interface ApplicationLeadData {
-  gender: Gender;
-  age: number;
-  city?: string;
+  gender:           Gender;
 
   // Step 1
-  intent: Intent;
+  preferred_plan:   PreferredPlan;
 
-  // Step 3 (gender-branched)
-  preferred_age_range?: string;  // e.g. '25-35' — male segment
-  key_preference?: KeyPreference; // female segment
+  // Step 2
+  personality_type: PersonalityType;
 
-  // Step 4
-  first_name: string;
-  email: string;
-  timeline: Timeline;
+  // Step 3 — open-ended
+  connection_goal:  string;
+
+  // Step 4 — conditional contact
+  contact_method:   ContactMethod;
+  phone?:           string;  // required when contact_method = 'whatsapp'
+  email?:           string;  // required when contact_method = 'email'
+
+  // Vibe fields (optional, reserved for future scoring)
+  vibe_energy?:     string;
+  vibe_style?:      string;
+  vibe_intention?:  string;
 
   // Source
-  source: string; // 'landing_man' | 'landing_women'
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
+  source:           string;  // 'landing_man' | 'landing_women'
+  utm_source?:      string;
+  utm_medium?:      string;
+  utm_campaign?:    string;
 }
 
 // ─── Tag Generation ─────────────────────────────────────────────────────────
 
 /**
- * Generates a CRM-compatible tag array for segmentation and lead scoring.
+ * Generates a CRM-compatible tag array for segmentation and prioritisation.
  *
- * Psychology: Tags are generated at submission time (not stored as free text)
- * so they can be used immediately for automated follow-up sequences.
+ * Example output:
+ *   ['Lead_Male', 'Plan_Dinner', 'Personality_Extrovert', 'Contact_WhatsApp', 'Source_LandingMan']
  *
- * Example output: ['Lead_Male_28', 'Intent_Relationship', 'Pref_AgeRange_25-35', 'Timeline_Hot']
+ * Psychology: Tags generated at submit time = usable immediately in follow-up
+ * sequences without manual labelling. WhatsApp leads get higher priority
+ * (higher intent signal) than Email leads.
  */
 function generateTags(data: ApplicationLeadData): string[] {
   const tags: string[] = [];
 
-  // Identity tag
+  // Identity
   const genderLabel = data.gender === 'male' ? 'Male' : data.gender === 'female' ? 'Female' : 'Other';
-  tags.push(`Lead_${genderLabel}_${data.age}`);
+  tags.push(`Lead_${genderLabel}`);
 
-  // Intent tag
-  const intentMap: Record<Intent, string> = {
-    relationship: 'Intent_Relationship',
-    social:       'Intent_Social',
-    explore:      'Intent_Explore',
+  // Plan preference
+  const planMap: Record<PreferredPlan, string> = {
+    afterwork: 'Plan_Afterwork',
+    dinner:    'Plan_Dinner',
+    social:    'Plan_Social',
   };
-  tags.push(intentMap[data.intent]);
+  tags.push(planMap[data.preferred_plan]);
 
-  // Preference tag (gender-branched)
-  if (data.preferred_age_range) {
-    tags.push(`Pref_AgeRange_${data.preferred_age_range}`);
-  }
-  if (data.key_preference) {
-    const prefMap: Record<KeyPreference, string> = {
-      safety:            'Pref_Safety',
-      small_group:       'Pref_SmallGroup',
-      age_match:         'Pref_AgeMatch',
-      shared_interests:  'Pref_SharedInterests',
-    };
-    tags.push(prefMap[data.key_preference]);
-  }
-
-  // Timeline tag (heat score for follow-up prioritisation)
-  const timelineMap: Record<Timeline, string> = {
-    this_month: 'Timeline_Hot',
-    next_month: 'Timeline_Warm',
-    exploring:  'Timeline_Cold',
+  // Personality
+  const personalityMap: Record<PersonalityType, string> = {
+    extrovert:   'Personality_Extrovert',
+    situational: 'Personality_Situational',
+    quiet:       'Personality_Quiet',
   };
-  tags.push(timelineMap[data.timeline]);
+  tags.push(personalityMap[data.personality_type]);
+
+  // Contact method — WhatsApp = higher intent (real name, real number)
+  tags.push(data.contact_method === 'whatsapp' ? 'Contact_WhatsApp' : 'Contact_Email');
+
+  // Source
+  tags.push(data.source === 'landing_man' ? 'Source_LandingMan' : 'Source_LandingWomen');
 
   return tags;
 }
 
-// ─── API ───────────────────────────────────────────────────────────────────
+// ─── API ────────────────────────────────────────────────────────────────────
 
 /**
- * Submits a full application lead to Supabase.
- * Tags are auto-generated from the lead data before insert.
+ * Validates contact data integrity before sending to DB.
+ * Mirrors the SQL CHECK constraints client-side to surface errors before the round-trip.
  */
+function validateContactFields(data: ApplicationLeadData): void {
+  if (data.contact_method === 'whatsapp' && !data.phone) {
+    throw new Error('Phone number is required for WhatsApp leads.');
+  }
+  if (data.contact_method === 'email' && !data.email) {
+    throw new Error('Email address is required for Email leads.');
+  }
+  if (data.phone && data.email) {
+    throw new Error('Only one contact method should be set.');
+  }
+}
+
 export async function submitApplicationLead(data: ApplicationLeadData): Promise<{ tags: string[] }> {
+  // Client-side guard — matches DB constraints
+  validateContactFields(data);
+
   const tags = generateTags(data);
 
   const { error } = await supabase.from('application_leads').insert([
     {
-      ...data,
-      tags,
-      created_at: new Date().toISOString(),
+      // Spread only the DB-mapped fields — `tags` is NOT a column in this table.
+      // Tags are generated in-memory for CRM segmentation and returned to the caller.
+      gender:           data.gender,
+      preferred_plan:   data.preferred_plan,
+      personality_type: data.personality_type,
+      connection_goal:  data.connection_goal,
+      contact_method:   data.contact_method,
+      phone:            data.phone ?? null,
+      email:            data.email ?? null,
+      vibe_energy:      data.vibe_energy ?? null,
+      vibe_style:       data.vibe_style ?? null,
+      vibe_intention:   data.vibe_intention ?? null,
+      source:           data.source,
+      utm_source:       data.utm_source ?? null,
+      utm_medium:       data.utm_medium ?? null,
+      utm_campaign:     data.utm_campaign ?? null,
+      created_at:       new Date().toISOString(),
     },
   ]);
 

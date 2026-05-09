@@ -23,7 +23,7 @@ const AppInner: React.FC = () => {
   const isStandalonePage = ['/man', '/women'].includes(location.pathname);
 
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const [isFiltering, setIsFiltering] = useState(false);
+  const [isFiltering, _] = useState(false);
 
   return (
     <div className="app-container">
@@ -42,7 +42,6 @@ const AppInner: React.FC = () => {
               <LandingPage
                 filterModalOpen={filterModalOpen}
                 onFilterModalClose={() => setFilterModalOpen(false)}
-                onFilteringChange={setIsFiltering}
               />
             }
           />
